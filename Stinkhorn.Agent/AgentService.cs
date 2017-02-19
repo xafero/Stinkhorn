@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Configuration;
+using System.Linq;
+using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.ServiceProcess;
+using Stinkhorn.Agent.API;
 using Stinkhorn.Util;
 
 namespace Stinkhorn.Agent
@@ -7,6 +12,8 @@ namespace Stinkhorn.Agent
 	public class AgentService : ServiceBase, ISetupService, IConsoleService
 	{
 		public const string MyServiceName = "StinkhornAgent";
+		
+		private ServiceHost ServiceHost { get; set; }
 		
 		public AgentService()
 		{
@@ -20,6 +27,8 @@ namespace Stinkhorn.Agent
 		
 		protected override void Dispose(bool disposing)
 		{
+			Stop();
+			ServiceHost = null;
 			base.Dispose(disposing);
 		}
 		
@@ -55,10 +64,30 @@ namespace Stinkhorn.Agent
 		
 		public void DoStart(string[] args)
 		{
+			var config = ConfigurationManager.AppSettings;
+			var host = config["host"];
+			var port = config["port"];
+			var name = GetType().Name;
+			var uri = string.Format("http://{0}:{1}/{2}", host, port, name);
+			ServiceHost = new ServiceHost(typeof(StinkAgent), new Uri(uri));
+			var binding = new WSHttpBinding();
+			ServiceHost.AddServiceEndpoint(typeof(IStinkAgentService), binding, "");
+			var behavior = new ServiceMetadataBehavior { HttpGetEnabled = true };
+			ServiceHost.Description.Behaviors.Add(behavior);
+			Console.WriteLine("Opening listener => {0}", uri);
+			ServiceHost.Open();
+			var addr = ServiceHost.BaseAddresses.Select(u => u+"");
+			var txt = string.Join(" | ", addr.ToArray());
+			Console.WriteLine("Service is started => {0}", txt);
 		}
 		
 		public void DoStop()
 		{
+			if (ServiceHost == null)
+				return;
+			if (ServiceHost.State == CommunicationState.Closed)
+				return;
+			ServiceHost.Close();
 		}
 
 		public void DoShutdown()

@@ -4,7 +4,7 @@ using System.ServiceModel;
 namespace Stinkhorn.Agent.API
 {
 	[ServiceContract]
-	public interface IAgentService
+	public interface IStinkAgentService
 	{
 		[OperationContract]
 		string Invoke(string arg);
