@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
-using System.ServiceModel;
-using System.ServiceModel.Description;
 using System.ServiceProcess;
-using Stinkhorn.Agent.API;
+using log4net;
+using Stinkhorn.API;
+using Stinkhorn.Common;
 using Stinkhorn.Util;
 
 namespace Stinkhorn.Agent
 {
 	public class AgentService : ServiceBase, ISetupService, IConsoleService
 	{
+		private static readonly ILog log = LogManager.GetLogger(typeof(AgentService));
+		
 		public const string MyServiceName = "StinkhornAgent";
 		
-		private ServiceHost ServiceHost { get; set; }
+		private BrokerClient Client { get; set; }
 		
 		public AgentService()
 		{
@@ -27,8 +30,8 @@ namespace Stinkhorn.Agent
 		
 		protected override void Dispose(bool disposing)
 		{
-			Stop();
-			ServiceHost = null;
+			DoStop();
+			Client = null;
 			base.Dispose(disposing);
 		}
 		
@@ -64,30 +67,31 @@ namespace Stinkhorn.Agent
 		
 		public void DoStart(string[] args)
 		{
+			log.InfoFormat("Service is starting...");
 			var config = ConfigurationManager.AppSettings;
 			var host = config["host"];
-			var port = config["port"];
+			var port = int.Parse(config["port"]);
 			var name = GetType().Name;
-			var uri = string.Format("http://{0}:{1}/{2}", host, port, name);
-			ServiceHost = new ServiceHost(typeof(StinkAgent), new Uri(uri));
-			var binding = new WSHttpBinding();
-			ServiceHost.AddServiceEndpoint(typeof(IStinkAgentService), binding, "");
-			var behavior = new ServiceMetadataBehavior { HttpGetEnabled = true };
-			ServiceHost.Description.Behaviors.Add(behavior);
-			Console.WriteLine("Opening listener => {0}", uri);
-			ServiceHost.Open();
-			var addr = ServiceHost.BaseAddresses.Select(u => u+"");
-			var txt = string.Join(" | ", addr.ToArray());
-			Console.WriteLine("Service is started => {0}", txt);
+			var client = new BrokerClient(host: host, port: port);
+			Client = client;
+			log.InfoFormat("Service is started!");
+			
+			client.Subscribe<HelloMessage>(msg => {
+			                               	Debugger.Break();
+			                               });
+			
+			client.Publish(new HelloMessage {
+			               	Local = client.LocalEndpoint + "",
+			               	Remote = client.RemoteEndpoint + ""
+			               });
 		}
 		
 		public void DoStop()
 		{
-			if (ServiceHost == null)
-				return;
-			if (ServiceHost.State == CommunicationState.Closed)
-				return;
-			ServiceHost.Close();
+			log.InfoFormat("Service is stopping...");
+			if (Client != null)
+				Client.Dispose();
+			log.InfoFormat("Service is stopped!");
 		}
 
 		public void DoShutdown()

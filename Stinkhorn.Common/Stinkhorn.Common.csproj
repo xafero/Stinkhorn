@@ -1,19 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
-    <ProjectGuid>{09A09A99-AD4F-45C1-AF59-F9197C6D28D9}</ProjectGuid>
+    <ProjectGuid>{D7AE9BFE-CA0F-46A7-BE08-726837A2C50B}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Stinkhorn.Agent</RootNamespace>
-    <AssemblyName>Stinkhorn.Agent</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Stinkhorn.Common</RootNamespace>
+    <AssemblyName>Stinkhorn.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -35,33 +34,20 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RabbitMQ.Client">
+      <HintPath>..\packages\RabbitMQ.Client.4.1.1\lib\net451\RabbitMQ.Client.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="ProjectInstaller.cs" />
+    <Compile Include="BrokerClient.cs" />
+    <Compile Include="DeliveryMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AgentService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Stinkhorn.API\Stinkhorn.API.csproj">
-      <Project>{de3037eb-1e63-4230-a5b2-ea7bbd04c853}</Project>
-      <Name>Stinkhorn.API</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Stinkhorn.Common\Stinkhorn.Common.csproj">
-      <Project>{d7ae9bfe-ca0f-46a7-be08-726837a2c50b}</Project>
-      <Name>Stinkhorn.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Stinkhorn.Util\Stinkhorn.Util.csproj">
-      <Project>{ecc8865f-06ac-4350-a09f-c32526ad9d1a}</Project>
-      <Name>Stinkhorn.Util</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

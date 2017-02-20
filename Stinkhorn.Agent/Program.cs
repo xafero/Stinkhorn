@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.ServiceProcess;
+using log4net.Config;
 using Stinkhorn.Util;
 
 namespace Stinkhorn.Agent
@@ -13,18 +14,19 @@ namespace Stinkhorn.Agent
 			{
 				var cmp = StringComparer.InvariantCultureIgnoreCase;
 				var service = new AgentService();
-				if (args.Contains("-install", cmp))
-				{
-					ServiceHelper.InstallService(service);
-					return;
-				}
-				if (args.Contains("-uninstall", cmp))
-				{
-					ServiceHelper.UninstallService(service);
-					return;
-				}
 				if (Environment.UserInteractive)
 				{
+					BasicConfigurator.Configure();
+					if (args.Contains("-install", cmp))
+					{
+						ServiceHelper.InstallService(service);
+						return;
+					}
+					if (args.Contains("-uninstall", cmp))
+					{
+						ServiceHelper.UninstallService(service);
+						return;
+					}
 					ServiceHelper.RunConsole(service, args);
 					return;
 				}
