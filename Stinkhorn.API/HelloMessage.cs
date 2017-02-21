@@ -18,4 +18,17 @@ namespace Stinkhorn.API
 	{
 		public IList<IImage> Screenshots { get; set; }
 	}
+	
+	public class ServeRequest : IRequest
+	{
+		public string Path { get; set; }
+		public string Host { get; set; }
+		public int Port { get; set; }
+	}
+	
+	public class ServeResponse : IResponse
+	{
+		public string Host { get; set; }
+		public int Port { get; set; }
+	}
 }
