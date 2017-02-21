@@ -15,7 +15,8 @@ namespace Stinkhorn.Common
 		private static readonly ILog log = LogManager.GetLogger(typeof(BrokerClient));
 		
 		private static readonly JsonSerializerSettings config = new JsonSerializerSettings {
-			Formatting = Formatting.Indented, NullValueHandling = NullValueHandling.Ignore
+			Formatting = Formatting.None, NullValueHandling = NullValueHandling.Ignore,
+			ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
 		};
 		
 		private IConnection conn;

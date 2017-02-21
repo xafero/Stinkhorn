@@ -16,5 +16,6 @@ namespace Stinkhorn.API
 	
 	public class ScreenshotResponse : IResponse
 	{
+		public IList<IImage> Screenshots { get; set; }
 	}
 }
