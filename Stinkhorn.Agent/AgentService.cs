@@ -75,11 +75,6 @@ namespace Stinkhorn.Agent
 			var client = new BrokerClient(host: host, port: port);
 			Client = client;
 			log.InfoFormat("Service is started!");
-			
-			client.Subscribe<HelloMessage>(msg => {
-			                               	Debugger.Break();
-			                               });
-			
 			client.Publish(new HelloMessage {
 			               	Local = client.LocalEndpoint + "",
 			               	Remote = client.RemoteEndpoint + ""
