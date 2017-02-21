@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Drawing;
 using System.Windows.Forms;
@@ -15,11 +16,19 @@ namespace Stinkhorn.Bureau
 		private static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
 		
 		private BrokerClient Client { get; set; }
+
+		private readonly BindingList<HelloMessage> contactList;
 		
 		public MainForm()
 		{
 			InitializeComponent();
+			// Bindings
+			contactList = new BindingList<HelloMessage>();
+			var contactSource = new BindingSource(contactList, null);
+			dataGridView1.DataSource = contactSource;
+			// Logging
 			BasicConfigurator.Configure();
+			// Events
 			Load += MainForm_Load;
 			FormClosing += MainForm_FormClosing;
 		}
@@ -40,7 +49,7 @@ namespace Stinkhorn.Bureau
 		
 		private void OnHello(HelloMessage msg)
 		{
-			throw new NotImplementedException();
+			contactList.Add(msg);
 		}
 		
 		private void OnScreenshot(ScreenshotResponse msg)
@@ -50,6 +59,7 @@ namespace Stinkhorn.Bureau
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
+			contactList.Clear();
 			Client.Dispose();
 			Client = null;
 		}
