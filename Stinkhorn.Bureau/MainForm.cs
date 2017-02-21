@@ -25,6 +25,7 @@ namespace Stinkhorn.Bureau
 			// Bindings
 			contactList = new BindingList<HelloMessage>();
 			var contactSource = new BindingSource(contactList, null);
+			dataGridView1.AllowUserToAddRows = false;
 			dataGridView1.DataSource = contactSource;
 			// Logging
 			BasicConfigurator.Configure();
@@ -49,7 +50,7 @@ namespace Stinkhorn.Bureau
 		
 		private void OnHello(HelloMessage msg)
 		{
-			contactList.Add(msg);
+			BeginInvoke((Action)(() => contactList.Add(msg)));
 		}
 		
 		private void OnScreenshot(ScreenshotResponse msg)
