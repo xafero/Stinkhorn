@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stinkhorn.Common", "Stinkho
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stinkhorn.API", "Stinkhorn.API\Stinkhorn.API.csproj", "{DE3037EB-1E63-4230-A5B2-EA7BBD04C853}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stinkhorn.Core", "Stinkhorn.Core\Stinkhorn.Core.csproj", "{4A15C36C-64AF-4F32-A67F-DD2701BA7642}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,5 +42,9 @@ Global
 		{DE3037EB-1E63-4230-A5B2-EA7BBD04C853}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE3037EB-1E63-4230-A5B2-EA7BBD04C853}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE3037EB-1E63-4230-A5B2-EA7BBD04C853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A15C36C-64AF-4F32-A67F-DD2701BA7642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A15C36C-64AF-4F32-A67F-DD2701BA7642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A15C36C-64AF-4F32-A67F-DD2701BA7642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A15C36C-64AF-4F32-A67F-DD2701BA7642}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
