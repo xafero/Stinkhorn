@@ -15,7 +15,7 @@ namespace Stinkhorn.Agent
 		{
 			serviceProcessInstaller = new ServiceProcessInstaller();
 			serviceInstaller = new ServiceInstaller();
-			serviceProcessInstaller.Account = ServiceAccount.LocalService;
+			serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
 			
 			serviceInstaller.ServiceName = AgentService.MyServiceName;
 			this.Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });
