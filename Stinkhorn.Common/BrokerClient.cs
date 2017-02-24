@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -6,6 +7,7 @@ using log4net;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Diagnostics;
 
 namespace Stinkhorn.Common
 {
@@ -21,7 +23,6 @@ namespace Stinkhorn.Common
         };
 
         IConnection conn;
-        IModel channel;
 
         public BrokerClient(string userName = "guest", string password = "guest",
                             string path = "/", string host = "localhost", int port = 5672)
@@ -39,37 +40,71 @@ namespace Stinkhorn.Common
             };
             log.InfoFormat("Connecting to '{0}'...", uri);
             conn = factory.CreateConnection();
-            channel = conn.CreateModel();
         }
 
-        public void Publish<T>(T message)
+        IModel _channel;
+        IModel Channel => _channel == null || _channel.IsClosed
+            ? (_channel = conn.CreateModel()) : _channel;
+
+        public void Publish<T>(T message, string target = null)
         {
-            var exchange = message.GetType().Namespace;
-            var route = message.GetType().Name;
+            string type;
+            string exchange;
+            string route;
+            bool mandatory;
+            Guid id;
+            if (string.IsNullOrWhiteSpace(target))
+            {
+                type = ExchangeType.Fanout;
+                exchange = RabbitExtensions.ToGeneral<T>();
+                route = string.Empty;
+                mandatory = false;
+            }
+            else if (Guid.TryParse(target, out id))
+            {
+                type = ExchangeType.Direct;
+                exchange = id.ToString("N");
+                route = RabbitExtensions.ToGeneral<T>();
+                mandatory = true;
+            }
+            else
+            {
+                type = ExchangeType.Topic;
+                exchange = target;
+                route = typeof(T).FullName;
+                mandatory = false;
+            }
+            if (!Channel.ExchangeExists(exchange))
+            {
+                var durable = false;
+                var autoDelete = false;
+                IDictionary<string, object> arguments = null;
+                Channel.ExchangeDeclare(exchange, type, durable, autoDelete, arguments);
+            }
             var text = JsonConvert.SerializeObject(message, config);
             var bytes = Encoding.UTF8.GetBytes(text);
-            var props = channel.CreateBasicProperties();
+            var props = Channel.CreateBasicProperties();
             props.ContentType = "application/json";
             props.DeliveryMode = (byte)DeliveryMode.Persistent;
             props.Headers = new Dictionary<string, object>();
-            channel.ExchangeDeclare(exchange, "direct");
-            channel.BasicPublish(exchange, route, props, bytes);
+            Channel.BasicPublish(exchange, route, mandatory, props, bytes);
         }
 
         public void Subscribe<T>(Action<T> callback)
         {
             var type = typeof(T);
-            var consumer = new EventingBasicConsumer(channel);
+            var consumer = new EventingBasicConsumer(Channel);
             consumer.Received += (sender, e) =>
             {
                 var text = Encoding.UTF8.GetString(e.Body);
                 var msg = JsonConvert.DeserializeObject(text, type, config);
                 callback((T)msg);
-                channel.BasicAck(e.DeliveryTag, false);
+                Channel.BasicAck(e.DeliveryTag, false);
             };
-            channel.QueueDeclare("Simple");
+
+            /*channel.QueueDeclare("Simple");
             channel.QueueBind("Simple", type.Namespace, type.Name);
-            channel.BasicConsume("Simple", false, consumer);
+            channel.BasicConsume("Simple", false, consumer);*/
         }
 
         public DnsEndPoint RemoteEndpoint =>
@@ -85,7 +120,7 @@ namespace Stinkhorn.Common
                 conn.Close();
                 conn.Dispose();
             }
-            channel = null;
+            _channel = null;
             conn = null;
         }
     }
