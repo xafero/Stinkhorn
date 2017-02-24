@@ -25,8 +25,12 @@ namespace Stinkhorn.Common
 
         public BrokerClient(string userName = "guest", string password = "guest",
                             string path = "/", string host = "localhost", int port = 5672)
+            : this($"amqp://{userName}:{password}@{host}:{port}{path}")
         {
-            var uri = string.Format("amqp://{0}:{1}@{2}:{3}{4}", userName, password, host, port, path);
+        }
+
+        public BrokerClient(string uri)
+        {
             var factory = new ConnectionFactory
             {
                 Uri = uri,
