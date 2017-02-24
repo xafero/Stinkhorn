@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Stinkhorn.API
+﻿namespace Stinkhorn.API
 {
-	public interface IMessage
+    public interface IMessage
 	{
 		
 	}

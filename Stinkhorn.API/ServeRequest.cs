@@ -1,11 +1,6 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Net;
-
 namespace Stinkhorn.API
 {
-	public class ServeRequest : IRequest
+    public class ServeRequest : IRequest
 	{
 		public string Path { get; set; }
 		public string Host { get; set; }

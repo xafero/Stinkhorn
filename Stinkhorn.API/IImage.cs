@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Stinkhorn.API
+﻿namespace Stinkhorn.API
 {
-	public enum ImageFormat
+    public enum ImageFormat
 	{
 		PNG
 	}
@@ -20,21 +18,19 @@ namespace Stinkhorn.API
 	
 	public class PngImage : IImage
 	{
-		public byte[] Bytes { get; private set; }
-		
-		public int Width { get; private set; }
-		
-		public int Height { get; private set; }
+		public byte[] Bytes { get; }
 
-		public PngImage(byte[] bytes, int width, int height)
+        public int Width { get; }
+
+        public int Height { get; }
+
+        public PngImage(byte[] bytes, int width, int height)
 		{
 			Bytes = bytes;
 			Width = width;
 			Height = height;
 		}
 
-		public ImageFormat Format {
-			get { return ImageFormat.PNG; }
-		}
-	}
+        public ImageFormat Format => ImageFormat.PNG;
+    }
 }

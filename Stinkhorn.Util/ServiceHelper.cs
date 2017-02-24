@@ -27,18 +27,15 @@ namespace Stinkhorn.Util
 			}
 			catch (Exception ex)
 			{
-				if (ex.InnerException != null && ex.InnerException.GetType() == typeof(Win32Exception))
-				{
-					var wex = (Win32Exception)ex.InnerException;
-					Console.WriteLine("Error(0x{0:X}): Service already installed!", wex.ErrorCode);
-					return wex.ErrorCode;
-				}
-				else
-				{
-					Console.WriteLine(ex.ToString());
-					return -1;
-				}
-			}
+                if (ex.InnerException != null && ex.InnerException.GetType() == typeof(Win32Exception))
+                {
+                    var wex = (Win32Exception)ex.InnerException;
+                    Console.WriteLine("Error(0x{0:X}): Service already installed!", wex.ErrorCode);
+                    return wex.ErrorCode;
+                }
+                Console.WriteLine(ex);
+                return -1;
+            }
 			return 0;
 		}
 
@@ -52,18 +49,15 @@ namespace Stinkhorn.Util
 			}
 			catch (Exception ex)
 			{
-				if (ex.InnerException != null && ex.InnerException.GetType() == typeof(Win32Exception))
-				{
-					var wex = (Win32Exception)ex.InnerException;
-					Console.WriteLine("Error(0x{0:X}): Service not installed!", wex.ErrorCode);
-					return wex.ErrorCode;
-				}
-				else
-				{
-					Console.WriteLine(ex.ToString());
-					return -1;
-				}
-			}
+                if (ex.InnerException != null && ex.InnerException.GetType() == typeof(Win32Exception))
+                {
+                    var wex = (Win32Exception)ex.InnerException;
+                    Console.WriteLine("Error(0x{0:X}): Service not installed!", wex.ErrorCode);
+                    return wex.ErrorCode;
+                }
+                Console.WriteLine(ex);
+                return -1;
+            }
 			return 0;
 		}
 	}

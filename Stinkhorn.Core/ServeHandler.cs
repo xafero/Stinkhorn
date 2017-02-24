@@ -13,9 +13,9 @@ namespace Stinkhorn.Core
 	public class ServeHandler : IDisposable,
 					IMessageHandler<ServeRequest, ServeResponse>
 	{
-		private FtpServer Server { get; set; }
-		
-		public ServeResponse Process(ServeRequest req)
+        FtpServer Server { get; set; }
+
+        public ServeResponse Process(ServeRequest req)
 		{
 			var cert = new X509Certificate2("myftp.pfx");
 			AuthTlsCommandHandler.ServerCertificate = cert;

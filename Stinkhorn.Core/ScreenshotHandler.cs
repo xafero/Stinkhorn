@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 using Stinkhorn.API;
@@ -8,7 +7,7 @@ using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
 namespace Stinkhorn.Core
 {
-	public class ScreenshotHandler
+    public class ScreenshotHandler
 		: IMessageHandler<ScreenshotRequest, ScreenshotResponse>
 	{
 		public ScreenshotResponse Process(ScreenshotRequest input)

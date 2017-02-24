@@ -1,10 +1,6 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
 namespace Stinkhorn.Util
 {
-	public interface IConsoleService
+    public interface IConsoleService
 	{
 		void DoStart(string[] args);
 		

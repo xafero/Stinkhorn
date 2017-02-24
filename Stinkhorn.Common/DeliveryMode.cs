@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Stinkhorn.Common
+﻿namespace Stinkhorn.Common
 {
-	public enum DeliveryMode : byte
+    public enum DeliveryMode : byte
 	{
 		NonPersistent = 1,
 		

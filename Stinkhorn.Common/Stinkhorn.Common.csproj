@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="BrokerClient.cs" />
     <Compile Include="DeliveryMode.cs" />
+    <Compile Include="IBrokerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

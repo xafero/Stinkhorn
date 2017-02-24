@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Stinkhorn.Util
+﻿namespace Stinkhorn.Util
 {
-	public interface ISetupService
+    public interface ISetupService
 	{
 		void OnInstallService();
 
