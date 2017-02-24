@@ -35,7 +35,6 @@
   <ItemGroup>
     <Compile Include="AssemblyLoader.cs" />
     <Compile Include="AssemblyType.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="IType.cs" />
     <Compile Include="ITypeLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

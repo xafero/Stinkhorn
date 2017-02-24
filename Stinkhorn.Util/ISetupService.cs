@@ -8,13 +8,4 @@ namespace Stinkhorn.Util
 
 		void OnUninstallService();
 	}
-	
-	public interface IConsoleService
-	{
-		void DoStart(string[] args);
-		
-		void DoStop();
-		
-		void DoShutdown();
-	}
 }
