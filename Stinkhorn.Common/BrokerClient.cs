@@ -6,6 +6,7 @@ using log4net;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Stinkhorn.API;
 
 namespace Stinkhorn.Common
 {
@@ -22,7 +23,8 @@ namespace Stinkhorn.Common
         };
 
         IConnection conn;
-        Lazy<Guid> MyID => new Lazy<Guid>(() => Guid.NewGuid());
+
+        public Lazy<Guid> MyID => new Lazy<Guid>(() => Guid.NewGuid());
 
         public BrokerClient(string userName = "guest", string password = "guest",
                             string path = "/", string host = "localhost", int port = 5672)
@@ -63,7 +65,7 @@ namespace Stinkhorn.Common
             else if (Guid.TryParse(target, out id))
             {
                 type = ExchangeType.Direct;
-                exchange = id.ToString("N");
+                exchange = id.ToIdString();
                 route = RabbitExtensions.ToGeneral<T>();
                 mandatory = true;
             }
@@ -113,9 +115,9 @@ namespace Stinkhorn.Common
             else if (Guid.TryParse(target, out id))
             {
                 if (id == default(Guid))
-                    exchange = MyID.Value.ToString("N");
+                    exchange = MyID.Value.ToIdString();
                 else
-                    exchange = id.ToString("N");
+                    exchange = id.ToIdString();
                 route = RabbitExtensions.ToGeneral<T>();
             }
             else

@@ -52,5 +52,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stinkhorn.API\Stinkhorn.API.csproj">
+      <Project>{DE3037EB-1E63-4230-A5B2-EA7BBD04C853}</Project>
+      <Name>Stinkhorn.API</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

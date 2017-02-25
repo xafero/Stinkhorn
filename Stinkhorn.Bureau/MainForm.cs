@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Configuration;
 using System.Windows.Forms;
@@ -6,6 +7,8 @@ using log4net;
 using log4net.Config;
 using Stinkhorn.API;
 using Stinkhorn.Common;
+using System.Drawing;
+using System.IO;
 
 namespace Stinkhorn.Bureau
 {
@@ -42,18 +45,33 @@ namespace Stinkhorn.Bureau
             var client = new BrokerClient(host: host, port: port);
             Client = client;
             log.InfoFormat("Manager is started!");
+            client.Publish<HelloMessage>(null);
             client.Subscribe<HelloMessage>(OnHello);
             client.Subscribe<ScreenshotResponse>(OnScreenshot);
         }
 
         void OnHello(HelloMessage msg)
         {
-            BeginInvoke((Action)(() => contactList.Add(msg)));
+            BeginInvoke((Action)(() => {
+                contactList.Add(msg);
+                Client.Publish(new ScreenshotRequest(), msg.SenderId);
+            }));
         }
 
         void OnScreenshot(ScreenshotResponse msg)
         {
-            throw new NotImplementedException();
+            BeginInvoke((Action)(() =>
+            {
+                var screen = msg.Screenshots.First();
+                var dialog = new Form();
+                var box = new PictureBox();
+                using (var stream = new MemoryStream(screen.Bytes))
+                    box.Image = Image.FromStream(stream);
+                box.Dock = DockStyle.Fill;
+                dialog.Controls.Add(box);
+                dialog.Size = new Size(screen.Width, screen.Height);
+                dialog.ShowDialog(this);
+            }));
         }
 
         void MainForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -1,9 +1,12 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.ServiceProcess;
 using log4net;
 using Stinkhorn.API;
 using Stinkhorn.Common;
 using Stinkhorn.Util;
+using System.Threading;
+using Stinkhorn.Core;
 
 namespace Stinkhorn.Agent
 {
@@ -69,23 +72,22 @@ namespace Stinkhorn.Agent
             var client = new BrokerClient(host: host, port: port);
             Client = client;
             log.InfoFormat("Service is started!");
-
-
+            var senderId = client.MyID.Value.ToIdString();
             client.Publish(new HelloMessage
             {
-                Local = client.LocalEndpoint + "",
-                Remote = client.RemoteEndpoint + ""
+                Local = client.LocalEndpoint.ToShortString(),
+                Remote = client.RemoteEndpoint.ToShortString(),
+                SenderId = senderId
             });
-            client.Publish(new HelloMessage
-            {
-                Local = client.LocalEndpoint + "",
-                Remote = client.RemoteEndpoint + ""
-            }, target: System.Guid.NewGuid()+"");
-            client.Publish(new HelloMessage
-            {
-                Local = client.LocalEndpoint + "",
-                Remote = client.RemoteEndpoint + ""
-            }, target: "Bureau");
+            client.Publish<ScreenshotRequest>(null, senderId);
+            client.Subscribe<ScreenshotRequest>(OnScreenShotReq, senderId);
+        }
+
+        void OnScreenShotReq(ScreenshotRequest req)
+        {
+            var handler = new ScreenshotHandler();
+            var resp = handler.Process(req);
+            Client.Publish(resp);
         }
 
         public void DoStop()
