@@ -19,6 +19,18 @@ namespace Stinkhorn.Common
             }
         }
 
+        public static bool QueueExists(this IModel model, string queueName)
+        {
+            try
+            {
+                return model.QueueDeclarePassive(queueName).QueueName == queueName;
+            }
+            catch (OperationInterruptedException)
+            {
+                return false;
+            }
+        }
+
         public static string ToGeneral<T>() => typeof(T).Namespace.Split('.').First();
     }
 }

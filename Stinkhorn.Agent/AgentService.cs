@@ -69,11 +69,23 @@ namespace Stinkhorn.Agent
             var client = new BrokerClient(host: host, port: port);
             Client = client;
             log.InfoFormat("Service is started!");
+
+
             client.Publish(new HelloMessage
             {
                 Local = client.LocalEndpoint + "",
                 Remote = client.RemoteEndpoint + ""
             });
+            client.Publish(new HelloMessage
+            {
+                Local = client.LocalEndpoint + "",
+                Remote = client.RemoteEndpoint + ""
+            }, target: System.Guid.NewGuid()+"");
+            client.Publish(new HelloMessage
+            {
+                Local = client.LocalEndpoint + "",
+                Remote = client.RemoteEndpoint + ""
+            }, target: "Bureau");
         }
 
         public void DoStop()

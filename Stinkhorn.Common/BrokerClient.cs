@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -7,7 +6,6 @@ using log4net;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Diagnostics;
 
 namespace Stinkhorn.Common
 {
@@ -19,10 +17,12 @@ namespace Stinkhorn.Common
         {
             Formatting = Formatting.None,
             NullValueHandling = NullValueHandling.Ignore,
-            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+            TypeNameHandling = TypeNameHandling.All
         };
 
         IConnection conn;
+        Lazy<Guid> MyID => new Lazy<Guid>(() => Guid.NewGuid());
 
         public BrokerClient(string userName = "guest", string password = "guest",
                             string path = "/", string host = "localhost", int port = 5672)
@@ -90,21 +90,51 @@ namespace Stinkhorn.Common
             Channel.BasicPublish(exchange, route, mandatory, props, bytes);
         }
 
-        public void Subscribe<T>(Action<T> callback)
+        public void Subscribe<T>(Action<T> callback, string target = null)
         {
-            var type = typeof(T);
             var consumer = new EventingBasicConsumer(Channel);
             consumer.Received += (sender, e) =>
             {
                 var text = Encoding.UTF8.GetString(e.Body);
-                var msg = JsonConvert.DeserializeObject(text, type, config);
+                var msg = JsonConvert.DeserializeObject(text, config);
+                if (!(msg is T))
+                    return;
                 callback((T)msg);
                 Channel.BasicAck(e.DeliveryTag, false);
             };
-
-            /*channel.QueueDeclare("Simple");
-            channel.QueueBind("Simple", type.Namespace, type.Name);
-            channel.BasicConsume("Simple", false, consumer);*/
+            string exchange;
+            string route;
+            Guid id;
+            if (string.IsNullOrWhiteSpace(target))
+            {
+                exchange = RabbitExtensions.ToGeneral<T>();
+                route = string.Empty;
+            }
+            else if (Guid.TryParse(target, out id))
+            {
+                if (id == default(Guid))
+                    exchange = MyID.Value.ToString("N");
+                else
+                    exchange = id.ToString("N");
+                route = RabbitExtensions.ToGeneral<T>();
+            }
+            else
+            {
+                exchange = target;
+                route = typeof(T).FullName;
+            }
+            var queue = string.Empty;
+            var durable = false;
+            var exclusive = true;
+            var autoDelete = true;
+            IDictionary<string, object> arguments = null;
+            var qOk = Channel.QueueDeclare(queue, durable, exclusive, autoDelete, arguments);
+            queue = qOk.QueueName;
+            Channel.QueueBind(queue, exchange, route, arguments);
+            bool noAck = false;
+            string consumerTag = "";
+            bool noLocal = false;
+            var consTag = Channel.BasicConsume(queue, noAck, consumerTag, noLocal, exclusive, arguments, consumer);
         }
 
         public DnsEndPoint RemoteEndpoint =>
