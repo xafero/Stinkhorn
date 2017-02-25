@@ -1,7 +1,7 @@
 
 namespace Stinkhorn.IoC
 {
-    interface IType
+    public interface IType
     {
         string Name { get; }
 

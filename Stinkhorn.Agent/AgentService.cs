@@ -1,18 +1,19 @@
-﻿using System;
+﻿using System.Linq;
 using System.Configuration;
 using System.ServiceProcess;
 using log4net;
 using Stinkhorn.API;
 using Stinkhorn.Common;
 using Stinkhorn.Util;
-using System.Threading;
 using Stinkhorn.Core;
+using Stinkhorn.IoC;
 
 namespace Stinkhorn.Agent
 {
     public class AgentService : ServiceBase, ISetupService, IConsoleService
     {
         static readonly ILog log = LogManager.GetLogger(typeof(AgentService));
+        static readonly object dummy = typeof(ImageExtensions);
 
         public const string MyServiceName = "StinkhornAgent";
 
@@ -85,7 +86,8 @@ namespace Stinkhorn.Agent
 
         void OnScreenShotReq(ScreenshotRequest req)
         {
-            var handler = new ScreenshotHandler();
+            var handler = ServiceLoader.Load<IMessageHandler<ScreenshotRequest,
+                                                             ScreenshotResponse>>().First();
             var resp = handler.Process(req);
             Client.Publish(resp);
         }

@@ -10,7 +10,7 @@ using Stinkhorn.API;
 
 namespace Stinkhorn.Core
 {
-	public class ServeHandler : IDisposable,
+	class ServeHandler : IDisposable,
 					IMessageHandler<ServeRequest, ServeResponse>
 	{
         FtpServer Server { get; set; }

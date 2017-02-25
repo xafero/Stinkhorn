@@ -63,6 +63,10 @@
       <Project>{d7ae9bfe-ca0f-46a7-be08-726837a2c50b}</Project>
       <Name>Stinkhorn.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.IoC\Stinkhorn.IoC.csproj">
+      <Project>{2820ad79-67b4-4793-b3bf-15143cb826da}</Project>
+      <Name>Stinkhorn.IoC</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainForm.resx">
