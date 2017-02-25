@@ -65,7 +65,7 @@ namespace Stinkhorn.Bureau
             var row = grid.Rows[e.RowIndex];
             var msg = (IEnvelope)row.DataBoundItem;
             var menu = new ContextMenuStrip();
-            menu.Items.Add("Screenshot", null, (s, a) =>
+            menu.Items.Add("Screenshot", Icons.camera_photo, (s, a) =>
             {
                 Client.Publish(new ScreenshotRequest(), msg.SenderId);
             });
