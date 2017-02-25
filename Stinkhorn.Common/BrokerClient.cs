@@ -77,7 +77,7 @@ namespace Stinkhorn.Common
             if (!Channel.ExchangeExists(exchange))
             {
                 var durable = false;
-                var autoDelete = false;
+                var autoDelete = true;
                 IDictionary<string, object> arguments = null;
                 Channel.ExchangeDeclare(exchange, type, durable, autoDelete, arguments);
             }
