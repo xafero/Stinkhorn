@@ -3,7 +3,12 @@ using System.Net;
 
 namespace Stinkhorn.API
 {
-    public class HelloMessage : IMessage
+    public interface IEnvelope
+    {
+        string SenderId { get; set; }
+    }
+
+    public class HelloMessage : IMessage, IEnvelope
     {
         public string Local { get; set; }
 

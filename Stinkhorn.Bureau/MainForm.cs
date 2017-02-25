@@ -13,7 +13,7 @@ using System.IO;
 namespace Stinkhorn.Bureau
 {
     public partial class MainForm : Form
-	{
+    {
         static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
 
         BrokerClient Client { get; set; }
@@ -21,19 +21,20 @@ namespace Stinkhorn.Bureau
         readonly BindingList<HelloMessage> contactList;
 
         public MainForm()
-		{
-			InitializeComponent();
-			// Bindings
-			contactList = new BindingList<HelloMessage>();
-			var contactSource = new BindingSource(contactList, null);
-			dataGridView1.AllowUserToAddRows = false;
-			dataGridView1.DataSource = contactSource;
-			// Logging
-			BasicConfigurator.Configure();
-			// Events
-			Load += MainForm_Load;
-			FormClosing += MainForm_FormClosing;
-		}
+        {
+            InitializeComponent();
+            // Bindings
+            contactList = new BindingList<HelloMessage>();
+            var contactSource = new BindingSource(contactList, null);
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.DataSource = contactSource;
+            // Logging
+            BasicConfigurator.Configure();
+            // Events
+            Load += MainForm_Load;
+            FormClosing += MainForm_FormClosing;
+            dataGridView1.RowsAdded += DataGridView1_RowsAdded;
+        }
 
         void MainForm_Load(object sender, EventArgs e)
         {
@@ -52,10 +53,23 @@ namespace Stinkhorn.Bureau
 
         void OnHello(HelloMessage msg)
         {
-            BeginInvoke((Action)(() => {
+            BeginInvoke((Action)(() =>
+            {
                 contactList.Add(msg);
-                Client.Publish(new ScreenshotRequest(), msg.SenderId);
             }));
+        }
+
+        void DataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            var grid = (DataGridView)sender;
+            var row = grid.Rows[e.RowIndex];
+            var msg = (IEnvelope)row.DataBoundItem;
+            var menu = new ContextMenuStrip();
+            menu.Items.Add("Screenshot", null, (s, a) =>
+            {
+                Client.Publish(new ScreenshotRequest(), msg.SenderId);
+            });
+            row.ContextMenuStrip = menu;
         }
 
         void OnScreenshot(ScreenshotResponse msg)
@@ -68,6 +82,7 @@ namespace Stinkhorn.Bureau
                 using (var stream = new MemoryStream(screen.Bytes))
                     box.Image = Image.FromStream(stream);
                 box.Dock = DockStyle.Fill;
+                box.SizeMode = PictureBoxSizeMode.Zoom;
                 dialog.Controls.Add(box);
                 dialog.Size = new Size(screen.Width, screen.Height);
                 dialog.ShowDialog(this);
