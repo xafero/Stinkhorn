@@ -35,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HelloMessage.cs" />
+    <Compile Include="IContextAction.cs" />
     <Compile Include="IImage.cs" />
     <Compile Include="IMessage.cs" />
     <Compile Include="PowerRequest.cs" />
