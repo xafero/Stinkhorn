@@ -60,10 +60,12 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PowerHandler.cs" />
     <Compile Include="ServeHandler.cs" />
     <Compile Include="ImageExtensions.cs" />
     <Compile Include="ScreenshotHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WinControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stinkhorn.API\Stinkhorn.API.csproj">
