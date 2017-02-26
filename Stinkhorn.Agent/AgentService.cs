@@ -84,11 +84,11 @@ namespace Stinkhorn.Agent
             client.Subscribe<ScreenshotRequest>(OnScreenShotReq, senderId);
         }
 
-        void OnScreenShotReq(ScreenshotRequest req)
+        void OnScreenShotReq(IEnvelope<ScreenshotRequest> req)
         {
             var handler = ServiceLoader.Load<IMessageHandler<ScreenshotRequest,
                                                              ScreenshotResponse>>().First();
-            var resp = handler.Process(req);
+            var resp = handler.Process(req.Body);
             Client.Publish(resp);
         }
 
