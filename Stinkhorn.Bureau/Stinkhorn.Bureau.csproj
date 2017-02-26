@@ -98,5 +98,11 @@
   <ItemGroup>
     <None Include="Images\camera-photo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\document-properties.png" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\preferences-desktop-screensaver.png" />
+    <Content Include="Images\system-file-manager.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,7 +8,10 @@ using log4net.Config;
 using Stinkhorn.API;
 using Stinkhorn.Common;
 using System.Drawing;
-using System.IO;
+using Stinkhorn.Bureau.Context;
+using Stinkhorn.Bureau.Utils;
+using Stinkhorn.Bureau.Controls;
+using Stinkhorn.IoC;
 
 namespace Stinkhorn.Bureau
 {
@@ -34,6 +37,7 @@ namespace Stinkhorn.Bureau
             Load += MainForm_Load;
             FormClosing += MainForm_FormClosing;
             dataGridView1.RowsAdded += DataGridView1_RowsAdded;
+            Icon = Icons.Logo.ToIcon();
         }
 
         void MainForm_Load(object sender, EventArgs e)
@@ -65,10 +69,22 @@ namespace Stinkhorn.Bureau
             var row = grid.Rows[e.RowIndex];
             var msg = (IEnvelope)row.DataBoundItem;
             var menu = new ContextMenuStrip();
-            menu.Items.Add("Screenshot", Icons.camera_photo, (s, a) =>
+            var reqs = ServiceLoader.Load<IRequest>().ToArray();
+            foreach (var req in reqs)
             {
-                Client.Publish(new ScreenshotRequest(), msg.SenderId);
-            });
+                var name = req.GetType().Name.Replace(typeof(IRequest)
+                    .Name.Substring(1), string.Empty);
+                var icon = (Image)Icons.ResourceManager.GetObject(name);
+                EventHandler onclick = (s, a) =>
+                {
+                    var userReq = (IMessage)Activator.CreateInstance(req.GetType());
+                    using (var dialog = new RequestDialog(req, icon))
+                        if (dialog.ShowDialog(this) == DialogResult.OK)
+                            Client.Publish(req, msg.SenderId);
+                };
+                var item = new ToolStripMenuItem(name, icon, onclick);
+                menu.Items.Add(item);
+            }
             row.ContextMenuStrip = menu;
         }
 
@@ -79,8 +95,7 @@ namespace Stinkhorn.Bureau
                 var screen = msg.Screenshots.First();
                 var dialog = new Form();
                 var box = new PictureBox();
-                using (var stream = new MemoryStream(screen.Bytes))
-                    box.Image = Image.FromStream(stream);
+                box.Image = screen.ToDrawingImage();
                 box.Dock = DockStyle.Fill;
                 box.SizeMode = PictureBoxSizeMode.Zoom;
                 dialog.Controls.Add(box);
