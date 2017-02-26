@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Stinkhorn.Bureau
 {
-	internal sealed class Program
+	sealed class Program
 	{
         [STAThread]
         static void Main(string[] args)
