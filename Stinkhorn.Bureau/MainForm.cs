@@ -54,11 +54,11 @@ namespace Stinkhorn.Bureau
             client.Subscribe<ScreenshotResponse>(OnScreenshot);
         }
 
-        void OnHello(HelloMessage msg)
+        void OnHello(IEnvelope<HelloMessage> msg)
         {
             BeginInvoke((Action)(() =>
             {
-                contactList.Add(msg);
+                contactList.Add(msg.Body);
             }));
         }
 
@@ -87,11 +87,11 @@ namespace Stinkhorn.Bureau
             row.ContextMenuStrip = menu;
         }
 
-        void OnScreenshot(ScreenshotResponse msg)
+        void OnScreenshot(IEnvelope<ScreenshotResponse> msg)
         {
             BeginInvoke((Action)(() =>
             {
-                var screen = msg.Screenshots.First();
+                var screen = msg.Body.Screenshots.First();
                 var dialog = new Form();
                 var box = new PictureBox();
                 box.Image = screen.ToDrawingImage();

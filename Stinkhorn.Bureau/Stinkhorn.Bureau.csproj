@@ -54,6 +54,12 @@
     <Compile Include="Controls\RequestDialog.Designer.cs">
       <DependentUpon>RequestDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ResponseControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ResponseControl.Designer.cs">
+      <DependentUpon>ResponseControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Icons.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -91,6 +97,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\RequestDialog.resx">
       <DependentUpon>RequestDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ResponseControl.resx">
+      <DependentUpon>ResponseControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Icons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
