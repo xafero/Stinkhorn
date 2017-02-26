@@ -8,7 +8,6 @@ using log4net.Config;
 using Stinkhorn.API;
 using Stinkhorn.Common;
 using System.Drawing;
-using Stinkhorn.Bureau.Context;
 using Stinkhorn.Bureau.Utils;
 using Stinkhorn.Bureau.Controls;
 using Stinkhorn.IoC;
