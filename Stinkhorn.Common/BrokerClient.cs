@@ -92,7 +92,7 @@ namespace Stinkhorn.Common
             Channel.BasicPublish(exchange, route, mandatory, props, bytes);
         }
 
-        public void Subscribe<T>(Action<T> callback, string target = null)
+        public void Subscribe<T>(Action<IEnvelope<T>> callback, string target = null)
         {
             var consumer = new EventingBasicConsumer(Channel);
             consumer.Received += (sender, e) =>
@@ -101,7 +101,7 @@ namespace Stinkhorn.Common
                 var msg = JsonConvert.DeserializeObject(text, config);
                 if (!(msg is T))
                     return;
-                callback((T)msg);
+                callback((IEnvelope<T>)msg);
                 Channel.BasicAck(e.DeliveryTag, false);
             };
             string exchange;

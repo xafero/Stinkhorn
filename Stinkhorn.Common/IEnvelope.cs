@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Stinkhorn.API;
 
 namespace Stinkhorn.Common
 {
-    public interface IEnvelope
+    public interface IEnvelope<out T>
     {
         IParticipant Sender { get; }
         IParticipant Receiver { get; }
         IDictionary<string, int> Headers { get; }
-        IMessage Body { get; }
+        T Body { get; }
         IFault Error { get; }
     }
 
