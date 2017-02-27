@@ -45,9 +45,19 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="VirtualFileDataObject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e9db8471034a9d23, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtualFileDataObject.1.0.0.0\lib\net40\VirtualFileDataObject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\ContextMenuAction.cs" />
+    <Compile Include="Controls\DragDropControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DragDropControl.Designer.cs">
+      <DependentUpon>DragDropControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RequestDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +105,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\DragDropControl.resx">
+      <DependentUpon>DragDropControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\RequestDialog.resx">
       <DependentUpon>RequestDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -114,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\document-properties.png" />
+    <Content Include="Images\format-justify-fill.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\preferences-desktop-screensaver.png" />
     <Content Include="Images\system-file-manager.png" />
