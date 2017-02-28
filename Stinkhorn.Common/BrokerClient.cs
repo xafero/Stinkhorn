@@ -50,51 +50,30 @@ namespace Stinkhorn.Common
 
         public void Publish<T>(T message, string target = null)
         {
-            string type;
-            string exchange;
-            string route;
-            bool mandatory;
-            Guid id;
-            if (string.IsNullOrWhiteSpace(target))
-            {
-                type = ExchangeType.Fanout;
-                exchange = RabbitExtensions.ToGeneral<T>();
-                route = string.Empty;
-                mandatory = false;
-            }
-            else if (Guid.TryParse(target, out id))
-            {
-                type = ExchangeType.Direct;
-                exchange = id.ToIdString();
-                route = RabbitExtensions.ToGeneral<T>();
-                mandatory = true;
-            }
-            else
-            {
-                type = ExchangeType.Topic;
-                exchange = target;
-                route = typeof(T).FullName;
-                mandatory = false;
-            }
-            if (!Channel.ExchangeExists(exchange))
+            IBrokerParticipant dest = new Participant(target, typeof(T), MyID, Channel.ChannelNumber,
+                conn.ClientProvidedName, conn.Endpoint, conn.LocalPort, conn.Endpoint.Port);
+            if (!Channel.ExchangeExists(dest.Exchange))
             {
                 var durable = false;
                 var autoDelete = true;
                 IDictionary<string, object> arguments = null;
-                Channel.ExchangeDeclare(exchange, type, durable, autoDelete, arguments);
+                Channel.ExchangeDeclare(dest.Exchange, dest.Type, durable, autoDelete, arguments);
             }
             var text = JsonConvert.SerializeObject(message, config);
-            var bytes = Encoding.UTF8.GetBytes(text);
+            var enc = Encoding.UTF8;
+            var bytes = enc.GetBytes(text);
             var props = Channel.CreateBasicProperties();
+            props.ContentEncoding = enc.EncodingName;
             props.ContentType = "application/json";
             props.DeliveryMode = (byte)DeliveryMode.Persistent;
-            props.Headers = new Dictionary<string, object>();
-            Channel.BasicPublish(exchange, route, mandatory, props, bytes);
+            props.Headers = dest.ToDict(MyID);
+            Channel.BasicPublish(dest.Exchange, dest.Route, dest.Mandatory, props, bytes);
         }
 
         public void Subscribe<T>(Action<IEnvelope<T>> callback, string target = null)
         {
-            IBrokerParticipant source = new Participant(target, typeof(T), MyID);
+            IBrokerParticipant source = new Participant(target, typeof(T), MyID, Channel.ChannelNumber,
+                conn.ClientProvidedName, conn.Endpoint, conn.LocalPort, conn.Endpoint.Port);
             var consumer = new EventingBasicConsumer(Channel);
             consumer.Received += (sender, e) =>
             {
@@ -102,7 +81,7 @@ namespace Stinkhorn.Common
                 var msg = JsonConvert.DeserializeObject(text, config);
                 if (!(msg is T))
                     return;
-                callback(new Envelope<T>(source, (T)msg));
+                callback(new Envelope<T>(source, (T)msg, e));
                 Channel.BasicAck(e.DeliveryTag, false);
             };
             var queue = string.Empty;
