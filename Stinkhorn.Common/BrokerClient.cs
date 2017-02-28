@@ -94,6 +94,7 @@ namespace Stinkhorn.Common
 
         public void Subscribe<T>(Action<IEnvelope<T>> callback, string target = null)
         {
+            var source = new Participant(target, typeof(T), MyID);
             var consumer = new EventingBasicConsumer(Channel);
             consumer.Received += (sender, e) =>
             {
@@ -101,42 +102,21 @@ namespace Stinkhorn.Common
                 var msg = JsonConvert.DeserializeObject(text, config);
                 if (!(msg is T))
                     return;
-                callback((IEnvelope<T>)msg);
+                callback(new Envelope<T>(source, (T)msg));
                 Channel.BasicAck(e.DeliveryTag, false);
             };
-            string exchange;
-            string route;
-            Guid id;
-            if (string.IsNullOrWhiteSpace(target))
-            {
-                exchange = RabbitExtensions.ToGeneral<T>();
-                route = string.Empty;
-            }
-            else if (Guid.TryParse(target, out id))
-            {
-                if (id == default(Guid))
-                    exchange = MyID.Value.ToIdString();
-                else
-                    exchange = id.ToIdString();
-                route = RabbitExtensions.ToGeneral<T>();
-            }
-            else
-            {
-                exchange = target;
-                route = typeof(T).FullName;
-            }
             var queue = string.Empty;
             var durable = false;
             var exclusive = true;
             var autoDelete = true;
             IDictionary<string, object> arguments = null;
             var qOk = Channel.QueueDeclare(queue, durable, exclusive, autoDelete, arguments);
-            queue = qOk.QueueName;
-            Channel.QueueBind(queue, exchange, route, arguments);
+            source.Queue = qOk.QueueName;
+            Channel.QueueBind(queue, source.Exchange, source.Route, arguments);
             bool noAck = false;
             string consumerTag = "";
             bool noLocal = false;
-            var consTag = Channel.BasicConsume(queue, noAck, consumerTag, noLocal, exclusive, arguments, consumer);
+            source.Tag = Channel.BasicConsume(queue, noAck, consumerTag, noLocal, exclusive, arguments, consumer);
         }
 
         public DnsEndPoint RemoteEndpoint =>

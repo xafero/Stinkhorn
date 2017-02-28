@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
+using System;
 
 namespace Stinkhorn.Common
 {
@@ -31,6 +32,7 @@ namespace Stinkhorn.Common
             }
         }
 
-        public static string ToGeneral<T>() => typeof(T).Namespace.Split('.').First();
+        public static string ToGeneral(Type type) => type.Namespace.Split('.').First();
+        public static string ToGeneral<T>() => ToGeneral(typeof(T));
     }
 }
