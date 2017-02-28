@@ -59,7 +59,7 @@ namespace Stinkhorn.Bureau
         {
             BeginInvoke((Action)(() =>
             {
-                contactList.Add(msg.Body);
+                contactList.Add(new Contact(msg));
             }));
         }
 
