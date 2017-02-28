@@ -94,7 +94,7 @@ namespace Stinkhorn.Common
 
         public void Subscribe<T>(Action<IEnvelope<T>> callback, string target = null)
         {
-            var source = new Participant(target, typeof(T), MyID);
+            IBrokerParticipant source = new Participant(target, typeof(T), MyID);
             var consumer = new EventingBasicConsumer(Channel);
             consumer.Received += (sender, e) =>
             {

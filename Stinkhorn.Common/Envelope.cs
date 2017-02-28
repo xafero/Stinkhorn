@@ -71,14 +71,14 @@ namespace Stinkhorn.Common
         public T Body { get; }
         public IFault Error { get; }
 
-        internal Envelope(Participant source, T body)
+        internal Envelope(IParticipant source, T body)
         {
             Receiver = source;
             Body = body;
             Error = null;
         }
 
-        internal Envelope(Participant source, Exception error)
+        internal Envelope(IParticipant source, Exception error)
         {
             Receiver = source;
             Body = default(T);
