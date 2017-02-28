@@ -24,5 +24,8 @@ namespace Stinkhorn.API
 
         public static string ToIdString(this Guid guid)
             => guid.ToString("N");
+
+        public static string ToIdString(this Guid? guid)
+            => guid == null ? null : guid.Value.ToIdString();
     }
 }

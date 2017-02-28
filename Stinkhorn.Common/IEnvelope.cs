@@ -7,7 +7,7 @@ namespace Stinkhorn.Common
     {
         IParticipant Sender { get; }
         IParticipant Receiver { get; }
-        IDictionary<string, int> Headers { get; }
+        IDictionary<string, object> Headers { get; }
         T Body { get; }
         IFault Error { get; }
     }
