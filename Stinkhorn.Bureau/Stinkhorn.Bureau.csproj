@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\Contact.cs" />
     <Compile Include="Context\ContextMenuAction.cs" />
     <Compile Include="Controls\DragDropControl.cs">
       <SubType>UserControl</SubType>

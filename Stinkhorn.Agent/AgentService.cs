@@ -7,6 +7,7 @@ using Stinkhorn.Common;
 using Stinkhorn.Util;
 using Stinkhorn.Core;
 using Stinkhorn.IoC;
+using System;
 
 namespace Stinkhorn.Agent
 {
@@ -76,6 +77,8 @@ namespace Stinkhorn.Agent
             var senderId = client.MyID.Value.ToIdString();
             client.Publish(new HelloMessage
             {
+                Machine = Environment.MachineName,
+                User = Environment.UserName,
                 Local = client.LocalEndpoint.ToShortString(),
                 Remote = client.RemoteEndpoint.ToShortString(),
                 SenderId = senderId

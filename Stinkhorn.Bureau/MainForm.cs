@@ -11,6 +11,7 @@ using System.Drawing;
 using Stinkhorn.Bureau.Utils;
 using Stinkhorn.Bureau.Controls;
 using Stinkhorn.IoC;
+using Stinkhorn.Bureau.Context;
 
 namespace Stinkhorn.Bureau
 {
@@ -20,13 +21,13 @@ namespace Stinkhorn.Bureau
 
         BrokerClient Client { get; set; }
 
-        readonly BindingList<HelloMessage> contactList;
+        readonly BindingList<Contact> contactList;
 
         public MainForm()
         {
             InitializeComponent();
             // Bindings
-            contactList = new BindingList<HelloMessage>();
+            contactList = new BindingList<Contact>();
             var contactSource = new BindingSource(contactList, null);
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.DataSource = contactSource;
@@ -66,7 +67,7 @@ namespace Stinkhorn.Bureau
         {
             var grid = (DataGridView)sender;
             var row = grid.Rows[e.RowIndex];
-            var msg = (IEnvelope)row.DataBoundItem;
+            var msg = (Contact)row.DataBoundItem;
             var menu = new ContextMenuStrip();
             var reqs = ServiceLoader.Load<IRequest>().ToArray();
             foreach (var req in reqs)

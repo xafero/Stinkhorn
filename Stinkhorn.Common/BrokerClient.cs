@@ -6,7 +6,6 @@ using log4net;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Stinkhorn.API;
 
 namespace Stinkhorn.Common
 {

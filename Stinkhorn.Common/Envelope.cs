@@ -1,6 +1,5 @@
 ﻿using Stinkhorn.API;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
