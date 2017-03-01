@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 using Stinkhorn.API;
-using System.ComponentModel;
+using Stinkhorn.Bureau.Utils;
 
 namespace Stinkhorn.Bureau.Controls
 {
@@ -17,8 +17,7 @@ namespace Stinkhorn.Bureau.Controls
             InitializeComponent();
             this.rsp = rsp;
             groupBox1.Text = rsp.GetType().Name;
-            TypeDescriptor.AddAttributes(rsp, new[] { new ReadOnlyAttribute(true) });
-            propertyGrid1.SelectedObject = rsp;
+            propertyGrid1.SetSelectedObject(rsp, readOnly:true);
         }
     }
 }

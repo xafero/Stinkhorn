@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.propertyGrid1 = new AdamsLair.WinForms.PropertyEditing.PropertyGrid();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -79,7 +79,7 @@
 
         #endregion
 
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
+        private AdamsLair.WinForms.PropertyEditing.PropertyGrid propertyGrid1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
     }

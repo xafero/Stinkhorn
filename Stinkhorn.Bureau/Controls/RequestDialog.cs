@@ -19,7 +19,7 @@ namespace Stinkhorn.Bureau.Controls
             this.req = req;
             Text = req.GetType().Name;
             Icon = image?.ToIcon();
-            propertyGrid1.SelectedObject = req;
+            propertyGrid1.SetSelectedObject(req);
         }
 
         void button1_Click(object sender, System.EventArgs e)
