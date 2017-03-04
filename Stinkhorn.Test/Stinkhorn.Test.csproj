@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{067456C0-086C-46A8-B37F-1405717B7BFC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Stinkhorn.Test</RootNamespace>
+    <AssemblyName>Stinkhorn.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NUnitTest1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stinkhorn.Agent\Stinkhorn.Agent.csproj">
+      <Project>{09a09a99-ad4f-45c1-af59-f9197c6d28d9}</Project>
+      <Name>Stinkhorn.Agent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.API\Stinkhorn.API.csproj">
+      <Project>{de3037eb-1e63-4230-a5b2-ea7bbd04c853}</Project>
+      <Name>Stinkhorn.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.Bureau\Stinkhorn.Bureau.csproj">
+      <Project>{0c42f319-60b0-4d83-8b49-9c3b6df0479f}</Project>
+      <Name>Stinkhorn.Bureau</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.Common\Stinkhorn.Common.csproj">
+      <Project>{d7ae9bfe-ca0f-46a7-be08-726837a2c50b}</Project>
+      <Name>Stinkhorn.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.Core\Stinkhorn.Core.csproj">
+      <Project>{4a15c36c-64af-4f32-a67f-dd2701ba7642}</Project>
+      <Name>Stinkhorn.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.IoC\Stinkhorn.IoC.csproj">
+      <Project>{2820ad79-67b4-4793-b3bf-15143cb826da}</Project>
+      <Name>Stinkhorn.IoC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.Util\Stinkhorn.Util.csproj">
+      <Project>{ecc8865f-06ac-4350-a09f-c32526ad9d1a}</Project>
+      <Name>Stinkhorn.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

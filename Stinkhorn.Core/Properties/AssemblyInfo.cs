@@ -1,6 +1,7 @@
 ﻿#region Using directives
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 #endregion
@@ -28,3 +29,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.*")]
+
+[assembly: InternalsVisibleTo("Stinkhorn.Test")]
