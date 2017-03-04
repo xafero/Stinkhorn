@@ -6,13 +6,13 @@ namespace Stinkhorn.Bureau.Controls
 {
     public partial class ResponseControl : UserControl
     {
-        IResponse rsp;
+        object rsp;
 
         public ResponseControl() : this(new ServeResponse())
         {
         }
 
-        public ResponseControl(IResponse rsp)
+        public ResponseControl(object rsp)
         {
             InitializeComponent();
             this.rsp = rsp;

@@ -59,6 +59,7 @@ namespace Stinkhorn.Bureau
         {
             BeginInvoke((Action)(() =>
             {
+                receiverDump1.Receive(msg);
                 contactList.Add(new Contact(msg));
             }));
         }
@@ -92,6 +93,8 @@ namespace Stinkhorn.Bureau
         {
             BeginInvoke((Action)(() =>
             {
+                receiverDump1.Receive(msg);
+
                 var screen = msg.Body.Screenshots.First();
                 var dialog = new Form();
                 var box = new PictureBox();

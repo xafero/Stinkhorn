@@ -1,5 +1,4 @@
 ﻿using AdamsLair.WinForms.PropertyEditing;
-using System;
 
 namespace Stinkhorn.Bureau.Utils
 {
