@@ -13,7 +13,7 @@ namespace Stinkhorn.Bureau.Controls
         readonly string DataFormatFileContent = "FileContents";
         readonly string DataFormatFileGroup = "FileGroupDescriptorW";
 
-        public DragDropMode Mode { get; }
+        DragDropMode _mode;
 
         public DragDropControl() : this("Test", DragDropMode.None)
         {
@@ -23,21 +23,30 @@ namespace Stinkhorn.Bureau.Controls
         {
             InitializeComponent();
             Mode = mode;
-            groupBox.Text = title;
-            if (mode.HasFlag(DragDropMode.Input))
-            {
-                listView.AllowDrop = true;
-                listView.DragEnter += ListView_DragEnter;
-                listView.DragDrop += ListView_DragDrop;
-            }
-            if (mode.HasFlag(DragDropMode.Output))
-            {
-                listView.ItemDrag += ListView_ItemDrag;
-            }
+            Title = title;            
             listView.LargeImageList = new ImageList
             {
                 Images = { Icons.FileUnknown }
             };
+        }
+
+        public DragDropMode Mode
+        {
+            get { return _mode; }
+            set
+            {
+                _mode = value;
+                if (_mode.HasFlag(DragDropMode.Input))
+                {
+                    listView.AllowDrop = true;
+                    listView.DragEnter += ListView_DragEnter;
+                    listView.DragDrop += ListView_DragDrop;
+                }
+                if (_mode.HasFlag(DragDropMode.Output))
+                {
+                    listView.ItemDrag += ListView_ItemDrag;
+                }
+            }
         }
 
         #region Output mode
@@ -94,6 +103,22 @@ namespace Stinkhorn.Bureau.Controls
             }
         }
 
+        public void AddFile(string name, byte[] bytes)
+        {
+            var file = new FileDescriptor
+            {
+                ChangeTimeUtc = DateTime.UtcNow,
+                Length = bytes.LongLength,
+                Name = name,
+                StreamContents = s =>
+                {
+                    using (var read = new MemoryStream(bytes))
+                        read.CopyTo(s);
+                }
+            };
+            AddFile(name + "#" + bytes.LongLength, file);
+        }
+
         public void AddFile(string path)
         {
             var info = new FileInfo(path);
@@ -108,9 +133,14 @@ namespace Stinkhorn.Bureau.Controls
                         read.CopyTo(s);
                 }
             };
+            AddFile(info.FullName, file);
+        }
+
+        void AddFile(string key, FileDescriptor file)
+        {
             listView.Items.Add(new ListViewItem
             {
-                Name = info.FullName,
+                Name = key,
                 ImageIndex = 0,
                 Text = file.Name,
                 Tag = file
@@ -120,6 +150,12 @@ namespace Stinkhorn.Bureau.Controls
 
         public IEnumerable<FileDescriptor> Files => listView.Items
             .OfType<ListViewItem>().Select(i => i.Tag).OfType<FileDescriptor>();
+
+        public string Title
+        {
+            get { return groupBox.Text; }
+            set { groupBox.Text = value; }
+        }
     }
 
     [Flags]
