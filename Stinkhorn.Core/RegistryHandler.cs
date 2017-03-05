@@ -9,11 +9,13 @@ namespace Stinkhorn.Core
         {
             var root = (RegistryKey)typeof(Registry).GetField(input.Root + "").GetValue(null);
             var writable = input.Value != null;
-            using (var key = root.OpenSubKey(input.Path, writable))
+            var path = input.Path.Trim();
+            using (var key = root.OpenSubKey(path, writable))
             {
-                var ret = new RegistryResponse { Value = key.GetValue(input.Key) };
+                var myKey = input.Key.Trim();
+                var ret = new RegistryResponse { Value = key.GetValue(myKey) };
                 if (writable)
-                    key.SetValue(input.Key, input.Value);
+                    key.SetValue(myKey, input.Value);
                 return ret;
             }
         }

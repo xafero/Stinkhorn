@@ -53,7 +53,10 @@ namespace Stinkhorn.Bureau
             log.InfoFormat("Manager is started!");
             var id = client.Id;
             client.Subscribe<HelloMessage>(id.Broad, OnHello);
-            client.Subscribe<ScreenshotResponse>(id.Uni, OnScreenshot);
+            client.Subscribe<ScreenshotResponse>(id.Uni, OnResponse);
+            client.Subscribe<RegistryResponse>(id.Uni, OnResponse);
+            client.Subscribe<PowerResponse>(id.Uni, OnResponse);
+            client.Subscribe<ServeResponse>(id.Uni, OnResponse);
         }
 
         void OnHello(IIdentity sender, HelloMessage msg)
@@ -90,7 +93,7 @@ namespace Stinkhorn.Bureau
             row.ContextMenuStrip = menu;
         }
 
-        void OnScreenshot(IIdentity sender, ScreenshotResponse msg)
+        void OnResponse<T>(IIdentity sender, T msg) where T : IResponse
         {
             BeginInvoke((Action)(() =>
             {
