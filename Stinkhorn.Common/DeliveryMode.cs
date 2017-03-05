@@ -1,4 +1,5 @@
-﻿namespace Stinkhorn.Common
+﻿
+namespace Stinkhorn.Common
 {
     public enum DeliveryMode : byte
 	{

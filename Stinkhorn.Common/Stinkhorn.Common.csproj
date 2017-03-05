@@ -44,25 +44,23 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Broadcast.cs" />
     <Compile Include="BrokerClient.cs" />
+    <Compile Include="Cached.cs" />
     <Compile Include="DeliveryMode.cs" />
     <Compile Include="Envelope.cs" />
     <Compile Include="IBroker.cs" />
-    <Compile Include="IBrokerClient.cs" />
     <Compile Include="IEnvelope.cs" />
+    <Compile Include="IIdentity.cs" />
     <Compile Include="ISerializer.cs" />
+    <Compile Include="ITransfer.cs" />
+    <Compile Include="JsonSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RabbitBroker.cs" />
     <Compile Include="RabbitExtensions.cs" />
-    <Compile Include="RemoteParticipant.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Stinkhorn.API\Stinkhorn.API.csproj">
-      <Project>{DE3037EB-1E63-4230-A5B2-EA7BBD04C853}</Project>
-      <Name>Stinkhorn.API</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
