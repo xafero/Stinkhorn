@@ -4,6 +4,7 @@ using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Net;
 
 namespace Stinkhorn.Common
 {
@@ -17,6 +18,12 @@ namespace Stinkhorn.Common
 
         ConnectionFactory Factory { get; set; }
         IConnection Connection { get; set; }
+
+        public DnsEndPoint RemoteEndpoint =>
+            new DnsEndPoint(Connection.Endpoint.HostName, Connection.Endpoint.Port);
+
+        public DnsEndPoint LocalEndpoint =>
+            new DnsEndPoint("localhost", Connection.LocalPort);
 
         public void Connect(string userName = "guest", string password = "guest",
                             string path = "/", string host = "localhost", int port = 5672)
