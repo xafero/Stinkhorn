@@ -83,14 +83,25 @@ namespace Stinkhorn.Agent
                 Local = client.LocalEndpoint.ToShortString(),
                 Remote = client.RemoteEndpoint.ToShortString()
             });
-            client.Subscribe<ScreenshotRequest>(id.Multi, OnScreenShotReq);
-            client.Subscribe<ScreenshotRequest>(id.Uni, OnScreenShotReq);
+            Subscribe<ScreenshotRequest, ScreenshotResponse>();
+            Subscribe<RegistryRequest, RegistryResponse>();
+            Subscribe<PowerRequest, PowerResponse>();
+            Subscribe<ServeRequest, ServeResponse>();
         }
 
-        void OnScreenShotReq(IIdentity sender, ScreenshotRequest req)
+        void Subscribe<I, O>()
+            where I : IRequest where O : IResponse
         {
-            var handler = ServiceLoader.Load<IMessageHandler<ScreenshotRequest,
-                                                             ScreenshotResponse>>().First();
+            var cid = Client.Id;
+            var ids = new ITransfer[] { cid.Multi, cid.Uni };
+            foreach (var id in ids)
+                Client.Subscribe<I>(id, OnRequest<I, O>);
+        }
+
+        void OnRequest<I, O>(IIdentity sender, I req)
+            where I : IRequest where O : IResponse
+        {
+            var handler = ServiceLoader.Load<IMessageHandler<I, O>>().First();
             var resp = handler.Process(req);
             Client.Publish(sender.Uni, resp);
         }
