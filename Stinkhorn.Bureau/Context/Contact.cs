@@ -1,20 +1,19 @@
-﻿using System;
-using Stinkhorn.API;
+﻿using Stinkhorn.API;
+using Stinkhorn.Common;
 
 namespace Stinkhorn.Bureau.Context
 {
     class Contact : HelloMessage
     {
-        public Contact(IEnvelope<HelloMessage> env)
+        public Contact(IIdentity sender, HelloMessage env)
         {
-            Machine = env.Body.Machine;
-            User = env.Body.User;
-            Local = env.Body.Local;
-            Remote = env.Body.Remote;
-            SenderId = env.Body.SenderId;
-            Id = env.Sender.Id.Value;
+            Machine = env.Machine;
+            User = env.User;
+            Local = env.Local;
+            Remote = env.Remote;
+            Id = (Unicast)sender.Uni;
         }
 
-        public Guid Id { get; }
+        public Unicast Id { get; }
     }
 }

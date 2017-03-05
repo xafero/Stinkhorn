@@ -14,11 +14,11 @@ namespace Stinkhorn.Bureau.Controls
         {
         }
 
-        public ResponseControl(object rsp)
+        public ResponseControl(object rsp, string title = null)
         {
             InitializeComponent();
             this.rsp = rsp;
-            groupBox1.Text = DateTime.Now.ToLongTimeString();
+            groupBox1.Text = $"({DateTime.Now.ToLongTimeString()}) {title}";
             propertyGrid1.SetSelectedObject(rsp, readOnly: true);
             ExtractDragDrop(rsp);
         }

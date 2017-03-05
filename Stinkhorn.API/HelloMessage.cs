@@ -9,8 +9,6 @@ namespace Stinkhorn.API
 
         public string Remote { get; set; }
 
-        public string SenderId { get; set; }
-
         public string Machine { get; set; }
 
         public string User { get; set; }

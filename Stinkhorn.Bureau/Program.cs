@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net.Config;
+using System;
 using System.Windows.Forms;
 
 namespace Stinkhorn.Bureau
@@ -8,6 +9,7 @@ namespace Stinkhorn.Bureau
         [STAThread]
         static void Main(string[] args)
         {
+            BasicConfigurator.Configure();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

@@ -18,7 +18,7 @@ namespace Stinkhorn.Agent
 
         public const string MyServiceName = "StinkhornAgent";
 
-        BrokerClient Client { get; set; }
+        RabbitBroker Client { get; set; }
 
         public AgentService()
         {
@@ -71,28 +71,28 @@ namespace Stinkhorn.Agent
             var host = config["host"];
             var port = int.Parse(config["port"]);
             var name = GetType().Name;
-            var client = new BrokerClient(host: host, port: port);
+            var client = new RabbitBroker();
+            client.Connect(host: host, port: port);
             Client = client;
             log.InfoFormat("Service is started!");
-            var senderId = client.MyID.Value.ToIdString();
-            client.Publish(new HelloMessage
+            var id = client.Id;
+            client.Publish(id.Broad, new HelloMessage
             {
                 Machine = Environment.MachineName,
                 User = Environment.UserName,
                 Local = client.LocalEndpoint.ToShortString(),
-                Remote = client.RemoteEndpoint.ToShortString(),
-                SenderId = senderId
+                Remote = client.RemoteEndpoint.ToShortString()
             });
-            client.Publish<ScreenshotRequest>(null, senderId);
-            client.Subscribe<ScreenshotRequest>(OnScreenShotReq, senderId);
+            client.Subscribe<ScreenshotRequest>(id.Multi, OnScreenShotReq);
+            client.Subscribe<ScreenshotRequest>(id.Uni, OnScreenShotReq);
         }
 
-        void OnScreenShotReq(IEnvelope<ScreenshotRequest> req)
+        void OnScreenShotReq(IIdentity sender, ScreenshotRequest req)
         {
             var handler = ServiceLoader.Load<IMessageHandler<ScreenshotRequest,
                                                              ScreenshotResponse>>().First();
-            var resp = handler.Process(req.Body);
-            Client.Publish(resp);
+            var resp = handler.Process(req);
+            Client.Publish(sender.Uni, resp);
         }
 
         public void DoStop()

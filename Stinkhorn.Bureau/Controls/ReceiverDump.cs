@@ -11,13 +11,12 @@ namespace Stinkhorn.Bureau.Controls
             InitializeComponent();
         }
 
-        public void Receive<T>(IEnvelope<T> msg)
+        public void Receive<T>(T msg, object title = null)
         {
-            var body = msg.Body;
             var lastIndex = flowLayout.Controls.Count - 1;
             if (flowLayout.Controls.Count >= MaxFlow)
                 flowLayout.Controls.RemoveAt(lastIndex);
-            var ctrl = new ResponseControl(body);
+            var ctrl = new ResponseControl(msg, title + string.Empty);
             flowLayout.Controls.Add(ctrl);
             flowLayout.Controls.SetChildIndex(ctrl, 0);
             Invalidate(true);

@@ -19,7 +19,7 @@ namespace Stinkhorn.Bureau
     {
         static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
 
-        BrokerClient Client { get; set; }
+        RabbitBroker Client { get; set; }
 
         readonly BindingList<Contact> contactList;
 
@@ -47,20 +47,21 @@ namespace Stinkhorn.Bureau
             var host = config["host"];
             var port = int.Parse(config["port"]);
             var name = GetType().Name;
-            var client = new BrokerClient(host: host, port: port);
+            var client = new RabbitBroker();
+            client.Connect(host: host, port: port);
             Client = client;
             log.InfoFormat("Manager is started!");
-            client.Publish<HelloMessage>(null);
-            client.Subscribe<HelloMessage>(OnHello);
-            client.Subscribe<ScreenshotResponse>(OnScreenshot);
+            var id = client.Id;
+            client.Subscribe<HelloMessage>(id.Broad, OnHello);
+            client.Subscribe<ScreenshotResponse>(id.Uni, OnScreenshot);
         }
 
-        void OnHello(IEnvelope<HelloMessage> msg)
+        void OnHello(IIdentity sender, HelloMessage msg)
         {
             BeginInvoke((Action)(() =>
             {
-                receiverDump1.Receive(msg);
-                contactList.Add(new Contact(msg));
+                receiverDump1.Receive(msg, sender.Uni);
+                contactList.Add(new Contact(sender, msg));
             }));
         }
 
@@ -81,7 +82,7 @@ namespace Stinkhorn.Bureau
                     var userReq = (IMessage)Activator.CreateInstance(req.GetType());
                     using (var dialog = new RequestDialog(req, icon))
                         if (dialog.ShowDialog(this) == DialogResult.OK)
-                            Client.Publish(req, msg.SenderId);
+                            Client.Publish(msg.Id, req);
                 };
                 var item = new ToolStripMenuItem(name, icon, onclick);
                 menu.Items.Add(item);
@@ -89,13 +90,12 @@ namespace Stinkhorn.Bureau
             row.ContextMenuStrip = menu;
         }
 
-        void OnScreenshot(IEnvelope<ScreenshotResponse> msg)
+        void OnScreenshot(IIdentity sender, ScreenshotResponse msg)
         {
             BeginInvoke((Action)(() =>
             {
-                receiverDump1.Receive(msg);
-
-                var screen = msg.Body.Screenshots.First();
+                receiverDump1.Receive(msg, sender.Uni);
+                /*var screen = msg.Screenshots.First();
                 var dialog = new Form();
                 var box = new PictureBox();
                 box.Image = screen.ToDrawingImage();
@@ -103,7 +103,7 @@ namespace Stinkhorn.Bureau
                 box.SizeMode = PictureBoxSizeMode.Zoom;
                 dialog.Controls.Add(box);
                 dialog.Size = new Size(screen.Width, screen.Height);
-                dialog.ShowDialog(this);
+                dialog.ShowDialog(this);*/
             }));
         }
 

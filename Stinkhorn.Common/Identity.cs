@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Stinkhorn.Common
 {
@@ -29,7 +30,10 @@ namespace Stinkhorn.Common
             };
 
         public static implicit operator Identity(Dictionary<string, object> dict)
-            => new Identity(Guid.Parse(dict[SenderId] + ""),
-                (dict[SenderRoles] + "").Split(Separator));
+            => new Identity(Guid.Parse(ToString(dict[SenderId])),
+                ToString(dict[SenderRoles]).Split(Separator));
+
+        static string ToString(object obj)
+            => Encoding.UTF8.GetString((byte[])obj);
     }
 }
