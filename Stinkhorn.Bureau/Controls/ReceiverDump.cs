@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using Stinkhorn.Common;
 
 namespace Stinkhorn.Bureau.Controls
 {
