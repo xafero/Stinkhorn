@@ -52,7 +52,7 @@ namespace Stinkhorn.Test
             var server = new RabbitBroker();
             server.Open();
             Thread.Sleep(2 * 1000);
-            server.Subscribe<string>(addr, (s, m) => Console.WriteLine($"{s} => {m}"));
+			server.Subscribe<string>(addr, (s, m) => Console.WriteLine($"{s.Uni} => {m}"));
         }
     }
 }
