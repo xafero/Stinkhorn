@@ -43,12 +43,9 @@ namespace Stinkhorn.Bureau
         void MainForm_Load(object sender, EventArgs e)
         {
             log.InfoFormat("Manager is starting...");
-            var config = ConfigurationManager.AppSettings;
-            var host = config["host"];
-            var port = int.Parse(config["port"]);
             var name = GetType().Name;
             var client = new RabbitBroker();
-            client.Connect(host: host, port: port);
+            client.Open();
             Client = client;
             log.InfoFormat("Manager is started!");
             var id = client.Id;

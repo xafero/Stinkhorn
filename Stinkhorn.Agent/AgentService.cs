@@ -1,78 +1,35 @@
 ﻿using System.Linq;
 using System.Configuration;
-using System.ServiceProcess;
 using log4net;
 using Stinkhorn.API;
 using Stinkhorn.Common;
-using Stinkhorn.Util;
 using Stinkhorn.Core;
 using Stinkhorn.IoC;
 using System;
 
 namespace Stinkhorn.Agent
 {
-    public class AgentService : ServiceBase, ISetupService, IConsoleService
+    public class AgentService : IAgentService
     {
-        static readonly ILog log = LogManager.GetLogger(typeof(AgentService));
+        private static readonly ILog log = LogManager.GetLogger(typeof(AgentService));
         static readonly object dummy = typeof(ImageExtensions);
 
         public const string MyServiceName = "StinkhornAgent";
 
         RabbitBroker Client { get; set; }
 
-        public AgentService()
+        public void Dispose()
         {
-            InitializeComponent();
-        }
-
-        void InitializeComponent()
-        {
-            ServiceName = MyServiceName;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            DoStop();
+            Stop();
             Client = null;
-            base.Dispose(disposing);
         }
 
-        protected override void OnStart(string[] args) { DoStart(args); }
-        protected override void OnStop() { DoStop(); }
-        protected override void OnShutdown() { DoShutdown(); }
-        protected override void OnContinue() { DoContinue(); }
-        protected override void OnCustomCommand(int cmd) { DoCustomCommand(cmd); }
-        protected override void OnPause() { DoPause(); }
-        protected override bool OnPowerEvent(PowerBroadcastStatus status) => DoPowerEvent(status);
-        protected override void OnSessionChange(SessionChangeDescription desc) => DoSessionChange(desc);
-
-        public void DoSessionChange(SessionChangeDescription desc)
-        {
-        }
-
-        public bool DoPowerEvent(PowerBroadcastStatus status) => true;
-
-        public void DoPause()
-        {
-        }
-
-        public void DoCustomCommand(int cmd)
-        {
-        }
-
-        public void DoContinue()
-        {
-        }
-
-        public void DoStart(string[] args)
+        public void Start()
         {
             log.InfoFormat("Service is starting...");
-            var config = ConfigurationManager.AppSettings;
-            var host = config["host"];
-            var port = int.Parse(config["port"]);
             var name = GetType().Name;
             var client = new RabbitBroker();
-            client.Connect(host: host, port: port);
+            client.Open();
             Client = client;
             log.InfoFormat("Service is started!");
             var id = client.Id;
@@ -106,24 +63,12 @@ namespace Stinkhorn.Agent
             Client.Publish(sender.Uni, resp);
         }
 
-        public void DoStop()
+        public void Stop()
         {
             log.InfoFormat("Service is stopping...");
             if (Client != null)
                 Client.Dispose();
             log.InfoFormat("Service is stopped!");
-        }
-
-        public void DoShutdown()
-        {
-        }
-
-        public void OnInstallService()
-        {
-        }
-
-        public void OnUninstallService()
-        {
         }
     }
 }

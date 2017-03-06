@@ -1,41 +1,24 @@
-﻿using System;
-using System.Linq;
-using System.ServiceProcess;
-using log4net.Config;
-using Stinkhorn.Util;
+﻿using Topshelf;
 
 namespace Stinkhorn.Agent
 {
-	static class Program
-	{
-		static void Main(string[] args)
-		{
-			try
-			{
-				var cmp = StringComparer.InvariantCultureIgnoreCase;
-				var service = new AgentService();
-				if (Environment.UserInteractive)
-				{
-					BasicConfigurator.Configure();
-					if (args.Contains("-install", cmp))
-					{
-						ServiceHelper.InstallService(service);
-						return;
-					}
-					if (args.Contains("-uninstall", cmp))
-					{
-						ServiceHelper.UninstallService(service);
-						return;
-					}
-					ServiceHelper.RunConsole(service, args);
-					return;
-				}
-				ServiceBase.Run(new ServiceBase[] { service });
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine("An exception occurred in Main(): {0}", ex);
-			}
-		}
-	}
+    static class Program
+    {
+        static void Main(string[] args)
+        {
+            HostFactory.Run(config =>
+            {
+                config.Service<AgentService>(
+                    service =>
+                    {
+                        service.ConstructUsing(x => new AgentService());
+                        service.WhenStarted(x => x.Start());
+                        service.WhenStopped(x => x.Stop());
+                    });
+                config.SetServiceName(AgentService.MyServiceName);
+                config.SetDisplayName("An agent for Stinkhorn");
+                config.SetDescription("Don't let the mushrooms kill you.");
+            });
+        }
+    }
 }

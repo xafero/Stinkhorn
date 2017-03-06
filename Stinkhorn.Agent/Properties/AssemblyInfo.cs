@@ -30,4 +30,7 @@ using System.Runtime.InteropServices;
 // Build Numbers by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.*")]
 
-[assembly:InternalsVisibleTo("Stinkhorn.Test")]
+[assembly: InternalsVisibleTo("Stinkhorn.Test")]
+
+// For logging
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
