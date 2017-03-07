@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.ComponentModel;
-using System.Configuration;
 using System.Windows.Forms;
 using log4net;
 using log4net.Config;

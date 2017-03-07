@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Configuration;
 using log4net;
 using Stinkhorn.API;
 using Stinkhorn.Common;
