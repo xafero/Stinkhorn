@@ -153,6 +153,9 @@
     <None Include="Images\camera-photo.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\computer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\document-properties.png" />
     <Content Include="Images\format-justify-fill.png" />
     <Content Include="Images\logo.png" />
