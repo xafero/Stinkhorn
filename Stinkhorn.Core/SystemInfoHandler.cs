@@ -21,6 +21,8 @@ namespace Stinkhorn.Core
 
     public class SystemInfo : ISystemInfo
     {
+        const string lsbRelease = "/usr/bin/lsb_release";
+
         public string UserName => Environment.UserName;
 
         public string HostName => Environment.MachineName;
@@ -144,7 +146,7 @@ namespace Stinkhorn.Core
             get
             {
                 if (Platform == Platform.Linux)
-                    return ReadProcess("lsb_release", "-c").Single().Split(':').Last().Trim();
+                    return ReadProcess(lsbRelease, "-c").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("EditionID") + "";
             }
@@ -155,7 +157,7 @@ namespace Stinkhorn.Core
             get
             {
                 if (Platform == Platform.Linux)
-                    return ReadProcess("lsb_release", "-d").Single().Split(':').Last().Trim();
+                    return ReadProcess(lsbRelease, "-d").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("ProductName") + "";
             }
@@ -166,7 +168,7 @@ namespace Stinkhorn.Core
             get
             {
                 if (Platform == Platform.Linux)
-                    return ReadProcess("lsb_release", "-r").Single().Split(':').Last().Trim();
+                    return ReadProcess(lsbRelease, "-r").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("ReleaseID") + "";
             }
