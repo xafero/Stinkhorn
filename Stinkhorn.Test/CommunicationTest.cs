@@ -8,7 +8,7 @@ namespace Stinkhorn.Test
     [TestFixture]
     public class CommunicationTest
     {
-        private void TestSomething(ITransfer transfer)
+        void TestSomething(ITransfer transfer)
         {
             var server = new Thread(ServerLoop);
             server.Start(transfer);

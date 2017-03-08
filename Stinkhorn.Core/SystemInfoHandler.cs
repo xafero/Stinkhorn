@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 
 namespace Stinkhorn.Core
@@ -176,5 +177,20 @@ namespace Stinkhorn.Core
 
         RegistryKey CurrentVersionKey
             => Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+
+        static IDictionary<string, string> ReadFile(string file)
+            => File.ReadAllLines(file).Select(l => l.Split('=')).
+            ToDictionary(k => k.First(), v => v.Last().Replace('"', ' ').Trim());
+
+        static IDictionary<string, string> ReadFiles(string dir, string pattern)
+        {
+            var dict = new Dictionary<string, string>();
+            foreach (var file in Directory.GetFiles(dir, pattern, SearchOption.TopDirectoryOnly))
+                foreach (var entry in ReadFile(file))
+                    dict[entry.Key] = entry.Value;
+            return dict;
+        }
+
+        IDictionary<string, string> LinuxReleaseDict => ReadFiles("/etc", "*release");
     }
 }

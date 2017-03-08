@@ -10,7 +10,7 @@ namespace Stinkhorn.Agent
 {
     public class AgentService : IAgentService
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(AgentService));
+        static readonly ILog log = LogManager.GetLogger(typeof(AgentService));
         static readonly object dummy = typeof(ImageExtensions);
 
         public const string MyServiceName = "StinkhornAgent";
