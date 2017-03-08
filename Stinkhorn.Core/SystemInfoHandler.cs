@@ -1,10 +1,22 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using Stinkhorn.API;
 using System;
 using System.Globalization;
 using System.Linq;
 
-namespace Stinkhorn.Util
+namespace Stinkhorn.Core
 {
+    class SystemInfoHandler : IDisposable,
+        IMessageHandler<InfoRequest, InfoResponse>
+    {
+        public InfoResponse Process(InfoRequest input)
+            => new InfoResponse { Result = new SystemInfo() };
+
+        public void Dispose()
+        {
+        }
+    }
+
     public class SystemInfo : ISystemInfo
     {
         public string UserName => Environment.UserName;
@@ -35,13 +47,13 @@ namespace Stinkhorn.Util
             }
         }
 
-        public Version Version
+        public string Version
         {
             get
             {
                 var ver = Environment.OSVersion.Version;
                 var plat = Environment.OSVersion.Platform;
-                return plat == PlatformID.Win32NT && ver.Major == 6 && ver.Minor >= 2 ? RegistryVersion : ver;
+                return (plat == PlatformID.Win32NT && ver.Major == 6 && ver.Minor >= 2 ? RegistryVersion : ver) + "";
             }
         }
 

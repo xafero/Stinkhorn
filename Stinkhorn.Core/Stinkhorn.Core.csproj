@@ -66,6 +66,7 @@
     <Compile Include="ImageExtensions.cs" />
     <Compile Include="ScreenshotHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemInfoHandler.cs" />
     <Compile Include="WinControl.cs" />
   </ItemGroup>
   <ItemGroup>

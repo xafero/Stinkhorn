@@ -43,6 +43,7 @@ namespace Stinkhorn.Agent
             Subscribe<RegistryRequest, RegistryResponse>();
             Subscribe<PowerRequest, PowerResponse>();
             Subscribe<ServeRequest, ServeResponse>();
+            Subscribe<InfoRequest, InfoResponse>();
         }
 
         void Subscribe<I, O>()
