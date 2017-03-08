@@ -82,27 +82,37 @@ namespace Stinkhorn.Core
             }
         }
 
-        static IEnumerable<string> ReadProcess(string cmd, params string[] args)
+        static IEnumerable<string> ReadProcess(string defaultLine, string cmd, params string[] args)
         {
-            using (var proc = Process.Start(new ProcessStartInfo
+            Process proc;
+            try
             {
-                FileName = cmd,
-                Arguments = string.Join(" ", args),
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            }))
-            {
-                while (!proc.StandardOutput.EndOfStream)
-                    yield return proc.StandardOutput.ReadLine().Trim();
+                proc = Process.Start(new ProcessStartInfo
+                {
+                    FileName = cmd,
+                    Arguments = string.Join(" ", args),
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                });
             }
+            catch
+            {
+                proc = null;
+            }
+            if (proc != null)
+                using (proc)
+                    while (!proc.StandardOutput.EndOfStream)
+                        yield return proc.StandardOutput.ReadLine().Trim();
+            else
+                yield return defaultLine;
         }
 
         OSType MacType
         {
             get
             {
-                var text = ReadProcess("serverinfo", "--software").Single();
+                var text = ReadProcess("Unknown type", "serverinfo", "--software").Single();
                 return text.Contains("NOT") ? OSType.Client : OSType.Server;
             }
         }
@@ -111,7 +121,7 @@ namespace Stinkhorn.Core
         {
             get
             {
-                var text = ReadProcess("uname", "-r").Single();
+                var text = ReadProcess("Unknown type", "uname", "-r").Single();
                 return text.Contains("generic") ? OSType.Client : OSType.Server;
             }
         }
@@ -147,7 +157,7 @@ namespace Stinkhorn.Core
             get
             {
                 if (Platform == Platform.Linux)
-                    return ReadProcess(lsbRelease, "-c").Single().Split(':').Last().Trim();
+                    return ReadProcess("C:Unknown edition", lsbRelease, "-c").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("EditionID") + "";
             }
@@ -158,7 +168,7 @@ namespace Stinkhorn.Core
             get
             {
                 if (Platform == Platform.Linux)
-                    return ReadProcess(lsbRelease, "-d").Single().Split(':').Last().Trim();
+                    return ReadProcess("D:Unknown product", lsbRelease, "-d").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("ProductName") + "";
             }
@@ -169,7 +179,7 @@ namespace Stinkhorn.Core
             get
             {
                 if (Platform == Platform.Linux)
-                    return ReadProcess(lsbRelease, "-r").Single().Split(':').Last().Trim();
+                    return ReadProcess("R:Unknown release", lsbRelease, "-r").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("ReleaseID") + "";
             }
