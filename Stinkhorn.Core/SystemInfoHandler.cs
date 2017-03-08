@@ -13,14 +13,14 @@ namespace Stinkhorn.Core
         IMessageHandler<InfoRequest, InfoResponse>
     {
         public InfoResponse Process(InfoRequest input)
-            => new InfoResponse { Result = new SystemInfo() };
+            => new InfoResponse { Result = new SimpleInfo(new SystemInfo()) };
 
         public void Dispose()
         {
         }
     }
 
-    public class SystemInfo : ISystemInfo
+    class SystemInfo : ISystemInfo
     {
         const string lsbRelease = "/usr/bin/lsb_release";
 

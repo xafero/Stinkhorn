@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace Stinkhorn.API
 {
@@ -79,5 +78,44 @@ namespace Stinkhorn.API
         Client,
 
         Server
+    }
+
+    public class SimpleInfo : ISystemInfo
+    {
+        readonly ISystemInfo sys;
+
+        public SimpleInfo(ISystemInfo systemInfo)
+        {
+            sys = systemInfo;
+            Arch = sys.Arch;
+            CPUs = sys.CPUs;
+            Edition = sys.Edition;
+            Encoding = sys.Encoding;
+            Endianness = sys.Endianness;
+            HostName = sys.HostName;
+            Locale = sys.Locale;
+            Platform = sys.Platform;
+            Product = sys.Product;
+            Release = sys.Release;
+            Type = sys.Type;
+            UserName = sys.UserName;
+            Version = sys.Version;
+        }
+
+        public SimpleInfo() { }
+
+        public Architecture Arch { get; set; }
+        public int CPUs { get; set; }
+        public string Edition { get; set; }
+        public string Encoding { get; set; }
+        public Endianness Endianness { get; set; }
+        public string HostName { get; set; }
+        public string Locale { get; set; }
+        public Platform Platform { get; set; }
+        public string Product { get; set; }
+        public string Release { get; set; }
+        public OSType Type { get; set; }
+        public string UserName { get; set; }
+        public string Version { get; set; }
     }
 }

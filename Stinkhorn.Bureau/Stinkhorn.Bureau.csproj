@@ -115,10 +115,6 @@
       <Project>{d7ae9bfe-ca0f-46a7-be08-726837a2c50b}</Project>
       <Name>Stinkhorn.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Stinkhorn.Core\Stinkhorn.Core.csproj">
-      <Project>{4a15c36c-64af-4f32-a67f-dd2701ba7642}</Project>
-      <Name>Stinkhorn.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Stinkhorn.IoC\Stinkhorn.IoC.csproj">
       <Project>{2820ad79-67b4-4793-b3bf-15143cb826da}</Project>
       <Name>Stinkhorn.IoC</Name>
