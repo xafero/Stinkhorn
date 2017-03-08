@@ -21,5 +21,13 @@ namespace Stinkhorn.Util
         int CPUs { get; }
 
         Endianness Endianness { get; }
+
+        OSType Type { get; }
+
+        string Edition { get; }
+
+        string Product { get; }
+
+        string Release { get; }
     }
 }

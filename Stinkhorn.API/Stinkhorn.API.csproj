@@ -43,6 +43,7 @@
     <Compile Include="RegistryRequest.cs" />
     <Compile Include="ScreenshotRequest.cs" />
     <Compile Include="ServeRequest.cs" />
+    <Compile Include="InfoRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

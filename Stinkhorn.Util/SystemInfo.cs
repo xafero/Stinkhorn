@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -34,14 +35,78 @@ namespace Stinkhorn.Util
             }
         }
 
-        public Version Version => Environment.OSVersion.Version;
+        public Version Version
+        {
+            get
+            {
+                var ver = Environment.OSVersion.Version;
+                var plat = Environment.OSVersion.Platform;
+                return plat == PlatformID.Win32NT && ver.Major == 6 && ver.Minor >= 2 ? RegistryVersion : ver;
+            }
+        }
 
         public string Locale => CultureInfo.InstalledUICulture.Name;
 
-        public string Encoding => System.Text.Encoding.Default.WebName.ToUpperInvariant();
+        public string Encoding => System.Text.Encoding.Default.WebName;
 
         public int CPUs => Environment.ProcessorCount;
 
         public Endianness Endianness => BitConverter.IsLittleEndian ? Endianness.Little : Endianness.Big;
+
+        public OSType Type
+        {
+            get
+            {
+                using (var folder = CurrentVersionKey)
+                {
+                    var installType = folder.GetValue("InstallationType") + "";
+                    return installType.Equals("Client") ? OSType.Client : OSType.Server;
+                }
+            }
+        }
+
+        Version RegistryVersion
+        {
+            get
+            {
+                using (var folder = CurrentVersionKey)
+                {
+                    var major = folder.GetValue("CurrentMajorVersionNumber");
+                    var minor = folder.GetValue("CurrentMinorVersionNumber");
+                    var build = folder.GetValue("CurrentBuildNumber");
+                    return new Version($"{major}.{minor}.{build}.0");
+                }
+            }
+        }
+
+        public string Edition
+        {
+            get
+            {
+                using (var folder = CurrentVersionKey)
+                    return folder.GetValue("EditionID") + "";
+            }
+        }
+
+        public string Product
+        {
+            get
+            {
+                using (var folder = CurrentVersionKey)
+                    return folder.GetValue("ProductName") + "";
+            }
+        }
+
+        public string Release
+        {
+            get
+            {
+                using (var folder = CurrentVersionKey)
+                    return folder.GetValue("ReleaseID") + "";
+            }
+        }
+
+        RegistryKey CurrentVersionKey
+            => Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
     }
 }
