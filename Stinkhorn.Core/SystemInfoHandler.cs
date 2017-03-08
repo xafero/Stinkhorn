@@ -158,6 +158,8 @@ namespace Stinkhorn.Core
             {
                 if (Platform == Platform.Linux)
                     return ReadProcess("C:Unknown edition", lsbRelease, "-c").Single().Split(':').Last().Trim();
+                if (Platform == Platform.MacOSX)
+                    return ReadProcess("B:Unknown", "sw_vers", "-buildVersion").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("EditionID") + "";
             }
@@ -169,6 +171,8 @@ namespace Stinkhorn.Core
             {
                 if (Platform == Platform.Linux)
                     return ReadProcess("D:Unknown product", lsbRelease, "-d").Single().Split(':').Last().Trim();
+                if (Platform == Platform.MacOSX)
+                    return ReadProcess("N:Unknown", "sw_vers", "-productName").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("ProductName") + "";
             }
@@ -180,6 +184,8 @@ namespace Stinkhorn.Core
             {
                 if (Platform == Platform.Linux)
                     return ReadProcess("R:Unknown release", lsbRelease, "-r").Single().Split(':').Last().Trim();
+                if (Platform == Platform.MacOSX)
+                    return ReadProcess("V:Unknown", "sw_vers", "-productVersion").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("ReleaseID") + "";
             }
