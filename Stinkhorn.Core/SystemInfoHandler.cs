@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
 using Stinkhorn.API;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 
@@ -65,7 +67,7 @@ namespace Stinkhorn.Core
 
         public Endianness Endianness => BitConverter.IsLittleEndian ? Endianness.Little : Endianness.Big;
 
-        public OSType Type
+        OSType WinType
         {
             get
             {
@@ -74,6 +76,52 @@ namespace Stinkhorn.Core
                     var installType = folder.GetValue("InstallationType") + "";
                     return installType.Equals("Client") ? OSType.Client : OSType.Server;
                 }
+            }
+        }
+
+        static IEnumerable<string> ReadProcess(string cmd, params string[] args)
+        {
+            using (var proc = Process.Start(new ProcessStartInfo
+            {
+                FileName = cmd,
+                Arguments = string.Join(" ", args),
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }))
+            {
+                while (!proc.StandardOutput.EndOfStream)
+                    yield return proc.StandardOutput.ReadLine().Trim();
+            }
+        }
+
+        OSType MacType
+        {
+            get
+            {
+                var text = ReadProcess("serverinfo", "--software").Single();
+                return text.Contains("NOT") ? OSType.Client : OSType.Server;
+            }
+        }
+
+        OSType LinuxType
+        {
+            get
+            {
+                var text = ReadProcess("uname", "-r").Single();
+                return text.Contains("generic") ? OSType.Client : OSType.Server;
+            }
+        }
+
+        public OSType Type
+        {
+            get
+            {
+                if (Platform == Platform.MacOSX)
+                    return MacType;
+                if (Platform == Platform.Linux)
+                    return LinuxType;
+                return WinType;
             }
         }
 
@@ -95,6 +143,8 @@ namespace Stinkhorn.Core
         {
             get
             {
+                if (Platform == Platform.Linux)
+                    return ReadProcess("lsb_release", "-c").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("EditionID") + "";
             }
@@ -104,6 +154,8 @@ namespace Stinkhorn.Core
         {
             get
             {
+                if (Platform == Platform.Linux)
+                    return ReadProcess("lsb_release", "-d").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("ProductName") + "";
             }
@@ -113,6 +165,8 @@ namespace Stinkhorn.Core
         {
             get
             {
+                if (Platform == Platform.Linux)
+                    return ReadProcess("lsb_release", "-r").Single().Split(':').Last().Trim();
                 using (var folder = CurrentVersionKey)
                     return folder.GetValue("ReleaseID") + "";
             }
