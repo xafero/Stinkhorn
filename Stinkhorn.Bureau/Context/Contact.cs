@@ -1,5 +1,5 @@
 ﻿using Stinkhorn.API;
-using Stinkhorn.Common;
+using Stinkhorn.Comm;
 
 namespace Stinkhorn.Bureau.Context
 {

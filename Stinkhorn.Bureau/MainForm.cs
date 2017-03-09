@@ -5,11 +5,11 @@ using System.Windows.Forms;
 using log4net;
 using log4net.Config;
 using Stinkhorn.API;
-using Stinkhorn.Common;
+using Stinkhorn.Comm;
 using System.Drawing;
 using Stinkhorn.Bureau.Utils;
 using Stinkhorn.Bureau.Controls;
-using Stinkhorn.IoC;
+using Mono.Addins;
 using Stinkhorn.Bureau.Context;
 
 namespace Stinkhorn.Bureau
@@ -71,7 +71,7 @@ namespace Stinkhorn.Bureau
             var row = grid.Rows[e.RowIndex];
             var msg = (Contact)row.DataBoundItem;
             var menu = new ContextMenuStrip();
-            var reqs = ServiceLoader.Load<IRequest>().ToArray();
+            var reqs = AddinManager.GetExtensionObjects<IRequest>().ToArray();
             foreach (var req in reqs)
             {
                 var name = req.GetType().Name.Replace(typeof(IRequest)

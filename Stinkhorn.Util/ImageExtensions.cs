@@ -2,7 +2,7 @@
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace Stinkhorn.Core
+namespace Stinkhorn.Util
 {
     public static class ImageExtensions
 	{

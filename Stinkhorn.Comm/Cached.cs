@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace Stinkhorn.Common
+namespace Stinkhorn.Comm
 {
     public class Cached<I, O>
     {

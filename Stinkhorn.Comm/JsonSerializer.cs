@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Text;
 
-namespace Stinkhorn.Common
+namespace Stinkhorn.Comm
 {
     public class JsonSerializer : ISerializer
     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
 
-namespace Stinkhorn.Common
+namespace Stinkhorn.Comm
 {
     public class RabbitBroker : IBroker
     {

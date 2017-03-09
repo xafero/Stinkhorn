@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using Stinkhorn.Common;
+using Stinkhorn.Comm;
 using System;
 using System.Threading;
 
@@ -14,7 +14,7 @@ namespace Stinkhorn.Test
             server.Start(transfer);
             var client = new Thread(ClientLoop);
             client.Start(transfer);
-            Thread.Sleep(30 * 1000);
+            Thread.Sleep(10 * 1000);
             server.Join();
             client.Join();
         }

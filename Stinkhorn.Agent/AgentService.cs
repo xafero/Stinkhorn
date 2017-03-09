@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 using log4net;
 using Stinkhorn.API;
-using Stinkhorn.Common;
-using Stinkhorn.Core;
-using Stinkhorn.IoC;
+using Stinkhorn.Comm;
+using Mono.Addins;
 using System;
 
 namespace Stinkhorn.Agent
@@ -11,7 +10,6 @@ namespace Stinkhorn.Agent
     public class AgentService : IAgentService
     {
         static readonly ILog log = LogManager.GetLogger(typeof(AgentService));
-        static readonly object dummy = typeof(ImageExtensions);
 
         public const string MyServiceName = "StinkhornAgent";
 
@@ -58,7 +56,7 @@ namespace Stinkhorn.Agent
         void OnRequest<I, O>(IIdentity sender, I req)
             where I : IRequest where O : IResponse
         {
-            var handler = ServiceLoader.Load<IMessageHandler<I, O>>().First();
+            var handler = AddinManager.GetExtensionObjects<IMessageHandler<I, O>>().First();
             var resp = handler.Process(req);
             Client.Publish(sender.Uni, resp);
         }

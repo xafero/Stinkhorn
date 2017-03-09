@@ -1,6 +1,6 @@
 using System;
 
-namespace Stinkhorn.Common
+namespace Stinkhorn.Comm
 {
     public interface IBroker : IId<Identity>, IDisposable, IPubSubBroker
     {

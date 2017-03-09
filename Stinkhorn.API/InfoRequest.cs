@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Stinkhorn.API
+﻿namespace Stinkhorn.API
 {
     public class InfoRequest : IRequest
     {

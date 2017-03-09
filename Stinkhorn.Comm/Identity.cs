@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Stinkhorn.Common
+namespace Stinkhorn.Comm
 {
     public class Identity : IIdentity
     {

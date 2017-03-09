@@ -1,6 +1,6 @@
 using RabbitMQ.Client;
 
-namespace Stinkhorn.Common
+namespace Stinkhorn.Comm
 {
     public class Multicast : Cached<string, Multicast>, IMulticast
     {

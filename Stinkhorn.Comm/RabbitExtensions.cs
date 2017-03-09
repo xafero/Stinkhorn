@@ -4,7 +4,7 @@ using RabbitMQ.Client.Exceptions;
 using System;
 using System.Collections.Generic;
 
-namespace Stinkhorn.Common
+namespace Stinkhorn.Comm
 {
     static class RabbitExtensions
     {

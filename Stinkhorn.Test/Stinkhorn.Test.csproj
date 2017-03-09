@@ -61,17 +61,13 @@
       <Project>{0c42f319-60b0-4d83-8b49-9c3b6df0479f}</Project>
       <Name>Stinkhorn.Bureau</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Stinkhorn.Common\Stinkhorn.Common.csproj">
-      <Project>{d7ae9bfe-ca0f-46a7-be08-726837a2c50b}</Project>
-      <Name>Stinkhorn.Common</Name>
+    <ProjectReference Include="..\Stinkhorn.Comm\Stinkhorn.Comm.csproj">
+      <Project>{f4f71ff4-540d-4e60-8eb1-d5aa482d4b0a}</Project>
+      <Name>Stinkhorn.Comm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Stinkhorn.Core\Stinkhorn.Core.csproj">
       <Project>{4a15c36c-64af-4f32-a67f-dd2701ba7642}</Project>
       <Name>Stinkhorn.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Stinkhorn.IoC\Stinkhorn.IoC.csproj">
-      <Project>{2820ad79-67b4-4793-b3bf-15143cb826da}</Project>
-      <Name>Stinkhorn.IoC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Stinkhorn.Util\Stinkhorn.Util.csproj">
       <Project>{ecc8865f-06ac-4350-a09f-c32526ad9d1a}</Project>

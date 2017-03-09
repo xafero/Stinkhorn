@@ -43,11 +43,16 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Addins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Addins.1.3.3\lib\net40\Mono.Addins.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PopupControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AdamsLair.WinForms.PopupControl.1.0.0.0\lib\net40\PopupControl.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -111,13 +116,9 @@
       <Project>{de3037eb-1e63-4230-a5b2-ea7bbd04c853}</Project>
       <Name>Stinkhorn.API</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Stinkhorn.Common\Stinkhorn.Common.csproj">
-      <Project>{d7ae9bfe-ca0f-46a7-be08-726837a2c50b}</Project>
-      <Name>Stinkhorn.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Stinkhorn.IoC\Stinkhorn.IoC.csproj">
-      <Project>{2820ad79-67b4-4793-b3bf-15143cb826da}</Project>
-      <Name>Stinkhorn.IoC</Name>
+    <ProjectReference Include="..\Stinkhorn.Comm\Stinkhorn.Comm.csproj">
+      <Project>{f4f71ff4-540d-4e60-8eb1-d5aa482d4b0a}</Project>
+      <Name>Stinkhorn.Comm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Stinkhorn.Util\Stinkhorn.Util.csproj">
       <Project>{ecc8865f-06ac-4350-a09f-c32526ad9d1a}</Project>

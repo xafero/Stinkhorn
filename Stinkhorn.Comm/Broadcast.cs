@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 
-namespace Stinkhorn.Common
+namespace Stinkhorn.Comm
 {
     public class Broadcast : Cached<bool, Broadcast>, IBroadcast
     {

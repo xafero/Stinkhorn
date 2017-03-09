@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Stinkhorn.Common;
+using Stinkhorn.Comm;
 
 namespace Stinkhorn.Test
 {

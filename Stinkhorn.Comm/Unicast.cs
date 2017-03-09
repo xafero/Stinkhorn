@@ -1,7 +1,7 @@
 using System;
 using RabbitMQ.Client;
 
-namespace Stinkhorn.Common
+namespace Stinkhorn.Comm
 {
     public class Unicast : Cached<Guid, Unicast>, IUnicast
     {

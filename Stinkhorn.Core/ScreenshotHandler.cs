@@ -8,6 +8,7 @@ using SProcess = System.Diagnostics.Process;
 using System;
 using System.Linq;
 using System.IO;
+using Stinkhorn.Util;
 
 namespace Stinkhorn.Core
 {
