@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net;
-
-namespace Stinkhorn.API
+﻿namespace Stinkhorn.API
 {
     public class HelloMessage : IMessage
     {
@@ -12,17 +9,5 @@ namespace Stinkhorn.API
         public string Machine { get; set; }
 
         public string User { get; set; }
-    }
-
-    public static class APIExtensions
-    {
-        public static string ToShortString(this DnsEndPoint endpoint)
-            => $"{endpoint.Host}:{endpoint.Port}";
-
-        public static string ToIdString(this Guid guid)
-            => guid.ToString("N");
-
-        public static string ToIdString(this Guid? guid)
-            => guid == null ? null : guid.Value.ToIdString();
     }
 }

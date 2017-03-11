@@ -1,24 +1,26 @@
 ﻿namespace Stinkhorn.API
 {
     public interface IMessage
-	{
-		
-	}
+    {
 
-	public interface IRequest : IMessage
-	{
-		
-	}
-	
-	public interface IResponse : IMessage
-	{
-		
-	}
-	
-	public interface IMessageHandler<I, O>
-		where I : IRequest
-		where O : IResponse
-	{
-		O Process(I input);
-	}
+    }
+
+    public interface IRequest : IMessage
+    {
+
+    }
+
+    public interface IResponse : IMessage
+    {
+
+    }
+
+    public interface IMessageHandler<I, O>
+        where I : IRequest
+        where O : IResponse
+    {
+        O Process(I input);
+    }
+
+   
 }

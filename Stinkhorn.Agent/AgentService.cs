@@ -37,11 +37,11 @@ namespace Stinkhorn.Agent
                 Local = client.LocalEndpoint.ToShortString(),
                 Remote = client.RemoteEndpoint.ToShortString()
             });
-            Subscribe<ScreenshotRequest, ScreenshotResponse>();
+            //Subscribe<ScreenshotRequest, ScreenshotResponse>();
             Subscribe<RegistryRequest, RegistryResponse>();
             Subscribe<PowerRequest, PowerResponse>();
             Subscribe<ServeRequest, ServeResponse>();
-            Subscribe<InfoRequest, InfoResponse>();
+            //Subscribe<InfoRequest, InfoResponse>();
         }
 
         void Subscribe<I, O>()

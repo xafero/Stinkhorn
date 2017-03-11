@@ -49,11 +49,11 @@ namespace Stinkhorn.Bureau
             log.InfoFormat("Manager is started!");
             var id = client.Id;
             client.Subscribe<HelloMessage>(id.Broad, OnHello);
-            client.Subscribe<ScreenshotResponse>(id.Uni, OnResponse);
+            //client.Subscribe<ScreenshotResponse>(id.Uni, OnResponse);
             client.Subscribe<RegistryResponse>(id.Uni, OnResponse);
             client.Subscribe<PowerResponse>(id.Uni, OnResponse);
             client.Subscribe<ServeResponse>(id.Uni, OnResponse);
-            client.Subscribe<InfoResponse>(id.Uni, OnResponse);
+           // client.Subscribe<InfoResponse>(id.Uni, OnResponse);
         }
 
         void OnHello(IIdentity sender, HelloMessage msg)

@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Stinkhorn.Core
+namespace Stinkhorn.System.Win
 {
-    static class WinControl
+    public static class WinControl
     {
         [DllImport("user32.dll")]
         public static extern bool LockWorkStation();

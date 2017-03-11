@@ -1,5 +1,6 @@
 ﻿using Stinkhorn.API;
 using System;
+using Stinkhorn.System.Win;
 
 namespace Stinkhorn.Core
 {

@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.IO;
 using Stinkhorn.Util;
+using Stinkhorn.Demo.API;
 
 namespace Stinkhorn.Core
 {
