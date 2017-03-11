@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Reflection;
 
 namespace Stinkhorn.API
 {
@@ -13,5 +14,8 @@ namespace Stinkhorn.API
 
         public static string ToIdString(this Guid? guid)
             => guid == null ? null : guid.Value.ToIdString();
+
+        public static MethodInfo GenericMe(this Type type, string name, Type param)
+            => type.GetMethod(name).MakeGenericMethod(param);
     }
 }

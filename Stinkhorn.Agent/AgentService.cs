@@ -47,16 +47,14 @@ namespace Stinkhorn.Agent
                 var intfName = typeof(IRequestHandler<>).Name;
                 var intf = handler.GetType().GetInterface(intfName);
                 var reqType = intf.GetGenericArguments()[0];
-                var meth = GetType().GetMethod(nameof(Subscribe));
-                meth = meth.MakeGenericMethod(reqType);
-                meth.Invoke(this, null);
+                GetType().GenericMe(nameof(Subscribe), reqType).Invoke(this, null);
                 Handlers[reqType] = handler;
             }
 
             // TODO ...
             //Subscribe<ScreenshotRequest, ScreenshotResponse>();
-            Subscribe<RegistryRequest>();
-            Subscribe<PowerRequest>();
+            //Subscribe<RegistryRequest>();
+            //Subscribe<PowerRequest>();
             Subscribe<ServeRequest>();
             //Subscribe<InfoRequest, InfoResponse>();
         }

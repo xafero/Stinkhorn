@@ -49,11 +49,26 @@ namespace Stinkhorn.Bureau
             log.InfoFormat("Manager is started!");
             var id = client.Id;
             client.Subscribe<HelloMessage>(id.Broad, OnHello);
+            foreach (var resp in AddinExtensions.GetFiltered<IResponse>())
+            {
+                var rType = resp.GetType();
+                var subName = nameof(client.Subscribe);
+                var subMeth = client.GetType().GenericMe(subName, rType);
+                var hndlMeth = GetType().GenericMe(nameof(OnResponse), rType);
+                var act = typeof(Action<,>).MakeGenericType(typeof(IIdentity), rType);
+                var dlgt = Delegate.CreateDelegate(act, this, hndlMeth);
+                var trf = id.Uni;
+                subMeth.Invoke(client, new object[] { trf, dlgt });
+                log.InfoFormat("Subscribed for '{0}' on '{1}'.", rType, trf);
+            }
+
+
+
+            // TODO ...
             //client.Subscribe<ScreenshotResponse>(id.Uni, OnResponse);
             client.Subscribe<RegistryResponse>(id.Uni, OnResponse);
             client.Subscribe<PowerResponse>(id.Uni, OnResponse);
             client.Subscribe<ServeResponse>(id.Uni, OnResponse);
-           // client.Subscribe<InfoResponse>(id.Uni, OnResponse);
         }
 
         void OnHello(IIdentity sender, HelloMessage msg)
@@ -90,7 +105,7 @@ namespace Stinkhorn.Bureau
             row.ContextMenuStrip = menu;
         }
 
-        void OnResponse<T>(IIdentity sender, T msg) where T : IResponse
+        public void OnResponse<T>(IIdentity sender, T msg) where T : IResponse
         {
             BeginInvoke((Action)(() =>
             {
