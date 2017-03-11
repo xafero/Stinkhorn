@@ -13,6 +13,7 @@ namespace Stinkhorn.API
         {
             foreach (var raw in AddinManager.GetExtensionNodes(type))
             {
+                var simple = raw as TypeExtensionNode;
                 var node = raw as TypeExtensionNode<ReqHandlerFilterAttribute>;
                 if (node != null)
                 {
@@ -20,7 +21,7 @@ namespace Stinkhorn.API
                     if (!attr.IsSuitable())
                         continue;
                 }
-                yield return node.CreateInstance(type);
+                yield return simple.CreateInstance(type);
             }
         }
 
