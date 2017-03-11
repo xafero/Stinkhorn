@@ -30,4 +30,8 @@ using System.Runtime.InteropServices;
 // Build Numbers by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.*")]
 
+// For testing
 [assembly: InternalsVisibleTo("Stinkhorn.Test")]
+
+// For addins
+[assembly: Mono.Addins.AddinRoot("Stinkhorn.API", "1.0")]

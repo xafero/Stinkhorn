@@ -1,10 +1,12 @@
 ﻿using Microsoft.Win32;
+using Mono.Addins;
 using Stinkhorn.API;
 using Stinkhorn.System.API;
 using System;
 
 namespace Stinkhorn.System.Win
 {
+    [Extension]
     public class WinSystemFactory : IRequestHandlerFactory<InfoRequest>
     {
         public IRequestHandler<InfoRequest> CreateHandler()

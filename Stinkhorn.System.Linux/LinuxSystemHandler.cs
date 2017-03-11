@@ -4,9 +4,11 @@ using Stinkhorn.System.API;
 using System.Collections.Generic;
 using static Stinkhorn.System.API.SystemExtensions;
 using System;
+using Mono.Addins;
 
 namespace Stinkhorn.System.Linux
 {
+    [Extension]
     public class LinuxSystemFactory : IRequestHandlerFactory<InfoRequest>
     {
         public IRequestHandler<InfoRequest> CreateHandler()

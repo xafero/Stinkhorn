@@ -3,9 +3,11 @@ using System.Linq;
 using Stinkhorn.System.API;
 using static Stinkhorn.System.API.SystemExtensions;
 using System;
+using Mono.Addins;
 
 namespace Stinkhorn.System.Mac
 {
+    [Extension]
     public class MacSystemFactory : IRequestHandlerFactory<InfoRequest>
     {
         public IRequestHandler<InfoRequest> CreateHandler()
