@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C729068C-01F1-44CA-AD25-871C6090E069}</ProjectGuid>
+    <ProjectGuid>{7E960F0F-EF9F-4A15-B6D5-F5E2F4C4F9AE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Stinkhorn.Demo.API</RootNamespace>
-    <AssemblyName>Stinkhorn.Demo.API</AssemblyName>
+    <RootNamespace>Stinkhorn.Demo.Mac</RootNamespace>
+    <AssemblyName>Stinkhorn.Demo.Mac</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\build_mgmt\debug\</OutputPath>
+    <OutputPath>..\build_agent\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,15 +39,17 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DemoExtensions.cs" />
-    <Compile Include="ScreenshotResponse.cs" />
-    <Compile Include="ScreenshotRequest.cs" />
+    <Compile Include="MacDemoHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stinkhorn.API\Stinkhorn.API.csproj">
       <Project>{de3037eb-1e63-4230-a5b2-ea7bbd04c853}</Project>
       <Name>Stinkhorn.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.Demo.API\Stinkhorn.Demo.API.csproj">
+      <Project>{c729068c-01f1-44ca-ad25-871c6090e069}</Project>
+      <Name>Stinkhorn.Demo.API</Name>
     </ProjectReference>
     <ProjectReference Include="..\Stinkhorn.Util\Stinkhorn.Util.csproj">
       <Project>{ECC8865F-06AC-4350-A09F-C32526AD9D1A}</Project>
