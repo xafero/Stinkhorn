@@ -10,7 +10,7 @@ namespace Stinkhorn.System.API
 {
     public static class SystemExtensions
     {
-        public static SystemInfo PatchDefaults(this SystemInfo info)
+        public static SystemInfo PatchDefaults(SystemInfo info)
         {
             info.CPUs = Environment.ProcessorCount;
             info.Encoding = Encoding.Default.WebName;

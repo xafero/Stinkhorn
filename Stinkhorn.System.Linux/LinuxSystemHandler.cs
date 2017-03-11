@@ -15,7 +15,7 @@ namespace Stinkhorn.System.Linux
 
         public IResponse Process(InfoRequest input)
         {
-            var info = (new SystemInfo()).PatchDefaults();
+            var info = PatchDefaults(new SystemInfo());
             info.Platform = Platform.Linux;
             var text = ReadProcess("Unknown type", "uname", "-r").Single();
             info.Type = text.Contains("generic") ? OSType.Client : OSType.Server;

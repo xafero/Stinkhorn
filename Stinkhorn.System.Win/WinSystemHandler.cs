@@ -2,6 +2,7 @@
 using Stinkhorn.API;
 using Stinkhorn.System.API;
 using System;
+using static Stinkhorn.System.API.SystemExtensions;
 
 namespace Stinkhorn.System.Win
 {
@@ -10,7 +11,7 @@ namespace Stinkhorn.System.Win
     {
         public IResponse Process(InfoRequest input)
         {
-            var info = (new SystemInfo()).PatchDefaults();
+            var info = PatchDefaults(new SystemInfo());
             info.Platform = Platform.Windows;
             var path = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion";
             using (var folder = Registry.LocalMachine.OpenSubKey(path))

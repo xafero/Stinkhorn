@@ -11,7 +11,7 @@ namespace Stinkhorn.System.Mac
     {
         public IResponse Process(InfoRequest input)
         {
-            var info = (new SystemInfo()).PatchDefaults();
+            var info = PatchDefaults(new SystemInfo());
             info.Platform = Platform.MacOSX;
             var text = ReadProcess("Unknown type", "serverinfo", "--software").Single();
             info.Type = text.Contains("NOT") ? OSType.Client : OSType.Server;
