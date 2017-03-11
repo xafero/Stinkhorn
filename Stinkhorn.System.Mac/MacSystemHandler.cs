@@ -2,28 +2,12 @@
 using System.Linq;
 using Stinkhorn.System.API;
 using static Stinkhorn.System.API.SystemExtensions;
-using System;
-using Mono.Addins;
 
 namespace Stinkhorn.System.Mac
 {
-    [Extension]
-    public class MacSystemFactory : IRequestHandlerFactory<InfoRequest>
-    {
-        public IRequestHandler<InfoRequest> CreateHandler()
-            => new MacSystemHandler();
-
-        public bool IsSuitable()
-        {
-            var platform = Environment.OSVersion.Platform;
-            var env = Environment.GetEnvironmentVariables();
-            var isMac = env.Keys.OfType<string>().Any(key => key.Contains("Apple_"));
-            return platform == PlatformID.MacOSX
-                || (platform == PlatformID.Unix && isMac);
-        }
-    }
-
-    class MacSystemHandler : IRequestHandler<InfoRequest>
+    [ReqHandlerFilter(Platform = "Unix", HasVar = "Apple_%")]
+    [ReqHandlerFilter(Platform = "MacOSX")]
+    public class MacSystemHandler : IRequestHandler<InfoRequest>
     {
         public IResponse Process(InfoRequest input)
         {

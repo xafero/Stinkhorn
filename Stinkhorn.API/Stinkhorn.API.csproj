@@ -38,6 +38,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddinExtensions.cs" />
     <Compile Include="APIExtensions.cs" />
     <Compile Include="HelloMessage.cs" />
     <Compile Include="IContextAction.cs" />

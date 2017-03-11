@@ -1,25 +1,12 @@
 ﻿using Microsoft.Win32;
-using Mono.Addins;
 using Stinkhorn.API;
 using Stinkhorn.System.API;
 using System;
 
 namespace Stinkhorn.System.Win
 {
-    [Extension]
-    public class WinSystemFactory : IRequestHandlerFactory<InfoRequest>
-    {
-        public IRequestHandler<InfoRequest> CreateHandler()
-            => new WinSystemHandler();
-
-        public bool IsSuitable()
-        {
-            var platform = Environment.OSVersion.Platform;
-            return platform == PlatformID.Win32NT;
-        }
-    }
-
-    class WinSystemHandler : IRequestHandler<InfoRequest>
+    [ReqHandlerFilter(Platform = "Win%")]
+    public class WinSystemHandler : IRequestHandler<InfoRequest>
     {
         public IResponse Process(InfoRequest input)
         {

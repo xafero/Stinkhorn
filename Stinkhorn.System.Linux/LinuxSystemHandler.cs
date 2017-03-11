@@ -3,27 +3,11 @@ using System.Linq;
 using Stinkhorn.System.API;
 using System.Collections.Generic;
 using static Stinkhorn.System.API.SystemExtensions;
-using System;
-using Mono.Addins;
 
 namespace Stinkhorn.System.Linux
 {
-    [Extension]
-    public class LinuxSystemFactory : IRequestHandlerFactory<InfoRequest>
-    {
-        public IRequestHandler<InfoRequest> CreateHandler()
-            => new LinuxSystemHandler();
-
-        public bool IsSuitable()
-        {
-            var platform = Environment.OSVersion.Platform;
-            var env = Environment.GetEnvironmentVariables();
-            var isLinux = env.Keys.OfType<string>().Any(key => key.Contains("_LINUX_"));
-            return platform == PlatformID.Unix && isLinux;
-        }
-    }
-
-    class LinuxSystemHandler : IRequestHandler<InfoRequest>
+    [ReqHandlerFilter(Platform = "Unix", HasVar = "%_LINUX_%")]
+    public class LinuxSystemHandler : IRequestHandler<InfoRequest>
     {
         const string lsbRelease = "/usr/bin/lsb_release";
 

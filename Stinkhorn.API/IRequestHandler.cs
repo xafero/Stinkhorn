@@ -1,8 +1,18 @@
-﻿using Mono.Addins;
+﻿using System;
+using Mono.Addins;
+using System.Globalization;
+using static Stinkhorn.API.AddinExtensions;
+using System.Linq;
 
 namespace Stinkhorn.API
 {
-    public class PlatformAttribute : CustomExtensionAttribute
+    public interface IFiltered
+    {
+        bool IsSuitable();
+    }
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true)]
+    public class ReqHandlerFilterAttribute : CustomExtensionAttribute, IFiltered
     {
         [NodeAttribute]
         public string Platform { get; set; }
@@ -12,33 +22,32 @@ namespace Stinkhorn.API
         public string Arch { get; set; }
         [NodeAttribute]
         public string Locale { get; set; }
+        [NodeAttribute]
+        public string HasVar { get; set; }
+
+        public bool IsSuitable()
+        {
+            var plat = Environment.OSVersion.Platform;
+            var ver = Environment.OSVersion.Version;
+            var arch = Environment.Is64BitOperatingSystem ? "x64" : "x86";
+            var loc = CultureInfo.InstalledUICulture;
+            var keys = Environment.GetEnvironmentVariables().Keys.OfType<string>();
+            return Compare(Platform, plat) && Compare(Version, ver)
+                && Compare(Arch, arch) && Compare(Locale, loc)
+                && (string.IsNullOrWhiteSpace(HasVar)
+                    || keys.Any(k => Compare(HasVar, k)));
+        }
     }
 
-    [TypeExtensionPoint(ExtensionAttributeType = typeof(PlatformAttribute))]
+    [TypeExtensionPoint(ExtensionAttributeType = typeof(ReqHandlerFilterAttribute))]
     public interface IRequestHandler
     {
 
     }
 
-    [TypeExtensionPoint(ExtensionAttributeType = typeof(PlatformAttribute))]
     public interface IRequestHandler<I> : IRequestHandler
         where I : IRequest
     {
         IResponse Process(I input);
-    }
-
-    [TypeExtensionPoint(ExtensionAttributeType = typeof(PlatformAttribute))]
-    public interface IRequestHandlerFactory
-    {
-
-    }
-
-    [TypeExtensionPoint(ExtensionAttributeType = typeof(PlatformAttribute))]
-    public interface IRequestHandlerFactory<I> : IRequestHandlerFactory
-        where I : IRequest
-    {
-        bool IsSuitable();
-
-        IRequestHandler<I> CreateHandler();
     }
 }
