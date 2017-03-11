@@ -66,9 +66,9 @@ namespace Stinkhorn.Bureau
 
             // TODO ...
             //client.Subscribe<ScreenshotResponse>(id.Uni, OnResponse);
-            client.Subscribe<RegistryResponse>(id.Uni, OnResponse);
-            client.Subscribe<PowerResponse>(id.Uni, OnResponse);
-            client.Subscribe<ServeResponse>(id.Uni, OnResponse);
+            //client.Subscribe<RegistryResponse>(id.Uni, OnResponse);
+            //client.Subscribe<PowerResponse>(id.Uni, OnResponse);
+            //client.Subscribe<ServeResponse>(id.Uni, OnResponse);
         }
 
         void OnHello(IIdentity sender, HelloMessage msg)

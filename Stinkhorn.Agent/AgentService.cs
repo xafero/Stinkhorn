@@ -55,8 +55,7 @@ namespace Stinkhorn.Agent
             //Subscribe<ScreenshotRequest, ScreenshotResponse>();
             //Subscribe<RegistryRequest>();
             //Subscribe<PowerRequest>();
-            Subscribe<ServeRequest>();
-            //Subscribe<InfoRequest, InfoResponse>();
+            //Subscribe<ServeRequest>();
         }
 
         public void Subscribe<I>() where I : IRequest

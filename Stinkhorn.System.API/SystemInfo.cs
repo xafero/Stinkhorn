@@ -16,7 +16,7 @@
 
         public string Encoding { get; set; }
 
-        public int? CPUs { get; set; }
+        public int CPUs { get; set; }
 
         public Endianness Endianness { get; set; }
 

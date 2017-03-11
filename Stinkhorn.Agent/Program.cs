@@ -2,6 +2,7 @@
 using System.Configuration;
 using Mono.Addins;
 using Stinkhorn.Util;
+using Stinkhorn.API;
 
 namespace Stinkhorn.Agent
 {
@@ -33,6 +34,8 @@ namespace Stinkhorn.Agent
             var dbDir = cfg.TryGetPath("database_dir");
             AddinManager.Initialize(cfgDir, plgDir, dbDir);
             AddinManager.Registry.Update(new ConsoleProgressStatus(true));
+            // Force request-loading, because handlers are affected, too
+            AddinManager.GetExtensionNodes(typeof(IRequest));
         }
     }
 }
