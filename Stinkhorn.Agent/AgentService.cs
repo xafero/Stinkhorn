@@ -48,11 +48,11 @@ namespace Stinkhorn.Agent
                 var intf = handler.GetType().GetInterface(intfName);
                 var reqType = intf.GetGenericArguments()[0];
                 GetType().GenericMe(nameof(Subscribe), reqType).Invoke(this, null);
+                log.InfoFormat("Found '{0}' for '{1}'.", handler, reqType);
                 Handlers[reqType] = handler;
             }
 
             // TODO ...
-            //Subscribe<ScreenshotRequest, ScreenshotResponse>();
             //Subscribe<RegistryRequest>();
             //Subscribe<PowerRequest>();
             //Subscribe<ServeRequest>();
