@@ -10,6 +10,7 @@ using System.Drawing;
 using Stinkhorn.Bureau.Utils;
 using Stinkhorn.Bureau.Controls;
 using Stinkhorn.Bureau.Context;
+using System.Reflection;
 
 namespace Stinkhorn.Bureau
 {
@@ -57,9 +58,8 @@ namespace Stinkhorn.Bureau
                 var hndlMeth = GetType().GenericMe(nameof(OnResponse), rType);
                 var act = typeof(Action<,>).MakeGenericType(typeof(IIdentity), rType);
                 var dlgt = Delegate.CreateDelegate(act, this, hndlMeth);
-                var trf = id.Uni;
-                subMeth.Invoke(client, new object[] { trf, dlgt });
-                log.InfoFormat("Subscribed for '{0}' on '{1}'.", rType, trf);
+                Invoke(client, subMeth, id.Uni, dlgt, rType);
+                Invoke(client, subMeth, id.Multi, dlgt, rType);
             }
 
 
@@ -68,6 +68,12 @@ namespace Stinkhorn.Bureau
             //client.Subscribe<RegistryResponse>(id.Uni, OnResponse);
             //client.Subscribe<PowerResponse>(id.Uni, OnResponse);
             //client.Subscribe<ServeResponse>(id.Uni, OnResponse);
+        }
+
+        void Invoke(RabbitBroker client, MethodInfo meth, ITransfer trf, Delegate dlgt, Type type)
+        {
+            meth.Invoke(client, new object[] { trf, dlgt });
+            log.InfoFormat("Subscribed for '{0}' on '{1}'.", type, trf);
         }
 
         void OnHello(IIdentity sender, HelloMessage msg)

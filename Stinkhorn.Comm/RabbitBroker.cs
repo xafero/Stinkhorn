@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
+using System.Reflection;
 
 namespace Stinkhorn.Comm
 {
@@ -12,9 +13,15 @@ namespace Stinkhorn.Comm
     {
         static readonly ILog log = LogManager.GetLogger(typeof(RabbitBroker));
 
-        public ISerializer Serializer { get; set; } = new JsonSerializer();
-        public Identity Id { get; set; } = new Identity(Guid.NewGuid(),
-            typeof(RabbitBroker).FullName);
+        public ISerializer Serializer { get; }
+        public Identity Id { get; }
+
+        public RabbitBroker()
+        {
+            Serializer = new JsonSerializer();
+            var ass = Assembly.GetCallingAssembly();
+            Id = new Identity(Guid.NewGuid(), ass.GetName().Name);
+        }
 
         ConnectionFactory Factory { get; set; }
         IConnection Connection { get; set; }

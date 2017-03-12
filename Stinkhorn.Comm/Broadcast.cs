@@ -11,7 +11,7 @@ namespace Stinkhorn.Comm
         public static Broadcast Of() => GetOrCreate(true);
 
         public string Type => ExchangeType.Fanout;
-        public string Exchange => GetType().Namespace;
+        public string Exchange => GetType().Namespace.ToLowerInvariant();
         public TransferKind Kind => TransferKind.Broadcast;
     }
 }
