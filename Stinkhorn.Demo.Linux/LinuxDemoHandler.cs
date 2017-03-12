@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Stinkhorn.Demo.Linux
 {
-    [ReqHandlerFilter(Platform = "Unix", HasVar = "%_LINUX_%")]
+    [ReqHandlerFilter(Platform = "Unix", HasVar = "%_LINUX_% INFINALITY_%")]
     public class LinuxDemoHandler : IRequestHandler<ScreenshotRequest>
     {
         public IResponse Process(ScreenshotRequest input)

@@ -32,10 +32,11 @@ namespace Stinkhorn.API
             var arch = Environment.Is64BitOperatingSystem ? "x64" : "x86";
             var loc = CultureInfo.InstalledUICulture;
             var keys = Environment.GetEnvironmentVariables().Keys.OfType<string>();
+            var vars = HasVar?.Split(' ');
             return Compare(Platform, plat) && Compare(Version, ver)
                 && Compare(Arch, arch) && Compare(Locale, loc)
                 && (string.IsNullOrWhiteSpace(HasVar)
-                    || keys.Any(k => Compare(HasVar, k)));
+                    || vars.Any(v => keys.Any(k => Compare(v, k))));
         }
     }
 

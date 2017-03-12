@@ -6,7 +6,7 @@ using static Stinkhorn.System.API.SystemExtensions;
 
 namespace Stinkhorn.System.Linux
 {
-    [ReqHandlerFilter(Platform = "Unix", HasVar = "%_LINUX_%")]
+    [ReqHandlerFilter(Platform = "Unix", HasVar = "%_LINUX_% INFINALITY_%")]
     public class LinuxSystemHandler : IRequestHandler<InfoRequest>
     {
         const string lsbRelease = "/usr/bin/lsb_release";
