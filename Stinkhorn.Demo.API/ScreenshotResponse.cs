@@ -1,10 +1,9 @@
-﻿using Mono.Addins;
-using Stinkhorn.API;
+﻿using Stinkhorn.API;
 using System.Collections.Generic;
 
 namespace Stinkhorn.Demo.API
 {
-    [Extension]
+    [ResponseDesc]
     public class ScreenshotResponse : IResponse
     {
         public IList<IImage> Screenshots { get; set; }

@@ -3,7 +3,7 @@ using Microsoft.Win32;
 
 namespace Stinkhorn.Core
 {
-    class RegistryHandler : IMessageHandler<RegistryRequest, RegistryResponse>
+    class RegistryHandler //: //IMessageHandler<RegistryRequest, RegistryResponse>
     {
         public RegistryResponse Process(RegistryRequest input)
         {

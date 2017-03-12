@@ -4,7 +4,7 @@ using Stinkhorn.System.Win;
 
 namespace Stinkhorn.Core
 {
-    class PowerHandler : IMessageHandler<PowerRequest, PowerResponse>
+    class PowerHandler //: IMessageHandler<PowerRequest, PowerResponse>
     {
         public PowerResponse Process(PowerRequest req)
         {

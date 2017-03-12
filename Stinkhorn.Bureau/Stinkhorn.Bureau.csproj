@@ -157,6 +157,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\document-properties.png" />
+    <Content Include="Images\drive-harddisk.png" />
     <Content Include="Images\format-justify-fill.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\preferences-desktop-screensaver.png" />

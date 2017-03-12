@@ -1,27 +1,21 @@
 ﻿using Mono.Addins;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Stinkhorn.API
 {
     public static class AddinExtensions
     {
-        public static IEnumerable<T> GetFiltered<T>() => GetFiltered(typeof(T)).Cast<T>();
-
-        public static IEnumerable<object> GetFiltered(Type type)
+        public static IEnumerable<KeyValuePair<A, T>> GetFiltered<A, T>()
+            where A : CustomExtensionAttribute where T : class
         {
-            foreach (var raw in AddinManager.GetExtensionNodes(type))
+            var type = typeof(T);
+            foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes(type))
             {
-                var simple = raw as TypeExtensionNode;
-                var node = raw as TypeExtensionNode<ReqHandlerFilterAttribute>;
-                if (node != null)
-                {
-                    var attr = node.Data;
-                    if (!attr.IsSuitable())
-                        continue;
-                }
-                yield return simple.CreateInstance(type);
+                var attr = (node as TypeExtensionNode<A>)?.Data;
+                if (!((attr as IFiltered)?.IsSuitable() ?? true))
+                    continue;
+                yield return new KeyValuePair<A, T>(attr, (T)node.CreateInstance(type));
             }
         }
 

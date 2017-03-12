@@ -7,28 +7,23 @@ namespace Stinkhorn.API
 
     }
 
-    [TypeExtensionPoint(ExtensionAttributeType = typeof(MessageAttribute))]
+    [TypeExtensionPoint(ExtensionAttributeType = typeof(RequestDescAttribute))]
     public interface IRequest : IMessage
     {
-
     }
 
-    [TypeExtensionPoint(ExtensionAttributeType = typeof(MessageAttribute))]
-    public interface IResponse : IMessage
-    {
-
-    }
-
-    public interface IMessageHandler<I, O>
-        where I : IRequest
-        where O : IResponse
-    {
-        O Process(I input);
-    }
-
-    public class MessageAttribute : CustomExtensionAttribute
+    public class RequestDescAttribute : CustomExtensionAttribute
     {
         [NodeAttribute]
         public string Category { get; set; }
+    }
+
+    [TypeExtensionPoint(ExtensionAttributeType = typeof(ResponseDescAttribute))]
+    public interface IResponse : IMessage
+    {
+    }
+
+    public class ResponseDescAttribute : CustomExtensionAttribute
+    {
     }
 }

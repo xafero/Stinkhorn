@@ -40,8 +40,9 @@ namespace Stinkhorn.Agent
                 Local = client.LocalEndpoint.ToShortString(),
                 Remote = client.RemoteEndpoint.ToShortString()
             });
-            foreach (var handler in AddinExtensions.GetFiltered<IRequestHandler>())
+            foreach (var pair in AddinExtensions.GetFiltered<ReqHandlerFilterAttribute, IRequestHandler>())
             {
+                var handler = pair.Value;
                 var intfName = typeof(IRequestHandler<>).Name;
                 var intf = handler.GetType().GetInterface(intfName);
                 var reqType = intf.GetGenericArguments()[0];

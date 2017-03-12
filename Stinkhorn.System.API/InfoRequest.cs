@@ -1,9 +1,8 @@
-﻿using Mono.Addins;
-using Stinkhorn.API;
+﻿using Stinkhorn.API;
 
 namespace Stinkhorn.System.API
 {
-    [Extension]
+    [RequestDesc(Category = nameof(System))]
     public class InfoRequest : IRequest
     {
     }

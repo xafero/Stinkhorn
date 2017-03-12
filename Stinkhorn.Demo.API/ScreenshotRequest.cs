@@ -1,9 +1,8 @@
-﻿using Mono.Addins;
-using Stinkhorn.API;
+﻿using Stinkhorn.API;
 
 namespace Stinkhorn.Demo.API
 {
-    [Extension]
+    [RequestDesc(Category = nameof(Demo))]
     public class ScreenshotRequest : IRequest
     {
     }

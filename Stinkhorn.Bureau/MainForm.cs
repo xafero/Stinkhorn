@@ -9,7 +9,6 @@ using Stinkhorn.Comm;
 using System.Drawing;
 using Stinkhorn.Bureau.Utils;
 using Stinkhorn.Bureau.Controls;
-using Mono.Addins;
 using Stinkhorn.Bureau.Context;
 
 namespace Stinkhorn.Bureau
@@ -49,8 +48,9 @@ namespace Stinkhorn.Bureau
             log.InfoFormat("Manager is started!");
             var id = client.Id;
             client.Subscribe<HelloMessage>(id.Broad, OnHello);
-            foreach (var resp in AddinExtensions.GetFiltered<IResponse>())
+            foreach (var pair in AddinExtensions.GetFiltered<ResponseDescAttribute, IResponse>())
             {
+                var resp = pair.Value;
                 var rType = resp.GetType();
                 var subName = nameof(client.Subscribe);
                 var subMeth = client.GetType().GenericMe(subName, rType);
@@ -85,9 +85,10 @@ namespace Stinkhorn.Bureau
             var row = grid.Rows[e.RowIndex];
             var msg = (Contact)row.DataBoundItem;
             var menu = new ContextMenuStrip();
-            var reqs = AddinManager.GetExtensionObjects<IRequest>().ToArray();
-            foreach (var req in reqs)
+            var reqs = AddinExtensions.GetFiltered<RequestDescAttribute, IRequest>().ToArray();
+            foreach (var pair in reqs)
             {
+                var req = pair.Value;
                 var name = req.GetType().Name.Replace(typeof(IRequest)
                     .Name.Substring(1), string.Empty);
                 var icon = (Image)Icons.ResourceManager.GetObject(name);
@@ -99,7 +100,18 @@ namespace Stinkhorn.Bureau
                             Client.Publish(msg.Id, req);
                 };
                 var item = new ToolStripMenuItem(name, icon, onclick);
-                menu.Items.Add(item);
+                var category = pair.Key?.Category;
+                if (string.IsNullOrWhiteSpace(category))
+                {
+                    menu.Items.Add(item);
+                }
+                else
+                {
+                    var subMenu = menu.Items.OfType<ToolStripDropDownItem>().FirstOrDefault(i => i.Text == category);
+                    if (subMenu == null)
+                        menu.Items.Add(subMenu = new ToolStripMenuItem(category, Icons.Category));
+                    subMenu.DropDownItems.Add(item);
+                }
             }
             row.ContextMenuStrip = menu;
         }
