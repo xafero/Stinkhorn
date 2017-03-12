@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using Stinkhorn.API;
 using System.Linq;
 using Stinkhorn.Bureau.Utils;
 using System;
@@ -10,7 +9,7 @@ namespace Stinkhorn.Bureau.Controls
     {
         object rsp;
 
-        public ResponseControl() : this(new ServeResponse())
+        public ResponseControl() : this(null)
         {
         }
 

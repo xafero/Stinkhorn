@@ -67,7 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\Contact.cs" />
-    <Compile Include="Context\ContextMenuAction.cs" />
     <Compile Include="Controls\DragDropControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -131,9 +130,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\DragDropControl.resx">
       <DependentUpon>DragDropControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ReceiverDump.resx">
       <DependentUpon>ReceiverDump.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\RequestDialog.resx">
       <DependentUpon>RequestDialog.cs</DependentUpon>
@@ -147,6 +148,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

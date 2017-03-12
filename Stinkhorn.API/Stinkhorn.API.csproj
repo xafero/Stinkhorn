@@ -41,14 +41,10 @@
     <Compile Include="AddinExtensions.cs" />
     <Compile Include="APIExtensions.cs" />
     <Compile Include="HelloMessage.cs" />
-    <Compile Include="IContextAction.cs" />
     <Compile Include="IImage.cs" />
     <Compile Include="IMessage.cs" />
     <Compile Include="IRequestHandler.cs" />
-    <Compile Include="PowerRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegistryRequest.cs" />
-    <Compile Include="ServeRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

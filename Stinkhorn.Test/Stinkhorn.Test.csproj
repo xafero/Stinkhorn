@@ -65,10 +65,6 @@
       <Project>{f4f71ff4-540d-4e60-8eb1-d5aa482d4b0a}</Project>
       <Name>Stinkhorn.Comm</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Stinkhorn.Core\Stinkhorn.Core.csproj">
-      <Project>{4a15c36c-64af-4f32-a67f-dd2701ba7642}</Project>
-      <Name>Stinkhorn.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Stinkhorn.Demo.API\Stinkhorn.Demo.API.csproj">
       <Project>{c729068c-01f1-44ca-ad25-871c6090e069}</Project>
       <Name>Stinkhorn.Demo.API</Name>

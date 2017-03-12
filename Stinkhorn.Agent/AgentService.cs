@@ -50,11 +50,6 @@ namespace Stinkhorn.Agent
                 log.InfoFormat("Found '{0}' for '{1}'.", handler, reqType);
                 Handlers[reqType] = handler;
             }
-
-            // TODO ...
-            //Subscribe<RegistryRequest>();
-            //Subscribe<PowerRequest>();
-            //Subscribe<ServeRequest>();
         }
 
         public void Subscribe<I>() where I : IRequest

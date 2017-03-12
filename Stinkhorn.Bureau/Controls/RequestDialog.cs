@@ -9,7 +9,7 @@ namespace Stinkhorn.Bureau.Controls
     {
         IRequest req;
 
-        public RequestDialog() : this(new ServeRequest(), null)
+        public RequestDialog() : this(null, null)
         {
         }
 
@@ -17,7 +17,7 @@ namespace Stinkhorn.Bureau.Controls
         {
             InitializeComponent();
             this.req = req;
-            Text = req.GetType().Name;
+            Text = req?.GetType().Name;
             Icon = image?.ToIcon();
             propertyGrid1.SetSelectedObject(req);
         }

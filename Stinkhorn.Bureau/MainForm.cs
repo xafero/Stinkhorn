@@ -61,13 +61,6 @@ namespace Stinkhorn.Bureau
                 Invoke(client, subMeth, id.Uni, dlgt, rType);
                 Invoke(client, subMeth, id.Multi, dlgt, rType);
             }
-
-
-
-            // TODO ...
-            //client.Subscribe<RegistryResponse>(id.Uni, OnResponse);
-            //client.Subscribe<PowerResponse>(id.Uni, OnResponse);
-            //client.Subscribe<ServeResponse>(id.Uni, OnResponse);
         }
 
         void Invoke(RabbitBroker client, MethodInfo meth, ITransfer trf, Delegate dlgt, Type type)
