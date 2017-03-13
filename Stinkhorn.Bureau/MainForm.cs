@@ -11,16 +11,19 @@ using Stinkhorn.Bureau.Utils;
 using Stinkhorn.Bureau.Controls;
 using Stinkhorn.Bureau.Context;
 using System.Reflection;
+using Mono.Addins;
+using System.Collections.Generic;
 
 namespace Stinkhorn.Bureau
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IAddressBook
     {
         static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
 
         RabbitBroker Client { get; set; }
 
         readonly BindingList<Contact> contactList;
+        readonly IResponseHandler[] handlers;
 
         public MainForm()
         {
@@ -37,6 +40,9 @@ namespace Stinkhorn.Bureau
             FormClosing += MainForm_FormClosing;
             dataGridView1.RowsAdded += DataGridView1_RowsAdded;
             Icon = Icons.Logo.ToIcon();
+            // Extensions
+            handlers = AddinExtensions.GetFiltered<CustomExtensionAttribute,
+                IResponseHandler>().Select(v => v.Value).ToArray();
         }
 
         void MainForm_Load(object sender, EventArgs e)
@@ -48,7 +54,7 @@ namespace Stinkhorn.Bureau
             Client = client;
             log.InfoFormat("Manager is started!");
             var id = client.Id;
-            client.Subscribe<HelloMessage>(id.Broad, OnHello);
+            client.Subscribe<HelloMessage>(id.Broad, OnResponse);
             foreach (var pair in AddinExtensions.GetFiltered<ResponseDescAttribute, IResponse>())
             {
                 var resp = pair.Value;
@@ -67,15 +73,6 @@ namespace Stinkhorn.Bureau
         {
             meth.Invoke(client, new object[] { trf, dlgt });
             log.InfoFormat("Subscribed for '{0}' on '{1}'.", type, trf);
-        }
-
-        void OnHello(IIdentity sender, HelloMessage msg)
-        {
-            BeginInvoke((Action)(() =>
-            {
-                receiverDump1.Receive(msg, sender.Uni);
-                contactList.Add(new Contact(sender, msg));
-            }));
         }
 
         void DataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -119,16 +116,20 @@ namespace Stinkhorn.Bureau
         {
             BeginInvoke((Action)(() =>
             {
-                receiverDump1.Receive(msg, sender.Uni);
-                /*var screen = msg.Screenshots.First();
-                var dialog = new Form();
-                var box = new PictureBox();
-                box.Image = screen.ToDrawingImage();
-                box.Dock = DockStyle.Fill;
-                box.SizeMode = PictureBoxSizeMode.Zoom;
-                dialog.Controls.Add(box);
-                dialog.Size = new Size(screen.Width, screen.Height);
-                dialog.ShowDialog(this);*/
+                foreach (var handler in handlers)
+                {
+                    var dumper = handler as IDumper;
+                    if (dumper != null)
+                        dumper.Dump = receiverDump1;
+                    var contacter = handler as IAddresser;
+                    if (contacter != null)
+                        contacter.Book = this;
+                    var proc = handler.GetType().GetMethod("Process");
+                    var argType = proc.GetParameters().Last().ParameterType;
+                    if (!argType.IsAssignableFrom(msg.GetType()))
+                        continue;
+                    proc.Invoke(handler, new object[] { sender, msg });
+                }
             }));
         }
 
@@ -137,6 +138,11 @@ namespace Stinkhorn.Bureau
             contactList.Clear();
             Client.Dispose();
             Client = null;
+        }
+
+        public void AddOrUpdate(Contact contact)
+        {
+            contactList.Add(contact);
         }
     }
 }

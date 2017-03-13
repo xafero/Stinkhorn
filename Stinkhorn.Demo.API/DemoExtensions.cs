@@ -3,6 +3,7 @@ using Stinkhorn.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
@@ -36,6 +37,15 @@ namespace Stinkhorn.Demo.API
                 // In Mono for Mac (for example), they don't want that!
                 return false;
             }
+        }
+
+        public static Image ToDrawingImage(this IImage img)
+            => img.Bytes.ToDrawingImage();
+
+        public static Image ToDrawingImage(this byte[] bytes)
+        {
+            using (var stream = new MemoryStream(bytes))
+                return Image.FromStream(stream);
         }
     }
 }

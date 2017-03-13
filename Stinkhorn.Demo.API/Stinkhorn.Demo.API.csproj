@@ -43,6 +43,7 @@
     <Compile Include="ScreenshotResponse.cs" />
     <Compile Include="ScreenshotRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenshotHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stinkhorn.API\Stinkhorn.API.csproj">

@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\Contact.cs" />
+    <Compile Include="Context\IAddressBook.cs" />
+    <Compile Include="Context\IDump.cs" />
     <Compile Include="Controls\DragDropControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,6 +93,8 @@
     <Compile Include="Controls\ResponseControl.Designer.cs">
       <DependentUpon>ResponseControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\GenericHandler.cs" />
+    <Compile Include="Handlers\HelloHandler.cs" />
     <Compile Include="Icons.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -1,6 +1,6 @@
 ﻿namespace Stinkhorn.API
 {
-    public class HelloMessage : IMessage
+    public class HelloMessage : IMessage, IResponse
     {
         public string Local { get; set; }
 

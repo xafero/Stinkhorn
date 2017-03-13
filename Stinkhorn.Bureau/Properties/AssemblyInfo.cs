@@ -31,3 +31,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.*")]
 
 [assembly: InternalsVisibleTo("Stinkhorn.Test")]
+
+// Is an add-in
+[assembly: Mono.Addins.Addin]
+[assembly: Mono.Addins.AddinDependency("Stinkhorn.API", "1.0")]

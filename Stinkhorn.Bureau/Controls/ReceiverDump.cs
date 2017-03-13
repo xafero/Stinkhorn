@@ -1,8 +1,9 @@
-﻿using System.Windows.Forms;
+﻿using Stinkhorn.Bureau.Context;
+using System.Windows.Forms;
 
 namespace Stinkhorn.Bureau.Controls
 {
-    public partial class ReceiverDump : UserControl
+    public partial class ReceiverDump : UserControl, IDump
     {
         public int MaxFlow { get; } = 6;
 

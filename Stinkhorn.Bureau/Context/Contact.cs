@@ -3,7 +3,7 @@ using Stinkhorn.Comm;
 
 namespace Stinkhorn.Bureau.Context
 {
-    class Contact : HelloMessage
+    public class Contact : HelloMessage
     {
         public Contact(IIdentity sender, HelloMessage env)
         {
