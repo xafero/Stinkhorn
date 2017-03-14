@@ -18,7 +18,7 @@ namespace Stinkhorn.VFS.API
             server.Start();
         }
 
-        MountHandler Parent { get; }
+        public MountHandler Parent { get; }
 
         public void Dispose()
         {

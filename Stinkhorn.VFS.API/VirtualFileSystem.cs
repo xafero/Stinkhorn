@@ -5,46 +5,30 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Stinkhorn.VFS.API
 {
     class VirtualFileSystem : IUnixFileSystem
     {
         string UserId { get; }
-        VirtualFsFactory Parent { get; }
+        public VirtualFsFactory Parent { get; }
 
         public VirtualFileSystem(VirtualFsFactory parent, string userId)
         {
             Parent = parent;
             UserId = userId;
+            Root = new VirtualDirectory(this);
         }
 
         public StringComparer FileSystemEntryComparer { get; }
             = StringComparer.InvariantCultureIgnoreCase;
 
-        public IUnixDirectoryEntry Root
-        {
-            get
-            {
-                Debugger.Break(); throw new NotImplementedException();
-            }
-        }
+        public IUnixDirectoryEntry Root { get; }
 
-        public bool SupportsAppend
-        {
-            get
-            {
-                Debugger.Break(); throw new NotImplementedException();
-            }
-        }
+        public bool SupportsAppend { get; } = false;
 
-        public bool SupportsNonEmptyDirectoryDelete
-        {
-            get
-            {
-                Debugger.Break(); throw new NotImplementedException();
-            }
-        }
+        public bool SupportsNonEmptyDirectoryDelete { get; } = false;
 
         public Task<IBackgroundTransfer> AppendAsync(IUnixFileEntry fileEntry, long? startPosition, Stream data, CancellationToken cancellationToken)
         {
@@ -61,14 +45,11 @@ namespace Stinkhorn.VFS.API
             Debugger.Break(); throw new NotImplementedException();
         }
 
-        public void Dispose()
-        {
-            Debugger.Break(); throw new NotImplementedException();
-        }
-
         public Task<IReadOnlyList<IUnixFileSystemEntry>> GetEntriesAsync(IUnixDirectoryEntry directoryEntry, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            var dir = (VirtualDirectory)directoryEntry;
+            IReadOnlyList<IUnixFileSystemEntry> entries = dir.Entries.ToList().AsReadOnly();
+            return Task.FromResult(entries);
         }
 
         public Task<IUnixFileSystemEntry> GetEntryByNameAsync(IUnixDirectoryEntry directoryEntry, string name, CancellationToken cancellationToken)
@@ -99,6 +80,10 @@ namespace Stinkhorn.VFS.API
         public Task UnlinkAsync(IUnixFileSystemEntry entry, CancellationToken cancellationToken)
         {
             Debugger.Break(); throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

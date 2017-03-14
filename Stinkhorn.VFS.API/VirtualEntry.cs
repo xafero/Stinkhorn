@@ -6,7 +6,7 @@ namespace Stinkhorn.VFS.API
 {
     abstract class VirtualEntry : IUnixFileSystemEntry
     {
-        VirtualFileSystem Parent { get; }
+        protected VirtualFileSystem Parent { get; }
 
         protected VirtualEntry(VirtualFileSystem parent)
         {
@@ -23,7 +23,7 @@ namespace Stinkhorn.VFS.API
         public DateTimeOffset? LastWriteTime { get; }
             = DateTime.UtcNow;
 
-        public string Name { get; } = "defName";
+        public string Name { get; set; } = "defName";
 
         public string Group { get; } = "defGroup";
 

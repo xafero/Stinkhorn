@@ -18,6 +18,8 @@ namespace Stinkhorn.Comm
             Uni = Unicast.Of(id);
         }
 
+        public override string ToString() => Uni.ToString();
+
         const string SenderId = "SenderId";
         const string SenderRoles = "SenderRoles";
         const char Separator = ';';

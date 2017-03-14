@@ -1,7 +1,7 @@
 ﻿using Mono.Addins;
 using Stinkhorn.API;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using Proc = System.Diagnostics.Process;
 
 namespace Stinkhorn.VFS.API
@@ -11,6 +11,7 @@ namespace Stinkhorn.VFS.API
         , IDisposable
     {
         FileServer server;
+        public ICollection<string> roots;
 
         public ResponseStatus Process(object src, MountResponse msg)
         {
@@ -22,19 +23,23 @@ namespace Stinkhorn.VFS.API
                 var port = 21;
                 var url = $"ftp://{user}:{pass}@{host}:{port}";
                 server = new FileServer(this, host, port, user, pass);
+                roots = new SortedSet<string>();
                 Proc.Start("explorer", url);
             }
-            InsertResponse(server, msg);
+            InsertResponse(src, msg);
             return ResponseStatus.Handled;
         }
 
-        void InsertResponse(FileServer server, MountResponse msg)
+        void InsertResponse(object src, MountResponse msg)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            var folder = src + string.Empty;
+            roots.Add(folder);
         }
 
         public void Dispose()
         {
+            roots?.Clear();
+            roots = null;
             server?.Dispose();
             server = null;
         }
