@@ -1,4 +1,5 @@
-﻿using Stinkhorn.API;
+﻿using System.Collections.Generic;
+using Stinkhorn.API;
 
 namespace Stinkhorn.VFS.API
 {
@@ -11,6 +12,6 @@ namespace Stinkhorn.VFS.API
     [ResponseDesc]
     public class MountResponse : IResponse
     {
-
+        public IDictionary<string, string> Drives { get; set; }
     }
 }

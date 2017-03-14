@@ -11,7 +11,7 @@ namespace Stinkhorn.VFS.API
         , IDisposable
     {
         FileServer server;
-        public ICollection<string> roots;
+        public SortedDictionary<string, object> roots;
 
         public ResponseStatus Process(object src, MountResponse msg)
         {
@@ -23,7 +23,7 @@ namespace Stinkhorn.VFS.API
                 var port = 21;
                 var url = $"ftp://{user}:{pass}@{host}:{port}";
                 server = new FileServer(this, host, port, user, pass);
-                roots = new SortedSet<string>();
+                roots = new SortedDictionary<string, object>();
                 Proc.Start("explorer", url);
             }
             InsertResponse(src, msg);
@@ -33,7 +33,7 @@ namespace Stinkhorn.VFS.API
         void InsertResponse(object src, MountResponse msg)
         {
             var folder = src + string.Empty;
-            roots.Add(folder);
+            roots.Add(folder, msg.Drives);
         }
 
         public void Dispose()

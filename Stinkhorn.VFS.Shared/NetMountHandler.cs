@@ -1,5 +1,7 @@
 ﻿using Stinkhorn.API;
 using Stinkhorn.VFS.API;
+using System.IO;
+using System.Linq;
 
 namespace Stinkhorn.VFS.Shared
 {
@@ -7,6 +9,12 @@ namespace Stinkhorn.VFS.Shared
     public class NetMountHandler : IRequestHandler<MountRequest>
     {
         public IResponse Process(MountRequest input)
-            => new MountResponse();
+        {
+            var allDrives = DriveInfo.GetDrives();
+            var drives = allDrives.Where(d => d.DriveType == DriveType.Fixed
+                && d.IsReady).ToDictionary(k => k.RootDirectory.FullName,
+                v => v.VolumeLabel);
+            return new MountResponse { Drives = drives };
+        }
     }
 }
