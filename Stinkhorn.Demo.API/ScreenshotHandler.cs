@@ -1,5 +1,4 @@
 ﻿using Stinkhorn.API;
-using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
 using Mono.Addins;

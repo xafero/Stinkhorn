@@ -12,7 +12,6 @@ using Stinkhorn.Bureau.Controls;
 using Stinkhorn.Bureau.Context;
 using System.Reflection;
 using Mono.Addins;
-using System.Collections.Generic;
 
 namespace Stinkhorn.Bureau
 {
