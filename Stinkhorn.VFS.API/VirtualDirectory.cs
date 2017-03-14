@@ -8,6 +8,9 @@ namespace Stinkhorn.VFS.API
 {
     class VirtualDirectory : VirtualEntry, IUnixDirectoryEntry
     {
+        const StringComparison cmp =
+            StringComparison.InvariantCultureIgnoreCase;
+
         VirtualDirectory Previous { get; }
 
         public VirtualDirectory(VirtualFileSystem sys,
@@ -31,7 +34,7 @@ namespace Stinkhorn.VFS.API
             get
             {
                 var roots = Parent.Parent.Parent.Parent.roots;
-                return roots.Select(r => new VirtualDirectory(Parent) { Name = r });
+                return roots.Select(r => new VirtualDirectory(Parent, this) { Name = r });
             }
         }
 
@@ -46,8 +49,6 @@ namespace Stinkhorn.VFS.API
         }
 
         internal IUnixFileSystemEntry GetEntryByName(string name)
-        {
-            throw new NotImplementedException();
-        }
+            => Entries.FirstOrDefault(e => e.Name.Equals(name, cmp));
     }
 }
