@@ -1,6 +1,8 @@
 ﻿using FubarDev.FtpServer.FileSystem;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.IO;
 
 namespace Stinkhorn.VFS.API
 {
@@ -19,8 +21,10 @@ namespace Stinkhorn.VFS.API
 
         public bool IsRoot => Previous == null;
 
-        public IEnumerable<IUnixFileSystemEntry> Entries
-            => IsRoot ? RootEntries : new IUnixFileSystemEntry[0];
+        Func<IEnumerable<IUnixFileSystemEntry>> EntriesFunc { get; }
+
+        public IEnumerable<IUnixFileSystemEntry> Entries => IsRoot ? RootEntries
+            : EntriesFunc?.Invoke() ?? new IUnixFileSystemEntry[0];
 
         IEnumerable<IUnixFileSystemEntry> RootEntries
         {
@@ -29,6 +33,21 @@ namespace Stinkhorn.VFS.API
                 var roots = Parent.Parent.Parent.Parent.roots;
                 return roots.Select(r => new VirtualDirectory(Parent) { Name = r });
             }
+        }
+
+        internal IBackgroundTransfer Create(string fileName, Stream data)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal IUnixDirectoryEntry CreateDirectory(string directoryName)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal IUnixFileSystemEntry GetEntryByName(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }

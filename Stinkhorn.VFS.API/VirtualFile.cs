@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using FubarDev.FtpServer.FileSystem;
 
 namespace Stinkhorn.VFS.API
@@ -11,5 +12,15 @@ namespace Stinkhorn.VFS.API
             : base(sys) { }
 
         public long Size => Bytes?.Invoke()?.LongLength ?? 0;
+
+        internal IBackgroundTransfer Append(long? startPosition, Stream data)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Stream OpenRead(long startPosition)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

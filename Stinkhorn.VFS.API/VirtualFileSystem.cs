@@ -32,17 +32,20 @@ namespace Stinkhorn.VFS.API
 
         public Task<IBackgroundTransfer> AppendAsync(IUnixFileEntry fileEntry, long? startPosition, Stream data, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            var file = (VirtualFile)fileEntry;
+            return Task.FromResult(file.Append(startPosition, data));
         }
 
         public Task<IBackgroundTransfer> CreateAsync(IUnixDirectoryEntry targetDirectory, string fileName, Stream data, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            var dir = (VirtualDirectory)targetDirectory;
+            return Task.FromResult(dir.Create(fileName, data));
         }
 
         public Task<IUnixDirectoryEntry> CreateDirectoryAsync(IUnixDirectoryEntry targetDirectory, string directoryName, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            var dir = (VirtualDirectory)targetDirectory;
+            return Task.FromResult(dir.CreateDirectory(directoryName));
         }
 
         public Task<IReadOnlyList<IUnixFileSystemEntry>> GetEntriesAsync(IUnixDirectoryEntry directoryEntry, CancellationToken cancellationToken)
@@ -54,32 +57,38 @@ namespace Stinkhorn.VFS.API
 
         public Task<IUnixFileSystemEntry> GetEntryByNameAsync(IUnixDirectoryEntry directoryEntry, string name, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            var dir = (VirtualDirectory)directoryEntry;
+            return Task.FromResult(dir.GetEntryByName(name));
         }
 
         public Task<IUnixFileSystemEntry> MoveAsync(IUnixDirectoryEntry parent, IUnixFileSystemEntry source, IUnixDirectoryEntry target, string fileName, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            Debugger.Break();
+            throw new NotImplementedException();
         }
 
         public Task<Stream> OpenReadAsync(IUnixFileEntry fileEntry, long startPosition, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            var file = (VirtualFile)fileEntry;
+            return Task.FromResult(file.OpenRead(startPosition));
         }
 
         public Task<IBackgroundTransfer> ReplaceAsync(IUnixFileEntry fileEntry, Stream data, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            Debugger.Break();
+            throw new NotImplementedException();
         }
 
         public Task<IUnixFileSystemEntry> SetMacTimeAsync(IUnixFileSystemEntry entry, DateTimeOffset? modify, DateTimeOffset? access, DateTimeOffset? create, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            Debugger.Break();
+            throw new NotImplementedException();
         }
 
         public Task UnlinkAsync(IUnixFileSystemEntry entry, CancellationToken cancellationToken)
         {
-            Debugger.Break(); throw new NotImplementedException();
+            Debugger.Break();
+            throw new NotImplementedException();
         }
 
         public void Dispose()
