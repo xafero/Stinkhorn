@@ -18,9 +18,12 @@ namespace Stinkhorn.VFS.API
             throw new NotImplementedException();
         }
 
-        internal Stream OpenRead(long startPosition)
+        internal Stream OpenRead(long startPos)
         {
-            throw new NotImplementedException();
+            var bits = Bytes();
+            var index = (int)startPos;
+            var count = (int)(bits.LongLength - startPos);
+            return new MemoryStream(bits, index, count);
         }
     }
 }
