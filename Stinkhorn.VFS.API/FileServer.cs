@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FubarDev.FtpServer;
+using System;
 
 namespace Stinkhorn.VFS.API
 {

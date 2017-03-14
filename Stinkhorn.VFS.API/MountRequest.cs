@@ -5,6 +5,7 @@ namespace Stinkhorn.VFS.API
     [RequestDesc(Category = nameof(VFS))]
     public class MountRequest : IRequest
     {
+
     }
 
     [ResponseDesc]

@@ -8,17 +8,26 @@ namespace Stinkhorn.VFS.API
     public class MountHandler : IResponseHandler<MountResponse, object>
         , IDisposable
     {
-        IDisposable server;
+        FileServer server;
 
         public ResponseStatus Process(object src, MountResponse msg)
         {
-            var user = Guid.NewGuid().ToString("N").Substring(0, 5);
-            var pass = Guid.NewGuid().ToString("N").Substring(0, 7);
-            var host = "127.0.0.1";
-            var port = 21;
-            var url = $"ftp://{user}:{pass}@{host}:{port}";
-            server = new FileServer(host, port, user, pass);
+            if (server == null)
+            {
+                var user = Guid.NewGuid().ToString("N").Substring(0, 5);
+                var pass = Guid.NewGuid().ToString("N").Substring(0, 7);
+                var host = "127.0.0.1";
+                var port = 21;
+                var url = $"ftp://{user}:{pass}@{host}:{port}";
+                server = new FileServer(host, port, user, pass);
+            }
+            InsertResponse(server, msg);
             return ResponseStatus.Handled;
+        }
+
+        void InsertResponse(FileServer server, MountResponse msg)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()

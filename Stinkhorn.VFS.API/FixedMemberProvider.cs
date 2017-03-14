@@ -1,4 +1,7 @@
-﻿namespace Stinkhorn.VFS.API
+﻿using FubarDev.FtpServer.AccountManagement;
+using System.Collections.Generic;
+
+namespace Stinkhorn.VFS.API
 {
     class FixedMemberProvider : IMembershipProvider
     {
