@@ -1,20 +1,15 @@
 ﻿using System;
 using FubarDev.FtpServer.FileSystem;
-using System.Diagnostics;
 
 namespace Stinkhorn.VFS.API
 {
     class VirtualFile : VirtualEntry, IUnixFileEntry
     {
+        Func<byte[]> Bytes { get; }
+
         public VirtualFile(VirtualFileSystem sys)
             : base(sys) { }
 
-        public long Size
-        {
-            get
-            {
-                Debugger.Break(); throw new NotImplementedException();
-            }
-        }
+        public long Size => Bytes?.Invoke()?.LongLength ?? 0;
     }
 }

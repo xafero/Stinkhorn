@@ -19,13 +19,8 @@ namespace Stinkhorn.VFS.API
             UserId = userId;
         }
 
-        public StringComparer FileSystemEntryComparer
-        {
-            get
-            {
-                Debugger.Break(); throw new NotImplementedException();
-            }
-        }
+        public StringComparer FileSystemEntryComparer { get; }
+            = StringComparer.InvariantCultureIgnoreCase;
 
         public IUnixDirectoryEntry Root
         {

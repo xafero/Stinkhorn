@@ -1,5 +1,6 @@
 ﻿using System;
 using FubarDev.FtpServer.FileSystem;
+using FubarDev.FtpServer.FileSystem.Generic;
 
 namespace Stinkhorn.VFS.API
 {
@@ -10,64 +11,26 @@ namespace Stinkhorn.VFS.API
         protected VirtualEntry(VirtualFileSystem parent)
         {
             Parent = parent;
+            var mode = new GenericAccessMode(true, false, false);
+            Permissions = new GenericUnixPermissions(mode, mode, mode);
         }
 
         public IUnixFileSystem FileSystem => Parent;
 
-        public DateTimeOffset? CreatedTime
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public DateTimeOffset? CreatedTime { get; }
+            = DateTime.UtcNow;
 
-        public string Group
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public DateTimeOffset? LastWriteTime { get; }
+            = DateTime.UtcNow;
 
-        public DateTimeOffset? LastWriteTime
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string Name { get; } = "defName";
 
-        public string Name
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string Group { get; } = "defGroup";
 
-        public long NumberOfLinks
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string Owner { get; } = "defOwner";
 
-        public string Owner
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public long NumberOfLinks { get; } = 0L;
 
-        public IUnixPermissions Permissions
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public IUnixPermissions Permissions { get; }
     }
 }
