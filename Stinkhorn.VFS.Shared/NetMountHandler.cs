@@ -9,7 +9,7 @@ namespace Stinkhorn.VFS.Shared
     {
         public IResponse Process(MountRequest input)
         {
-            throw new NotImplementedException();
+            Debugger.Break(); throw new NotImplementedException();
         }
     }
 }

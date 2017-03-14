@@ -1,6 +1,8 @@
 ﻿using Mono.Addins;
 using Stinkhorn.API;
 using System;
+using System.Diagnostics;
+using Proc = System.Diagnostics.Process;
 
 namespace Stinkhorn.VFS.API
 {
@@ -19,7 +21,8 @@ namespace Stinkhorn.VFS.API
                 var host = "127.0.0.1";
                 var port = 21;
                 var url = $"ftp://{user}:{pass}@{host}:{port}";
-                server = new FileServer(host, port, user, pass);
+                server = new FileServer(this, host, port, user, pass);
+                Proc.Start("explorer", url);
             }
             InsertResponse(server, msg);
             return ResponseStatus.Handled;
@@ -27,7 +30,7 @@ namespace Stinkhorn.VFS.API
 
         void InsertResponse(FileServer server, MountResponse msg)
         {
-            throw new NotImplementedException();
+            Debugger.Break(); throw new NotImplementedException();
         }
 
         public void Dispose()

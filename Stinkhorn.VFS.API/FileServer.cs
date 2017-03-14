@@ -7,15 +7,18 @@ namespace Stinkhorn.VFS.API
     {
         readonly FtpServer server;
 
-        public FileServer(string host, int port, string user, string pass)
+        public FileServer(MountHandler parent, string host, int port, string user, string pass)
         {
-            var fsFact = new VirtualFsFactory();
+            Parent = parent;
+            var fsFact = new VirtualFsFactory(this);
             var mbFact = new FixedMemberProvider(user, pass);
             var ass = typeof(FtpServer).Assembly;
             var commands = new AssemblyFtpCommandHandlerFactory(ass);
             server = new FtpServer(fsFact, mbFact, host, port, commands);
             server.Start();
         }
+
+        MountHandler Parent { get; }
 
         public void Dispose()
         {

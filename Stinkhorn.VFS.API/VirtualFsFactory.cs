@@ -6,9 +6,18 @@ namespace Stinkhorn.VFS.API
 {
     class VirtualFsFactory : IFileSystemClassFactory
     {
+        FileServer Parent { get; }
+
+        public VirtualFsFactory(FileServer parent)
+        {
+            Parent = parent;
+        }
+
         public Task<IUnixFileSystem> Create(string userId, bool isAnonymous)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(userId) || isAnonymous)
+                throw new NotSupportedException("Anonymous not allowed!");
+            return Task.FromResult<IUnixFileSystem>(new VirtualFileSystem(this, userId));
         }
     }
 }
