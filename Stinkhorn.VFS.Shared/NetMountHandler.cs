@@ -1,6 +1,7 @@
 ﻿using System;
 using Stinkhorn.API;
 using Stinkhorn.VFS.API;
+using System.Diagnostics;
 
 namespace Stinkhorn.VFS.Shared
 {
