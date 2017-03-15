@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Stinkhorn.VFS.API
@@ -24,9 +23,6 @@ namespace Stinkhorn.VFS.API
         public StringComparer FileSystemEntryComparer { get; set; }
             = StringComparer.InvariantCultureIgnoreCase;
 
-        StringComparison Comparison { get; }
-            = StringComparison.InvariantCultureIgnoreCase;
-
         public IUnixDirectoryEntry Root { get; }
 
         public bool SupportsAppend { get; set; } = false;
@@ -35,19 +31,28 @@ namespace Stinkhorn.VFS.API
 
         public Task<IReadOnlyList<IUnixFileSystemEntry>> GetEntriesAsync(IUnixDirectoryEntry dir, CancellationToken token)
         {
+            var model = Parent.Parent.Parent.roots;
             var folder = (VirtualDirectory)dir;
-
-            // TODO
-
+            if (folder.IsRoot)
+            {
+                var dirs = model.Values;
+                var items = dirs.Select(v => v.ToFolder(this, folder));
+                var list = items.ToList().AsReadOnly();
+                return Task.FromResult<IReadOnlyList<IUnixFileSystemEntry>>(list);
+            }
             return Task.FromResult<IReadOnlyList<IUnixFileSystemEntry>>(null);
         }
 
         public Task<IUnixFileSystemEntry> GetEntryByNameAsync(IUnixDirectoryEntry dir, string name, CancellationToken token)
         {
+            var model = Parent.Parent.Parent.roots;
             var folder = (VirtualDirectory)dir;
-
-            // TODO
-
+            if (folder.IsRoot)
+            {
+                var dirs = model.Values;
+                var item = dirs.First(v => FileSystemEntryComparer.Compare(v.Name, name) == 0);
+                return Task.FromResult<IUnixFileSystemEntry>(item.ToFolder(this, folder));
+            }
             return Task.FromResult<IUnixFileSystemEntry>(null);
         }
 

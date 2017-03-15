@@ -23,7 +23,7 @@ namespace Stinkhorn.VFS.API
         public DateTimeOffset? LastWriteTime { get; set; }
             = DateTime.UtcNow;
 
-        public string Name { get; set; } = "someName";
+        public virtual string Name { get; set; } = "someName";
 
         public string Group { get; set; } = "someGroup";
 

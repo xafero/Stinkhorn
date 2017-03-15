@@ -66,6 +66,7 @@
     <Compile Include="MountHandler.cs" />
     <Compile Include="MountRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VfsExtensions.cs" />
     <Compile Include="VirtualDirectory.cs" />
     <Compile Include="VirtualEntry.cs" />
     <Compile Include="VirtualFile.cs" />

@@ -17,6 +17,8 @@ namespace Stinkhorn.VFS.API
 
         public bool IsRoot => Previous == null;
 
+        public override string Name => IsRoot ? "" : base.Name;
+
         public string Path => $"{Previous?.Name}/{Name}";
     }
 }

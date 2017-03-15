@@ -31,8 +31,15 @@ namespace Stinkhorn.VFS.Shared
             }
             return new MountResponse
             {
-                Directories = dirs.Select(d => new VirtualDirectory()),
-                Files = files.Select(f => new VirtualFile())
+                Name = input.Target,
+                Folders = dirs.Select(d => new VfsFolder
+                {
+                    Name = d
+                }).ToArray(),
+                Files = files.Select(f => new VfsFile
+                {
+                    Name = f
+                }).ToArray()
             };
         }
     }

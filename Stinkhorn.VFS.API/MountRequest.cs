@@ -16,6 +16,7 @@ namespace Stinkhorn.VFS.API
     {
         public IFile[] Files { get; set; }
         public IFolder[] Folders { get; set; }
+        public string Name { get; set; }
     }
 
     public enum FsType
@@ -25,7 +26,7 @@ namespace Stinkhorn.VFS.API
 
     public interface IEntry
     {
-
+        string Name { get; }
     }
 
     public interface IFile : IEntry
@@ -41,7 +42,7 @@ namespace Stinkhorn.VFS.API
 
     public abstract class VfsEntry : IEntry
     {
-
+        public string Name { get; set; }
     }
 
     public class VfsFile : VfsEntry, IFile
@@ -49,8 +50,9 @@ namespace Stinkhorn.VFS.API
 
     }
 
-    public class VfsFolder : VfsEntry, IFile
+    public class VfsFolder : VfsEntry, IFolder
     {
-
+        public IFile[] Files { get; set; }
+        public IFolder[] Folders { get; set; }
     }
 }
