@@ -24,6 +24,9 @@ namespace Stinkhorn.VFS.API
         public StringComparer FileSystemEntryComparer { get; }
             = StringComparer.InvariantCultureIgnoreCase;
 
+        const StringComparison cmp
+            = StringComparison.InvariantCultureIgnoreCase;
+
         public IUnixDirectoryEntry Root { get; }
 
         public bool SupportsAppend { get; } = false;

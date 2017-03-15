@@ -17,20 +17,20 @@ namespace Stinkhorn.VFS.API
 
         public IUnixFileSystem FileSystem => Parent;
 
-        public DateTimeOffset? CreatedTime { get; }
+        public DateTimeOffset? CreatedTime { get; set; }
             = DateTime.UtcNow;
 
-        public DateTimeOffset? LastWriteTime { get; }
+        public DateTimeOffset? LastWriteTime { get; set; }
             = DateTime.UtcNow;
 
-        public string Name { get; set; } = "defName";
+        public string Name { get; set; } = "someName";
 
-        public string Group { get; } = "defGroup";
+        public string Group { get; set; } = "someGroup";
 
-        public string Owner { get; } = "defOwner";
+        public string Owner { get; set; } = "someOwner";
 
-        public long NumberOfLinks { get; } = 0L;
+        public long NumberOfLinks { get; set; } = 0L;
 
-        public IUnixPermissions Permissions { get; }
+        public IUnixPermissions Permissions { get; set; }
     }
 }
