@@ -16,5 +16,7 @@ namespace Stinkhorn.VFS.API
         public bool IsDeletable { get; set; } = false;
 
         public bool IsRoot => Previous == null;
+
+        public string Path => $"{Previous?.Name}/{Name}";
     }
 }
