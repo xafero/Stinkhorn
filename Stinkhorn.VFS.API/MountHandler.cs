@@ -1,6 +1,7 @@
 ﻿using Mono.Addins;
 using Stinkhorn.API;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Proc = System.Diagnostics.Process;
 
@@ -11,7 +12,8 @@ namespace Stinkhorn.VFS.API
         , IDisposable
     {
         FileServer server;
-        public SortedDictionary<string, IFolder> roots;
+        IFolder root;
+        IDictionary<string, IFolder> refs;
 
         public ResponseStatus Process(object src, MountResponse msg)
         {
@@ -23,27 +25,52 @@ namespace Stinkhorn.VFS.API
                 var port = 21;
                 var url = $"ftp://{user}:{pass}@{host}:{port}";
                 server = new FileServer(this, host, port, user, pass);
-                roots = new SortedDictionary<string, IFolder>();
+                root = new VfsFolder("");
+                refs = new Dictionary<string, IFolder>();
                 Proc.Start("explorer", url);
             }
+            Mount(src, msg.Source, msg.Target);
             InsertResponse(src, msg);
             return ResponseStatus.Handled;
         }
 
-        void InsertResponse(object src, MountResponse msg)
+        public static string BuildRefPath(object id, string src)
+            => $"{id}@{src}";
+
+        void InsertResponse(object id, MountResponse msg)
         {
-            var dir = new VfsFolder
+            var entries = msg.Files.OfType<IEntry>().Concat(msg.Folders);
+            var refPath = BuildRefPath(id, msg.Source);
+            var folder = refs[refPath];
+            Array.ForEach(entries.ToArray(), e => folder[e.Name] = e);
+        }
+
+        void Mount(object id, string src, string dest)
+        {
+            const char separator = '/';
+            IFolder current = root;
+            foreach (var part in dest.Split(separator))
             {
-                Name = src + string.Empty,
-                Folders = new[] { msg }
-            };
-            roots[dir.Name] = dir;
+                if (string.IsNullOrWhiteSpace(part))
+                    continue;
+                var item = current[part] as IFolder;
+                if (item != null)
+                {
+                    current = item;
+                    continue;
+                }
+                var parent = current;
+                parent[part] = current = new VfsFolder(part);
+            }
+            current.Ref = BuildRefPath(id, src);
+            refs[current.Ref] = current;
         }
 
         public void Dispose()
         {
-            roots?.Clear();
-            roots = null;
+            refs?.Clear();
+            refs = null;
+            root = null;
             server?.Dispose();
             server = null;
         }

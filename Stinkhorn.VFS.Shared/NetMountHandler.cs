@@ -31,15 +31,10 @@ namespace Stinkhorn.VFS.Shared
             }
             return new MountResponse
             {
-                Name = input.Target,
-                Folders = dirs.Select(d => new VfsFolder
-                {
-                    Name = d
-                }).ToArray(),
-                Files = files.Select(f => new VfsFile
-                {
-                    Name = f
-                }).ToArray()
+                Folders = dirs.Select(d => new VfsFolder(d)).ToArray(),
+                Files = files.Select(f => new VfsFile(f)).ToArray(),
+                Source = input.Source + string.Empty,
+                Target = input.Target
             };
         }
     }
