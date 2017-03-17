@@ -45,7 +45,7 @@ namespace Stinkhorn.VFS.API
             Array.ForEach(entries.ToArray(), e => folder[e.Name] = e);
         }
 
-        void Mount(object id, string src, string dest)
+        internal IFolder GetFolder(string dest, bool createAllowed)
         {
             const char separator = '/';
             IFolder current = root;
@@ -59,9 +59,17 @@ namespace Stinkhorn.VFS.API
                     current = item;
                     continue;
                 }
+                if (!createAllowed)
+                    return null;
                 var parent = current;
                 parent[part] = current = new VfsFolder(part);
             }
+            return current;
+        }
+
+        void Mount(object id, string src, string dest)
+        {
+            var current = GetFolder(dest, createAllowed: true);
             current.Ref = BuildRefPath(id, src);
             refs[current.Ref] = current;
         }

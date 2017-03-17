@@ -31,29 +31,22 @@ namespace Stinkhorn.VFS.API
 
         public Task<IReadOnlyList<IUnixFileSystemEntry>> GetEntriesAsync(IUnixDirectoryEntry dir, CancellationToken token)
         {
-            var model = Parent.Parent.Parent.roots;
             var folder = (VirtualDirectory)dir;
-            if (folder.IsRoot)
-            {
-                var dirs = model.Values;
-                var items = dirs.Select(v => v.ToFolder(this, folder));
-                var list = items.ToList().AsReadOnly();
-                return Task.FromResult<IReadOnlyList<IUnixFileSystemEntry>>(list);
-            }
-            return Task.FromResult<IReadOnlyList<IUnixFileSystemEntry>>(null);
+            var vfs = Parent.Parent.Parent;
+            var model = vfs.GetFolder(folder.Path, false) as VfsFolder;
+            var entries = model.Folders.OfType<IEntry>().Concat(model.Files);
+            var items = entries.Select(v => v.ToEntry(this, folder));
+            var list = items.ToList().AsReadOnly();
+            return Task.FromResult<IReadOnlyList<IUnixFileSystemEntry>>(list);
         }
 
         public Task<IUnixFileSystemEntry> GetEntryByNameAsync(IUnixDirectoryEntry dir, string name, CancellationToken token)
         {
-            var model = Parent.Parent.Parent.roots;
             var folder = (VirtualDirectory)dir;
-            if (folder.IsRoot)
-            {
-                var dirs = model.Values;
-                var item = dirs.First(v => FileSystemEntryComparer.Compare(v.Name, name) == 0);
-                return Task.FromResult<IUnixFileSystemEntry>(item.ToFolder(this, folder));
-            }
-            return Task.FromResult<IUnixFileSystemEntry>(null);
+            var vfs = Parent.Parent.Parent;
+            var model = vfs.GetFolder(folder.Path, false);
+            var entry = model[name];
+            return Task.FromResult(entry.ToEntry(this, folder));
         }
 
         public Task<IBackgroundTransfer> AppendAsync(IUnixFileEntry file, long? startPos, Stream data, CancellationToken token)

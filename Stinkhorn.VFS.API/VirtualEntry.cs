@@ -7,10 +7,13 @@ namespace Stinkhorn.VFS.API
     abstract class VirtualEntry : IUnixFileSystemEntry
     {
         protected VirtualFileSystem Parent { get; }
+        protected VirtualDirectory Previous { get; }
 
-        protected VirtualEntry(VirtualFileSystem parent)
+        protected VirtualEntry(VirtualFileSystem parent,
+            VirtualDirectory dir = null)
         {
             Parent = parent;
+            Previous = dir;
             var mode = new GenericAccessMode(true, false, false);
             Permissions = new GenericUnixPermissions(mode, mode, mode);
         }
@@ -32,5 +35,7 @@ namespace Stinkhorn.VFS.API
         public long NumberOfLinks { get; set; } = 0L;
 
         public IUnixPermissions Permissions { get; set; }
+
+        public string Path => $"{Previous?.Name}/{Name}";
     }
 }

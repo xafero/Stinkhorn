@@ -4,21 +4,13 @@ namespace Stinkhorn.VFS.API
 {
     class VirtualDirectory : VirtualEntry, IUnixDirectoryEntry
     {
-        VirtualDirectory Previous { get; }
-
         public VirtualDirectory(VirtualFileSystem sys,
-            VirtualDirectory dir = null)
-            : base(sys)
-        {
-            Previous = dir;
-        }
+            VirtualDirectory dir = null) : base(sys, dir) { }
 
         public bool IsDeletable { get; set; } = false;
 
         public bool IsRoot => Previous == null;
 
         public override string Name => IsRoot ? "" : base.Name;
-
-        public string Path => $"{Previous?.Name}/{Name}";
     }
 }
