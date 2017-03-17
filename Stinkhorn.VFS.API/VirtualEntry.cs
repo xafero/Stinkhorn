@@ -36,6 +36,6 @@ namespace Stinkhorn.VFS.API
 
         public IUnixPermissions Permissions { get; set; }
 
-        public string Path => $"{Previous?.Name}/{Name}";
+        public string Path => $"{Previous?.Path}/{Name}";
     }
 }

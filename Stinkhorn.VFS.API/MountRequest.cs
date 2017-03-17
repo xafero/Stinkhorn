@@ -48,6 +48,8 @@ namespace Stinkhorn.VFS.API
     public abstract class VfsEntry : IEntry
     {
         public string Name { get; set; }
+
+        protected string ToSimpleName(string name) => name.Split('\\').Last();
     }
 
     public class VfsFile : VfsEntry, IFile
@@ -56,7 +58,7 @@ namespace Stinkhorn.VFS.API
 
         public VfsFile(string name) : this()
         {
-            Name = name;
+            Name = ToSimpleName(name);
         }
     }
 
@@ -74,7 +76,7 @@ namespace Stinkhorn.VFS.API
 
         public VfsFolder(string name) : this()
         {
-            Name = name;
+            Name = ToSimpleName(name);
         }
 
         public IEntry this[string name]
