@@ -14,6 +14,7 @@ namespace Stinkhorn.VFS.API
         FileServer server;
         IFolder root;
         IDictionary<string, IFolder> refs;
+        IDictionary<string, string> tgts;
 
         public ResponseStatus Process(object src, MountResponse msg)
         {
@@ -27,11 +28,17 @@ namespace Stinkhorn.VFS.API
                 server = new FileServer(this, host, port, user, pass);
                 root = new VfsFolder("");
                 refs = new Dictionary<string, IFolder>();
+                tgts = new Dictionary<string, string>();
                 Proc.Start("explorer", url);
             }
             Mount(src, msg);
             InsertResponse(src, msg);
             return ResponseStatus.Handled;
+        }
+
+        internal void Refresh(Guid id, string src, string dest, string path)
+        {
+            throw new NotImplementedException();
         }
 
         public static string BuildRefPath(object id, string src)
@@ -51,6 +58,15 @@ namespace Stinkhorn.VFS.API
             var current = GetFolder(msg.Target, createAllowed: true);
             current.Ref = BuildRefPath(id, msg.Source);
             refs[current.Ref] = current;
+            tgts[current.Ref] = msg.Target;
+        }
+
+        internal string GetMountPath(VfsEntry entry, out string lastRef)
+        {
+            lastRef = entry?.LastRef;
+            if (string.IsNullOrWhiteSpace(lastRef))
+                return null;
+            return tgts[lastRef];
         }
 
         internal IFolder GetFolder(string dest, bool createAllowed)
@@ -77,6 +93,8 @@ namespace Stinkhorn.VFS.API
 
         public void Dispose()
         {
+            tgts?.Clear();
+            tgts = null;
             refs?.Clear();
             refs = null;
             root = null;

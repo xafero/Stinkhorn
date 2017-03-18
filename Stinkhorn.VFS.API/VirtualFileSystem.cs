@@ -23,6 +23,9 @@ namespace Stinkhorn.VFS.API
         public StringComparer FileSystemEntryComparer { get; set; }
             = StringComparer.InvariantCultureIgnoreCase;
 
+        public StringComparison Cmp { get; set; }
+            = StringComparison.InvariantCultureIgnoreCase;
+
         public IUnixDirectoryEntry Root { get; }
 
         public bool SupportsAppend { get; set; } = false;
@@ -37,6 +40,18 @@ namespace Stinkhorn.VFS.API
             var entries = model.Folders.OfType<IEntry>().Concat(model.Files);
             var items = entries.Select(v => v.ToEntry(this, folder));
             var list = items.ToList().AsReadOnly();
+            if (list.Count < 1 /* TODO: || Date check */)
+            {
+                string serverRef;
+                var mountPoint = vfs.GetMountPath(model, out serverRef);
+                var absolute = folder.Path;
+                var index = absolute.IndexOf(mountPoint, Cmp);
+                var relative = absolute.Substring(index + mountPoint.Length);
+                var tmp = serverRef.Split('@');
+                var id = Guid.Parse(tmp.First());
+                var arg = tmp.Last();
+                vfs.Refresh(id, arg, mountPoint, relative);
+            }
             return Task.FromResult<IReadOnlyList<IUnixFileSystemEntry>>(list);
         }
 
