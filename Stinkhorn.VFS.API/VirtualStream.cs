@@ -10,6 +10,8 @@ namespace Stinkhorn.VFS.API
         readonly long start;
         readonly ReadFileChunk chunk;
 
+        long read;
+
         public VirtualStream(IFile file, long start, ReadFileChunk chunk)
         {
             this.file = file;
@@ -17,14 +19,14 @@ namespace Stinkhorn.VFS.API
             this.chunk = chunk;
         }
 
-        public override bool CanRead { get; } = true;
-
-        public override bool CanSeek { get; } = true;
-
-        public override bool CanWrite { get; } = false;
-
         public override int Read(byte[] buffer, int offset, int count)
-            => chunk(buffer, offset, count, start);
+        {
+            var bytesRead = chunk(buffer, offset, count, start);
+            read += bytesRead;
+            return bytesRead;
+        }
+
+        public override bool CanRead => read <= (file.Size - start);
 
         public override long Length
         {
@@ -44,6 +46,24 @@ namespace Stinkhorn.VFS.API
             }
 
             set
+            {
+                Debugger.Break();
+                throw new NotImplementedException();
+            }
+        }
+
+        public override bool CanSeek
+        {
+            get
+            {
+                Debugger.Break();
+                throw new NotImplementedException();
+            }
+        }
+
+        public override bool CanWrite
+        {
+            get
             {
                 Debugger.Break();
                 throw new NotImplementedException();
