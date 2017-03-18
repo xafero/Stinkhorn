@@ -29,7 +29,7 @@ namespace Stinkhorn.VFS.API
                 refs = new Dictionary<string, IFolder>();
                 Proc.Start("explorer", url);
             }
-            Mount(src, msg.Source, msg.Target);
+            Mount(src, msg);
             InsertResponse(src, msg);
             return ResponseStatus.Handled;
         }
@@ -37,7 +37,8 @@ namespace Stinkhorn.VFS.API
         public static string BuildRefPath(object id, string src)
             => $"{id}@{src}";
 
-        void InsertResponse(object id, MountResponse msg)
+        void InsertResponse<T>(object id, T msg)
+            where T : ISourceable, IFilesParent, IFoldersParent
         {
             var entries = msg.Files.OfType<IEntry>().Concat(msg.Folders);
             var refPath = BuildRefPath(id, msg.Source);
@@ -45,10 +46,17 @@ namespace Stinkhorn.VFS.API
             Array.ForEach(entries.ToArray(), e => folder[e.Name] = e);
         }
 
+        void Mount<T>(object id, T msg) where T : ISourceable, ITargetable
+        {
+            var current = GetFolder(msg.Target, createAllowed: true);
+            current.Ref = BuildRefPath(id, msg.Source);
+            refs[current.Ref] = current;
+        }
+
         internal IFolder GetFolder(string dest, bool createAllowed)
         {
             const char separator = '/';
-            IFolder current = root;
+            var current = root;
             foreach (var part in dest.Split(separator))
             {
                 if (string.IsNullOrWhiteSpace(part))
@@ -61,17 +69,10 @@ namespace Stinkhorn.VFS.API
                 }
                 if (!createAllowed)
                     return null;
-                var parent = current;
-                parent[part] = current = new VfsFolder(part);
+                var parent = current as VfsFolder;
+                parent[part] = current = new VfsFolder(part, parent);
             }
             return current;
-        }
-
-        void Mount(object id, string src, string dest)
-        {
-            var current = GetFolder(dest, createAllowed: true);
-            current.Ref = BuildRefPath(id, src);
-            refs[current.Ref] = current;
         }
 
         public void Dispose()

@@ -22,7 +22,7 @@ namespace Stinkhorn.Demo.API
                 dialog.Text = $"{screen.Width}x{screen.Height} ({screen.Format})";
                 dialog.Show();
             }
-            return ResponseStatus.Handled;
+            return ResponseStatus.NotHandled;
         }
     }
 }
