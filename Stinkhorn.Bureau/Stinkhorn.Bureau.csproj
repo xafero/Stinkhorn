@@ -165,6 +165,7 @@
     <Content Include="Images\document-properties.png" />
     <Content Include="Images\drive-harddisk.png" />
     <Content Include="Images\format-justify-fill.png" />
+    <Content Include="Images\format-justify-left.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\media-floppy.png" />
     <Content Include="Images\preferences-desktop-screensaver.png" />

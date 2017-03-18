@@ -44,11 +44,15 @@ namespace Stinkhorn.Agent
             {
                 var handler = pair.Value;
                 var intfName = typeof(IRequestHandler<>).Name;
-                var intf = handler.GetType().GetInterface(intfName);
-                var reqType = intf.GetGenericArguments()[0];
-                GetType().GenericMe(nameof(Subscribe), reqType).Invoke(this, null);
-                log.InfoFormat("Found '{0}' for '{1}'.", handler, reqType);
-                Handlers[reqType] = handler;
+                foreach (var intf in handler.GetType().GetInterfaces())
+                {
+                    if (!(intf.Name.Equals(intfName)))
+                        continue;
+                    var reqType = intf.GetGenericArguments()[0];
+                    GetType().GenericMe(nameof(Subscribe), reqType).Invoke(this, null);
+                    log.InfoFormat("Found '{0}' for '{1}'.", handler, reqType);
+                    Handlers[reqType] = handler;
+                }
             }
         }
 

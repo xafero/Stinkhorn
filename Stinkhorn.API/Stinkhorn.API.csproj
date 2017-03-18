@@ -43,6 +43,7 @@
     <Compile Include="HelloMessage.cs" />
     <Compile Include="IImage.cs" />
     <Compile Include="IMessage.cs" />
+    <Compile Include="IPublisher.cs" />
     <Compile Include="IRequestHandler.cs" />
     <Compile Include="IResponseHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

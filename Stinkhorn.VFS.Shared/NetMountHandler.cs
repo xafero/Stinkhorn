@@ -7,8 +7,16 @@ using static System.Environment;
 namespace Stinkhorn.VFS.Shared
 {
     [ReqHandlerFilter]
-    public class NetMountHandler : IRequestHandler<MountRequest>
+    public class NetMountHandler : IRequestHandler<MountRequest>,
+        IRequestHandler<ListRequest>
     {
+        public IResponse Process(ListRequest input)
+        {
+            System.Diagnostics.Debugger.Break();
+
+            return null;
+        }
+
         public IResponse Process(MountRequest input)
         {
             var specialFld = input.Source;

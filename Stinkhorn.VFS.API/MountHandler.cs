@@ -8,8 +8,8 @@ using Proc = System.Diagnostics.Process;
 namespace Stinkhorn.VFS.API
 {
     [Extension]
-    public class MountHandler : IResponseHandler<MountResponse, object>
-        , IDisposable
+    public class MountHandler : IResponseHandler<MountResponse, object>,
+        IResponseHandler<ListResponse, object>, IDisposable, IPublisher
     {
         FileServer server;
         IFolder root;
@@ -36,9 +36,18 @@ namespace Stinkhorn.VFS.API
             return ResponseStatus.Handled;
         }
 
+        public ResponseStatus Process(object src, ListResponse msg)
+        {
+            System.Diagnostics.Debugger.Break();
+
+            return ResponseStatus.Handled;
+        }
+
+        public Action<Guid, IMessage> Pub { private get; set; }
+
         internal void Refresh(Guid id, string src, string dest, string path)
         {
-            throw new NotImplementedException();
+            Pub(id, new ListRequest());
         }
 
         public static string BuildRefPath(object id, string src)

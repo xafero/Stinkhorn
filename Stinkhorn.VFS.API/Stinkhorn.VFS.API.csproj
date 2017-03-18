@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="FileServer.cs" />
     <Compile Include="FixedMemberProvider.cs" />
+    <Compile Include="ListRequest.cs" />
     <Compile Include="MountHandler.cs" />
     <Compile Include="MountRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

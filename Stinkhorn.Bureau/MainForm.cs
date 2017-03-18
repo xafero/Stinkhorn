@@ -123,14 +123,24 @@ namespace Stinkhorn.Bureau
                     var contacter = handler as IAddresser;
                     if (contacter != null)
                         contacter.Book = this;
-                    var proc = handler.GetType().GetMethod("Process");
-                    var argType = proc.GetParameters().Last().ParameterType;
-                    if (!argType.IsAssignableFrom(msg.GetType()))
-                        continue;
-                    proc.Invoke(handler, new object[] { sender, msg });
+                    var publisher = handler as IPublisher;
+                    if (publisher != null)
+                        publisher.Pub = Publish;
+                    foreach (var proc in handler.GetType().GetMethods())
+                    {
+                        if (!proc.Name.Equals("Process"))
+                            continue;
+                        var argType = proc.GetParameters().Last().ParameterType;
+                        if (!argType.IsAssignableFrom(msg.GetType()))
+                            continue;
+                        proc.Invoke(handler, new object[] { sender, msg });
+                    }
                 }
             }));
         }
+
+        void Publish(Guid id, IMessage msg)
+            => Client.Publish(Unicast.Of(id), msg);
 
         void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
