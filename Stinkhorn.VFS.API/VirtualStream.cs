@@ -21,7 +21,7 @@ namespace Stinkhorn.VFS.API
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            var bytesRead = chunk(buffer, offset, count, start);
+            var bytesRead = chunk(buffer, offset, count, start + Counter);
             Counter += bytesRead;
             return bytesRead;
         }
