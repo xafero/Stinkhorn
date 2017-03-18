@@ -56,7 +56,7 @@ namespace Stinkhorn.VFS.Shared
                 Relative = input.Path.TrimStart('/'),
                 Source = input.Source,
                 Folders = dirs.Select(d => new VfsFolder(d)).ToArray(),
-                Files = files.Select(f => new VfsFile(f)).ToArray()
+                Files = files.Select(GetFileInfo).ToArray()
             };
         }
 
@@ -82,7 +82,7 @@ namespace Stinkhorn.VFS.Shared
             return new MountResponse
             {
                 Folders = dirs.Select(d => new VfsFolder(d)).ToArray(),
-                Files = files.Select(f => new VfsFile(f)).ToArray(),
+                Files = files.Select(GetFileInfo).ToArray(),
                 Source = input.Source + string.Empty,
                 Target = input.Target
             };

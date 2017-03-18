@@ -7,6 +7,6 @@ namespace Stinkhorn.VFS.API
         public VirtualFile(VirtualFileSystem sys,
             VirtualDirectory dir = null) : base(sys, dir) { }
 
-        public long Size { get; set; } = 0;
+        public long Size { get; set; } = 0L;
     }
 }

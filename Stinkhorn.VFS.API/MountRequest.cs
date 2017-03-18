@@ -57,7 +57,7 @@ namespace Stinkhorn.VFS.API
 
     public interface IFile : IEntry
     {
-
+        long Size { get; }
     }
 
     public interface IFolder : IEntry
@@ -94,6 +94,8 @@ namespace Stinkhorn.VFS.API
 
     public class VfsFile : VfsEntry, IFile
     {
+        public long Size { get; set; }
+
         public VfsFile() { }
 
         public VfsFile(string name, VfsEntry parent = null) : this()

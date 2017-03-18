@@ -20,6 +20,7 @@ namespace Stinkhorn.VFS.API
         {
             var vfile = new VirtualFile(sys, dir);
             vfile.Name = file.Name;
+            vfile.Size = file.Size;
             return vfile;
         }
 

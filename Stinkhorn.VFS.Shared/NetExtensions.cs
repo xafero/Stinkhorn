@@ -2,6 +2,7 @@
 using System.Linq;
 using static System.Environment;
 using Stinkhorn.API;
+using Stinkhorn.VFS.API;
 
 namespace Stinkhorn.VFS.Shared
 {
@@ -29,6 +30,14 @@ namespace Stinkhorn.VFS.Shared
                 root = GetFolderPath(specialFld.Value, opt);
             }
             return Path.Combine(root, relative);
+        }
+
+        public static IFile GetFileInfo(string path)
+        {
+            var file = new VfsFile(path);
+            var info = new FileInfo(path);
+            file.Size = info.Length;
+            return file;
         }
     }
 }
