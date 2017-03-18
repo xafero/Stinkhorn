@@ -45,9 +45,9 @@ namespace Stinkhorn.VFS.API
 
         public Action<Guid, IMessage> Pub { private get; set; }
 
-        internal void Refresh(Guid id, string src, string dest, string path)
+        internal void Refresh(Guid id, string src, string path)
         {
-            Pub(id, new ListRequest());
+            Pub(id, new ListRequest { Source = src, Path = path });
         }
 
         public static string BuildRefPath(object id, string src)

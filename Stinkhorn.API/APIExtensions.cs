@@ -17,5 +17,11 @@ namespace Stinkhorn.API
 
         public static MethodInfo GenericMe(this Type type, string name, Type param)
             => type.GetMethod(name).MakeGenericMethod(param);
+
+        public static T? TryEnum<T>(this string text) where T : struct
+        {
+            T value;
+            return Enum.TryParse(text, true, out value) ? value : default(T?);
+        }
     }
 }

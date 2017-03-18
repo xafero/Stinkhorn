@@ -50,7 +50,7 @@ namespace Stinkhorn.VFS.API
                 var tmp = serverRef.Split('@');
                 var id = Guid.Parse(tmp.First());
                 var arg = tmp.Last();
-                vfs.Refresh(id, arg, mountPoint, relative);
+                vfs.Refresh(id, arg, relative);
             }
             return Task.FromResult<IReadOnlyList<IUnixFileSystemEntry>>(list);
         }
