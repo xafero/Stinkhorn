@@ -115,7 +115,7 @@ namespace Stinkhorn.Bureau
         {
             BeginInvoke((Action)(() =>
             {
-                foreach (var handler in handlers)
+                foreach (var handler in handlers.Reverse())
                 {
                     var dumper = handler as IDumper;
                     if (dumper != null)
@@ -133,7 +133,9 @@ namespace Stinkhorn.Bureau
                         var argType = proc.GetParameters().Last().ParameterType;
                         if (!argType.IsAssignableFrom(msg.GetType()))
                             continue;
-                        proc.Invoke(handler, new object[] { sender, msg });
+                        var res = proc.Invoke(handler, new object[] { sender, msg });
+                        if ((res + "").Equals(ResponseStatus.Handled + ""))
+                            return;
                     }
                 }
             }));
