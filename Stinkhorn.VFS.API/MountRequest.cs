@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using static System.Environment;
 using System;
+using System.IO;
 
 namespace Stinkhorn.VFS.API
 {
@@ -69,7 +70,8 @@ namespace Stinkhorn.VFS.API
     {
         public string Name { get; set; }
 
-        protected string ToSimpleName(string name) => name.Split('\\').Last();
+        protected string ToSimpleName(string name)
+            => name.Split(Path.DirectorySeparatorChar).Last();
 
         public string Ref { get; set; }
 
