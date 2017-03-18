@@ -51,6 +51,10 @@ namespace Stinkhorn.VFS.API
                 var id = Guid.Parse(tmp.First());
                 var arg = tmp.Last();
                 vfs.Refresh(id, arg, relative);
+                Thread.Sleep(3 * 100);
+                entries = model.Folders.OfType<IEntry>().Concat(model.Files);
+                items = entries.Select(v => v.ToEntry(this, folder));
+                list = items.ToList().AsReadOnly();
             }
             return Task.FromResult<IReadOnlyList<IUnixFileSystemEntry>>(list);
         }

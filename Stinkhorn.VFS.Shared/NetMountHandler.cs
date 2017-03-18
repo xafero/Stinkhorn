@@ -39,6 +39,8 @@ namespace Stinkhorn.VFS.Shared
             FetchEntries(path, out dirs, out files);
             return new ListResponse
             {
+                Relative = input.Path.TrimStart('/'),
+                Source = input.Source,
                 Folders = dirs.Select(d => new VfsFolder(d)).ToArray(),
                 Files = files.Select(f => new VfsFile(f)).ToArray()
             };
@@ -74,8 +76,16 @@ namespace Stinkhorn.VFS.Shared
 
         void FetchEntries(string folder, out string[] dirs, out string[] files)
         {
-            dirs = Directory.GetDirectories(folder);
-            files = Directory.GetFiles(folder);
+            try
+            {
+                dirs = Directory.GetDirectories(folder);
+                files = Directory.GetFiles(folder);
+            }
+            catch (UnauthorizedAccessException uae)
+            {
+                dirs = new string[0];
+                files = new[] { uae.ToFileName() };
+            }
         }
     }
 }

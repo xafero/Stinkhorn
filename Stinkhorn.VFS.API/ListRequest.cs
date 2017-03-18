@@ -11,9 +11,12 @@ namespace Stinkhorn.VFS.API
 
     [ResponseDesc]
     public class ListResponse : IResponse,
-        IFilesParent, IFoldersParent
+        ISourceable, IFilesParent, IFoldersParent
     {
+        public string Source { get; set; }
         public IFile[] Files { get; set; }
         public IFolder[] Folders { get; set; }
+
+        public string Relative { get; set; }
     }
 }

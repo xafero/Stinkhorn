@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Proc = System.Diagnostics.Process;
+using System.Threading;
 
 namespace Stinkhorn.VFS.API
 {
@@ -38,8 +39,7 @@ namespace Stinkhorn.VFS.API
 
         public ResponseStatus Process(object src, ListResponse msg)
         {
-            System.Diagnostics.Debugger.Break();
-
+            InsertResponse(src, msg, msg.Relative);
             return ResponseStatus.Handled;
         }
 
@@ -53,12 +53,14 @@ namespace Stinkhorn.VFS.API
         public static string BuildRefPath(object id, string src)
             => $"{id}@{src}";
 
-        void InsertResponse<T>(object id, T msg)
+        void InsertResponse<T>(object id, T msg, string subPath = null)
             where T : ISourceable, IFilesParent, IFoldersParent
         {
             var entries = msg.Files.OfType<IEntry>().Concat(msg.Folders);
             var refPath = BuildRefPath(id, msg.Source);
             var folder = refs[refPath];
+            if (!string.IsNullOrWhiteSpace(subPath))
+                folder = GetFolder(subPath, true, start: folder);
             Array.ForEach(entries.ToArray(), e => folder[e.Name] = e);
         }
 
@@ -78,10 +80,11 @@ namespace Stinkhorn.VFS.API
             return tgts[lastRef];
         }
 
-        internal IFolder GetFolder(string dest, bool createAllowed)
+        internal IFolder GetFolder(string dest, bool createAllowed,
+            IFolder start = null)
         {
             const char separator = '/';
-            var current = root;
+            var current = start ?? root;
             foreach (var part in dest.Split(separator))
             {
                 if (string.IsNullOrWhiteSpace(part))
