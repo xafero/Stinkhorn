@@ -37,10 +37,8 @@ namespace Stinkhorn.VFS.API
             var folder = (VirtualDirectory)dir;
             var vfs = Parent.Parent.Parent;
             var model = vfs.GetFolder(folder.Path, false) as VfsFolder;
-            var entries = model.Folders.OfType<IEntry>().Concat(model.Files);
-            var items = entries.Select(v => v.ToEntry(this, folder));
-            var list = items.ToList().AsReadOnly();
-            if (list.Count < 1 /* TODO: || Date check */)
+            var entries = GetEntries(folder, model);
+            if (entries.Count < 1 /* TODO: || Date check */)
             {
                 string serverRef;
                 var mountPoint = vfs.GetMountPath(model, out serverRef);
@@ -52,12 +50,16 @@ namespace Stinkhorn.VFS.API
                 var arg = tmp.Last();
                 vfs.Refresh(id, arg, relative);
                 Thread.Sleep(3 * 100);
-                entries = model.Folders.OfType<IEntry>().Concat(model.Files);
-                items = entries.Select(v => v.ToEntry(this, folder));
-                list = items.ToList().AsReadOnly();
+                entries = GetEntries(folder, model);
             }
-            return Task.FromResult<IReadOnlyList<IUnixFileSystemEntry>>(list);
+            return Task.FromResult(entries);
         }
+
+        IReadOnlyList<IUnixFileSystemEntry> GetEntries(
+            VirtualDirectory folder, VfsFolder model)
+            => model.Folders.OfType<IEntry>().Concat(model.Files)
+            .Select(v => v.ToEntry(this, folder))
+            .ToList().AsReadOnly();
 
         public Task<IUnixFileSystemEntry> GetEntryByNameAsync(IUnixDirectoryEntry dir, string name, CancellationToken token)
         {
@@ -81,7 +83,10 @@ namespace Stinkhorn.VFS.API
             => Task.FromResult<IUnixFileSystemEntry>(null);
 
         public Task<Stream> OpenReadAsync(IUnixFileEntry file, long startPos, CancellationToken token)
-            => Task.FromResult<Stream>(null);
+        {
+            System.Diagnostics.Debugger.Break();
+            return Task.FromResult<Stream>(null);
+        }
 
         public Task<IBackgroundTransfer> ReplaceAsync(IUnixFileEntry file, Stream data, CancellationToken token)
             => Task.FromResult<IBackgroundTransfer>(null);
