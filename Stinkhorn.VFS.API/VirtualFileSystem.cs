@@ -71,13 +71,13 @@ namespace Stinkhorn.VFS.API
             var vfs = Parent.Parent.Parent;
             var folder = entity.Path.Replace(entity.Name, "");
             var model = vfs.GetFolder(folder, false) as VfsFolder;
-            var entry = model[entity.Name];
+            var entry = model[entity.Name] as IFile;
             Guid id;
             string arg, relative;
             DetermineArgs(vfs, model, entity, out id, out arg, out relative);
-            vfs.ReadFile(id, arg, relative);
-            Thread.Sleep(3 * 100);
-            return Task.FromResult(entry.ToStream(this, startPos));
+            ReadFileChunk rfc = (a, b, c) => vfs.ReadFile(a, b, c);
+            var str = new VirtualStream(entry, startPos, rfc);
+            return Task.FromResult<Stream>(str);
         }
 
         void DetermineArgs(MountHandler vfs, VfsEntry model, VirtualEntry entry,

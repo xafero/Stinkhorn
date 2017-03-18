@@ -1,26 +1,10 @@
 ﻿using FubarDev.FtpServer.FileSystem;
 using System;
-using System.IO;
 
 namespace Stinkhorn.VFS.API
 {
     public static class VfsExtensions
     {
-        internal static Stream ToStream(this IEntry entry, VirtualFileSystem sys, long startPos)
-        {
-            var file = entry as IFile;
-            if (file != null)
-                return file.ToStream(sys, startPos);
-            return null;
-        }
-
-        internal static Stream ToStream(this IFile file, VirtualFileSystem sys, long startPos)
-        {
-            var vfs = sys.Parent.Parent.Parent;
-            var stream = new VirtualStream(file, sys, vfs, startPos);
-            return stream;
-        }
-
         internal static IUnixFileSystemEntry ToEntry(this IEntry entry, VirtualFileSystem sys, VirtualDirectory dir)
         {
             var file = entry as IFile;

@@ -124,4 +124,7 @@ namespace Stinkhorn.VFS.API
             server = null;
         }
     }
+
+    internal delegate void ReadFileChunk(Guid id,
+        string arg, string path);
 }
