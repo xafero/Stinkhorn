@@ -55,9 +55,13 @@ namespace Stinkhorn.VFS.API
             Pub(id, new ListRequest { Source = src, Path = path });
         }
 
-        internal void ReadFile(Guid id, string src, string path)
+        internal int ReadFile(Guid id, string src, string path,
+            byte[] buffer, long offset, long length, long start)
         {
             Pub(id, new FileRequest { Source = src, Path = path });
+
+
+            throw new NotImplementedException();
         }
 
         public static string BuildRefPath(object id, string src)
@@ -125,6 +129,6 @@ namespace Stinkhorn.VFS.API
         }
     }
 
-    internal delegate void ReadFileChunk(Guid id,
-        string arg, string path);
+    internal delegate int ReadFileChunk(byte[] buffer,
+        long offset, long length, long start);
 }

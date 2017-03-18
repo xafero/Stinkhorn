@@ -75,7 +75,8 @@ namespace Stinkhorn.VFS.API
             Guid id;
             string arg, relative;
             DetermineArgs(vfs, model, entity, out id, out arg, out relative);
-            ReadFileChunk rfc = (a, b, c) => vfs.ReadFile(a, b, c);
+            ReadFileChunk rfc = (a, b, c, d) =>
+                vfs.ReadFile(id, arg, relative, a, b, c, d);
             var str = new VirtualStream(entry, startPos, rfc);
             return Task.FromResult<Stream>(str);
         }
