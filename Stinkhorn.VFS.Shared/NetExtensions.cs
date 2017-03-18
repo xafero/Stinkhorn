@@ -21,7 +21,7 @@ namespace Stinkhorn.VFS.Shared
                 var part = relative.Split(new[] { '/' }, 2);
                 var driveName = part.First();
                 var drive = DriveInfo.GetDrives().First(
-                    d => d.VolumeLabel == driveName);
+                    d => PatchLabel(d.VolumeLabel) == driveName);
                 relative = part.Length < 2 ? "" : part.Last();
                 root = drive.RootDirectory.FullName;
             }
@@ -39,5 +39,8 @@ namespace Stinkhorn.VFS.Shared
             file.Size = info.Length;
             return file;
         }
+
+        public static string PatchLabel(string label)
+            => label == "/" ? "Root" : label;
     }
 }

@@ -70,7 +70,7 @@ namespace Stinkhorn.VFS.Shared
                 var allDrives = DriveInfo.GetDrives();
                 var drives = allDrives.Where(d => d.DriveType == DriveType.Fixed
                         && d.IsReady).ToDictionary(k => k.RootDirectory.FullName,
-                        v => v.VolumeLabel);
+                        v => PatchLabel(v.VolumeLabel));
                 dirs = drives.Values.ToArray();
                 files = new string[0];
             }
