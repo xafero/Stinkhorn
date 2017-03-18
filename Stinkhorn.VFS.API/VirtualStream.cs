@@ -10,7 +10,7 @@ namespace Stinkhorn.VFS.API
         readonly long start;
         readonly ReadFileChunk chunk;
 
-        long read;
+        internal long Counter { get; private set; } = 0L;
 
         public VirtualStream(IFile file, long start, ReadFileChunk chunk)
         {
@@ -22,11 +22,11 @@ namespace Stinkhorn.VFS.API
         public override int Read(byte[] buffer, int offset, int count)
         {
             var bytesRead = chunk(buffer, offset, count, start);
-            read += bytesRead;
+            Counter += bytesRead;
             return bytesRead;
         }
 
-        public override bool CanRead => read <= (file.Size - start);
+        public override bool CanRead => Counter <= (file.Size - start);
 
         public override long Length
         {

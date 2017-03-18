@@ -67,9 +67,9 @@ namespace Stinkhorn.VFS.API
             var chunkRef = BuildChunkRef(id, src, path, start);
             ReadFileChunk handle = null;
             var numberOfTries = 0;
-            while (handle == null && (numberOfTries++) <= 5)
+            while (handle == null && (numberOfTries++) <= 50)
                 if (!chunks.TryGetValue(chunkRef, out handle))
-                    Thread.Sleep(100);
+                    Thread.Sleep(10);
             var bytesRead = handle(buffer, offset, length, start);
             chunks.TryRemove(chunkRef, out handle);
             return bytesRead;

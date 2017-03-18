@@ -24,7 +24,7 @@ namespace Stinkhorn.VFS.Shared
                     file.Seek(offset, SeekOrigin.Begin);
                 var size = input.Buffer;
                 if (size <= 1024)
-                    size = 4 * 1024;
+                    size = 16 * 1024;
                 var buffer = new byte[size];
                 var bits = file.Read(buffer, 0, buffer.Length);
                 byte[] result = null;
