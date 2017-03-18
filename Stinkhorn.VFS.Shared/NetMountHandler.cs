@@ -3,37 +3,51 @@ using Stinkhorn.VFS.API;
 using System.IO;
 using System.Linq;
 using static System.Environment;
+using static Stinkhorn.VFS.Shared.NetExtensions;
 using System;
 
 namespace Stinkhorn.VFS.Shared
 {
     [ReqHandlerFilter]
     public class NetMountHandler : IRequestHandler<MountRequest>,
-        IRequestHandler<ListRequest>
+        IRequestHandler<ListRequest>, IRequestHandler<FileRequest>
     {
         const SpecialFolderOption opt = SpecialFolderOption.Create;
 
+        public IResponse Process(FileRequest input)
+        {
+            var path = FindRealPath(input.Source, input.Path, opt);
+            using (var file = File.OpenRead(path))
+            {
+                var offset = input.Offset;
+                if (offset > 0)
+                    file.Seek(offset, SeekOrigin.Begin);
+                var size = input.Buffer;
+                if (size <= 1024)
+                    size = 4 * 1024;
+                var buffer = new byte[size];
+                var bits = file.Read(buffer, 0, buffer.Length);
+                byte[] result = null;
+                if (bits < buffer.Length)
+                {
+                    result = new byte[bits];
+                    Array.Copy(buffer, result, bits);
+                }
+                var resp = new FileResponse
+                {
+                    Relative = input.Path.TrimStart('/'),
+                    Source = input.Source,
+                    Bytes = result ?? buffer,
+                    Offset = offset
+                };
+                resp.Length = resp.Bytes.LongLength;
+                return resp;
+            }
+        }
+
         public IResponse Process(ListRequest input)
         {
-            var specialFld = input.Source.TryEnum<SpecialFolder>();
-            if (!specialFld.HasValue)
-                return null;
-            string root;
-            var relative = input.Path.TrimStart('/');
-            if (specialFld == SpecialFolder.MyComputer)
-            {
-                var part = relative.Split(new[] { '/' }, 2);
-                var driveName = part.First();
-                var drive = DriveInfo.GetDrives().First(
-                    d => d.VolumeLabel == driveName);
-                relative = part.Length < 2 ? "" : part.Last();
-                root = drive.RootDirectory.FullName;
-            }
-            else
-            {
-                root = GetFolderPath(specialFld.Value, opt);
-            }
-            var path = Path.Combine(root, relative);
+            var path = FindRealPath(input.Source, input.Path, opt);
             string[] dirs;
             string[] files;
             FetchEntries(path, out dirs, out files);

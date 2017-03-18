@@ -61,6 +61,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileRequest.cs" />
     <Compile Include="FileServer.cs" />
     <Compile Include="FixedMemberProvider.cs" />
     <Compile Include="ListRequest.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="VirtualFile.cs" />
     <Compile Include="VirtualFileSystem.cs" />
     <Compile Include="VirtualFsFactory.cs" />
+    <Compile Include="VirtualStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

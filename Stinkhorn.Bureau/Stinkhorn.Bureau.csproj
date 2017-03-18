@@ -162,6 +162,7 @@
     <Content Include="Images\computer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\document-open.png" />
     <Content Include="Images\document-properties.png" />
     <Content Include="Images\drive-harddisk.png" />
     <Content Include="Images\format-justify-fill.png" />

@@ -4,13 +4,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Proc = System.Diagnostics.Process;
-using System.Threading;
 
 namespace Stinkhorn.VFS.API
 {
     [Extension]
     public class MountHandler : IResponseHandler<MountResponse, object>,
-        IResponseHandler<ListResponse, object>, IDisposable, IPublisher
+        IResponseHandler<ListResponse, object>, IDisposable, IPublisher,
+        IResponseHandler<FileResponse, object>
     {
         FileServer server;
         IFolder root;
@@ -43,11 +43,21 @@ namespace Stinkhorn.VFS.API
             return ResponseStatus.Handled;
         }
 
+        public ResponseStatus Process(object src, FileResponse msg)
+        {
+            return ResponseStatus.Handled;
+        }
+
         public Action<Guid, IMessage> Pub { private get; set; }
 
         internal void Refresh(Guid id, string src, string path)
         {
             Pub(id, new ListRequest { Source = src, Path = path });
+        }
+
+        internal void ReadFile(Guid id, string src, string path)
+        {
+            Pub(id, new FileRequest { Source = src, Path = path });
         }
 
         public static string BuildRefPath(object id, string src)

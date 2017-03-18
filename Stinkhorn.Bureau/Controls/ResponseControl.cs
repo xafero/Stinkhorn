@@ -45,7 +45,10 @@ namespace Stinkhorn.Bureau.Controls
                 {
                     var ext = MimeType.GetFileType(bytes);
                     var key = binary.Key.Replace("/Item/", $"/{++i}/");
-                    key = key.Substring(1, key.LastIndexOf('/') - 1);
+                    var count = key.LastIndexOf('/') - 1;
+                    if (count < 1)
+                        count = key.Length - 1;
+                    key = key.Substring(1, count);
                     var name = $"{key.Replace('/', '_')}.{ext}";
                     dragDropControl1.AddFile(name, bytes);
                 }
