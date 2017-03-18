@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Proc = System.Diagnostics.Process;
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Stinkhorn.VFS.API
 {
@@ -16,6 +18,7 @@ namespace Stinkhorn.VFS.API
         IFolder root;
         IDictionary<string, IFolder> refs;
         IDictionary<string, string> tgts;
+        ConcurrentDictionary<string, ReadFileChunk> chunks;
 
         public ResponseStatus Process(object src, MountResponse msg)
         {
@@ -30,6 +33,7 @@ namespace Stinkhorn.VFS.API
                 root = new VfsFolder("");
                 refs = new Dictionary<string, IFolder>();
                 tgts = new Dictionary<string, string>();
+                chunks = new ConcurrentDictionary<string, ReadFileChunk>();
                 Proc.Start("explorer", url);
             }
             Mount(src, msg);
@@ -43,11 +47,6 @@ namespace Stinkhorn.VFS.API
             return ResponseStatus.Handled;
         }
 
-        public ResponseStatus Process(object src, FileResponse msg)
-        {
-            return ResponseStatus.Handled;
-        }
-
         public Action<Guid, IMessage> Pub { private get; set; }
 
         internal void Refresh(Guid id, string src, string path)
@@ -58,11 +57,39 @@ namespace Stinkhorn.VFS.API
         internal int ReadFile(Guid id, string src, string path,
             byte[] buffer, long offset, long length, long start)
         {
-            Pub(id, new FileRequest { Source = src, Path = path });
-
-
-            throw new NotImplementedException();
+            Pub(id, new FileRequest
+            {
+                Source = src,
+                Path = path,
+                Buffer = (int)length,
+                Offset = start
+            });
+            var chunkRef = BuildChunkRef(id, src, path, start);
+            ReadFileChunk handle = null;
+            var numberOfTries = 0;
+            while (handle == null && (numberOfTries++) <= 5)
+                if (!chunks.TryGetValue(chunkRef, out handle))
+                    Thread.Sleep(100);
+            var bytesRead = handle(buffer, offset, length, start);
+            chunks.TryRemove(chunkRef, out handle);
+            return bytesRead;
         }
+
+        public ResponseStatus Process(object src, FileResponse msg)
+        {
+            var chunkRef = BuildChunkRef(src, msg.Source, msg.Relative, msg.Offset);
+            ReadFileChunk chunk = (b, o, l, s) =>
+            {
+                Array.Copy(msg.Bytes, 0, b, o, Math.Min(l, msg.Length));
+                return (int)msg.Length;
+            };
+            chunks[chunkRef] = chunk;
+            return ResponseStatus.Handled;
+        }
+
+        static string BuildChunkRef(object id, string src,
+            string relative, long offset)
+            => $"{(id + "").Replace("-", "")}@{src}|{relative.TrimStart('/')}|{offset}";
 
         public static string BuildRefPath(object id, string src)
             => $"{id}@{src}";
@@ -119,6 +146,8 @@ namespace Stinkhorn.VFS.API
 
         public void Dispose()
         {
+            chunks?.Clear();
+            chunks = null;
             tgts?.Clear();
             tgts = null;
             refs?.Clear();
