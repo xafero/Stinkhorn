@@ -19,7 +19,7 @@ namespace Stinkhorn.Test
                         "
             };
             var rsp = handler.Process(rr) as RunResponse;
-            Assert.AreEqual("Win32NT", rsp.Result);
+            Assert.AreEqual("Win32NT", rsp.Result + "");
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace Stinkhorn.Test
                         "
             };
             var rsp = handler.Process(rr) as RunResponse;
-            Assert.AreEqual("Win32NT", rsp.Result);
+            Assert.AreEqual("Win32NT", rsp.Result + "");
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Stinkhorn.Test
                         "
             };
             var rsp = handler.Process(rr) as RunResponse;
-            Assert.AreEqual("Win32NT", rsp.Result);
+            Assert.AreEqual("Win32NT", rsp.Result + "");
         }
     }
 }
