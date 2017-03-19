@@ -68,9 +68,9 @@ namespace Stinkhorn.VFS.Shared
             if (specialFld == SpecialFolder.MyComputer)
             {
                 var allDrives = DriveInfo.GetDrives();
-                var drives = allDrives.Where(d => d.DriveType == DriveType.Fixed
-                        && d.IsReady).ToDictionary(k => k.RootDirectory.FullName,
-                        v => PatchLabel(v.VolumeLabel));
+                var drives = allDrives.Where(DriveFilter)
+                    .ToDictionary(k => k.RootDirectory.FullName,
+                                  v => PatchLabel(v.VolumeLabel));
                 dirs = drives.Values.ToArray();
                 files = new string[0];
             }

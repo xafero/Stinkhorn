@@ -3,6 +3,7 @@ using System.Linq;
 using static System.Environment;
 using Stinkhorn.API;
 using Stinkhorn.VFS.API;
+using System;
 
 namespace Stinkhorn.VFS.Shared
 {
@@ -43,5 +44,10 @@ namespace Stinkhorn.VFS.Shared
         public static string PatchLabel(string label)
             => label == "/" ? "Root" : label.TrimStart('/')
             .Replace('/', '_').Replace('.', '-');
+
+        public static bool DriveFilter(DriveInfo di)
+            => di.IsReady &&
+                di.DriveType != DriveType.Network &&
+                di.DriveType != DriveType.NoRootDirectory;
     }
 }
