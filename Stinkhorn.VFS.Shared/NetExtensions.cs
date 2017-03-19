@@ -3,7 +3,6 @@ using System.Linq;
 using static System.Environment;
 using Stinkhorn.API;
 using Stinkhorn.VFS.API;
-using System;
 
 namespace Stinkhorn.VFS.Shared
 {

@@ -55,6 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Script", "Script", "{B23071
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stinkhorn.Script.Shared", "Stinkhorn.Script.Shared\Stinkhorn.Script.Shared.csproj", "{8EE9128E-7866-48CA-9352-9DC4A9055E49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stinkhorn.Demo.BSD", "Stinkhorn.Demo.BSD\Stinkhorn.Demo.BSD.csproj", "{6BFF31E4-32C1-4D84-90DC-C12BECC3B0EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{8EE9128E-7866-48CA-9352-9DC4A9055E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EE9128E-7866-48CA-9352-9DC4A9055E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EE9128E-7866-48CA-9352-9DC4A9055E49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BFF31E4-32C1-4D84-90DC-C12BECC3B0EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BFF31E4-32C1-4D84-90DC-C12BECC3B0EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BFF31E4-32C1-4D84-90DC-C12BECC3B0EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BFF31E4-32C1-4D84-90DC-C12BECC3B0EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,5 +162,6 @@ Global
 		{16BF2832-3224-465A-B4BC-A4FE30E360AE} = {4ECB3B3F-E9C5-44C3-A0C3-D17C6423E99B}
 		{D7AC561B-DAAD-4812-9804-89E997891DEF} = {B2307110-1CD6-4121-A5DC-3ED18582AFEB}
 		{8EE9128E-7866-48CA-9352-9DC4A9055E49} = {B2307110-1CD6-4121-A5DC-3ED18582AFEB}
+		{6BFF31E4-32C1-4D84-90DC-C12BECC3B0EE} = {37BE5D15-74AA-4DBC-8F44-1A5BA82244F2}
 	EndGlobalSection
 EndGlobal
