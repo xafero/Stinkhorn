@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Stinkhorn.API;
 using Stinkhorn.Bureau.Utils;
+using Stinkhorn.Bureau.Editor;
 
 namespace Stinkhorn.Bureau.Controls
 {
@@ -20,6 +21,7 @@ namespace Stinkhorn.Bureau.Controls
             Text = req?.GetType().Name;
             Icon = image?.ToIcon();
             propertyGrid1.SetSelectedObject(req);
+            propertyGrid1.EnableAddons();
         }
 
         void button1_Click(object sender, System.EventArgs e)

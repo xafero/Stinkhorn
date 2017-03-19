@@ -93,6 +93,7 @@
     <Compile Include="Controls\ResponseControl.Designer.cs">
       <DependentUpon>ResponseControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editor\EditorExts.cs" />
     <Compile Include="Handlers\GenericHandler.cs" />
     <Compile Include="Handlers\HelloHandler.cs" />
     <Compile Include="Icons.Designer.cs">
