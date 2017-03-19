@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using static NUnit.Framework.Assert;
 using Stinkhorn.System.API;
+using Stinkhorn.System.Win;
 
 namespace Stinkhorn.Test
 {
@@ -10,7 +11,10 @@ namespace Stinkhorn.Test
         [Test]
         public void TestInfoWin10()
         {
-            var sys = new SystemInfo();
+            var handler = new WinSystemHandler();
+            var ir = new InfoRequest { };
+            var rr = handler.Process(ir) as InfoResponse;
+            var sys = rr.Result;
             AreEqual(Architecture.x64, sys.Arch);
             AreEqual(8, sys.CPUs);
             AreEqual("Windows-1252", sys.Encoding);

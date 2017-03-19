@@ -10,8 +10,14 @@ namespace Stinkhorn.Script.Shared
     {
         public IResponse Process(RunRequest input)
         {
-            Debugger.Break();
-            throw new NotImplementedException();
+            var code = input.Code.Trim();
+
+
+
+            return new RunResponse
+            {
+                Result = 42 + ""
+            };
         }
     }
 }

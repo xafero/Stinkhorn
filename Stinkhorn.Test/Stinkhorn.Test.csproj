@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="CommunicationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScriptTest.cs" />
     <Compile Include="SerializerTest.cs" />
     <Compile Include="SystemInfoTest.cs" />
   </ItemGroup>
@@ -68,6 +69,14 @@
     <ProjectReference Include="..\Stinkhorn.Demo.API\Stinkhorn.Demo.API.csproj">
       <Project>{c729068c-01f1-44ca-ad25-871c6090e069}</Project>
       <Name>Stinkhorn.Demo.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.Script.API\Stinkhorn.Script.API.csproj">
+      <Project>{d7ac561b-daad-4812-9804-89e997891def}</Project>
+      <Name>Stinkhorn.Script.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stinkhorn.Script.Shared\Stinkhorn.Script.Shared.csproj">
+      <Project>{8ee9128e-7866-48ca-9352-9dc4a9055e49}</Project>
+      <Name>Stinkhorn.Script.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\Stinkhorn.System.API\Stinkhorn.System.API.csproj">
       <Project>{3ba5b43c-c169-495e-9c90-c394c0247dd8}</Project>
