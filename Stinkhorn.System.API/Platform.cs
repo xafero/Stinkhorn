@@ -10,6 +10,6 @@
 
         Windows,
 
-        Unix
+        BSD
     }
 }
