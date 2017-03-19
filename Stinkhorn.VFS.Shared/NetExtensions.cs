@@ -41,6 +41,7 @@ namespace Stinkhorn.VFS.Shared
         }
 
         public static string PatchLabel(string label)
-            => label == "/" ? "Root" : label;
+            => label == "/" ? "Root" : label.TrimStart('/')
+            .Replace('/', '_').Replace('.', '-');
     }
 }
