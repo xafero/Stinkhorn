@@ -1,7 +1,6 @@
-﻿using Stinkhorn.API;
+﻿using CSScriptLibrary;
+using Stinkhorn.API;
 using Stinkhorn.Script.API;
-using System;
-using System.Diagnostics;
 
 namespace Stinkhorn.Script.Shared
 {
@@ -11,13 +10,14 @@ namespace Stinkhorn.Script.Shared
         public IResponse Process(RunRequest input)
         {
             var code = input.Code.Trim();
-
-
-
-            return new RunResponse
+            var txt = string.Format("object Run() => {0};", code);
+            var res = CSScript.Evaluator.CreateDelegateRemotely<object>(txt);
+            var rsp = new RunResponse
             {
-                Result = 42 + ""
+                Result = res() + ""
             };
+            res.UnloadOwnerDomain();
+            return rsp;
         }
     }
 }

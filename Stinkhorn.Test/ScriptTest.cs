@@ -18,7 +18,7 @@ namespace Stinkhorn.Test
                         "
             };
             var rsp = handler.Process(rr) as RunResponse;
-            Assert.AreEqual("42", rsp.Result);
+            Assert.AreEqual("Win32NT", rsp.Result);
         }
     }
 }
