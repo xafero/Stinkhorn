@@ -15,8 +15,8 @@ namespace Stinkhorn.Script.API
     [ResponseDesc]
     public class RunResponse : IResponse
     {
+        public object Result { get; set; }
         public TimeSpan Duration { get; set; }
-        public string Result { get; set; }
     }
 
     [Serializable]
