@@ -23,7 +23,7 @@ namespace Stinkhorn.Test
             Assert.AreEqual("MyComputer", rr.Source + "");
             Assert.AreEqual("/drives", rr.Target);
             Assert.AreEqual(0, rr.Files.Count());
-            Assert.IsTrue(rr.Folders.Count() >= 1);
+            Assert.IsTrue(rr.Folders.Count() >= 1, "No folders ?!");
         }
     }
 }
