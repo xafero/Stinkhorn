@@ -171,6 +171,7 @@
     <Content Include="Images\media-floppy.png" />
     <Content Include="Images\preferences-desktop-screensaver.png" />
     <Content Include="Images\system-file-manager.png" />
+    <Content Include="Images\text-x-script.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
